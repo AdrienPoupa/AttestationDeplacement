@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Attestation Coronavirus</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_create_attestation">CreateAttestationActivity</string>
+    <string name="save">Sauvegarder</string>
+    <string name="delete">Effacer</string>
+    <string name="empty_list">Vous n\'avez pas encore généré d\'attestations</string>
+    <string name="info_create">Entrez vos informations pour générer votre attestation</string>
+    <string name="surname">Prénom</string>
+    <string name="name">Nom</string>
+    <string name="selectBirthdate">Sélectionnez la date de naissance</string>
+    <string name="birthdate">Date de naissance</string>
+    <string name="address">Adresse</string>
+    <string name="signature_location">Lieu de la signature</string>
+    <string name="reasons">Motifs de déplacement</string>
+    <string name="reason1">Déplacements entre le domicile et le lieu d’exercice de l’activité professionnelle ou déplacements professionnels ne pouvant être différés.</string>
+    <string name="reason2">Achats de première nécessité dans des établissements autorisés.</string>
+    <string name="reason3">Motifs de santé.</string>
+    <string name="reason4">Motif familial impétueux, assistance aux personnes vulnérables, garde d\'enfants.</string>
+    <string name="reason5">Déplacement brefs, à proximité du domicile, liés à l’activité physique individuelle des personnes, à l’exclusion de toute pratique sportive collective, et aux besoins des animaux de compagnie.</string>
+    <string name="sign">Signer</string>
+    <string name="generate">Générer</string>
+</resources>
