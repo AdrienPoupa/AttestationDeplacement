@@ -1,0 +1,11 @@
+Generates the PDF attestation file required by the French government to go out.
+
+This application does not send your personal information anywhere,
+ everything remains on your device.
+
+This is not an official application, it is not endorsed by the French government.
+
+Please note that attestations on a phone screen are not valid [1],
+ one has to print then after generation.
+
+[1]: https://twitter.com/Place_Beauvau/status/1240236276416118784
