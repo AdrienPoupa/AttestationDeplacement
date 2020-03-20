@@ -1,6 +1,7 @@
 package com.adrienpoupa.attestationcoronavirus;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,12 +35,52 @@ import java.util.Map;
 
 public class CreateAttestationActivity extends AppCompatActivity {
 
+    private TextInputEditText surnameInput;
+    private TextInputEditText lastNameInput;
+    private TextInputEditText birthDateInput;
+    private TextInputEditText addressInput;
+    private TextInputEditText locationInput;
+
+    private SharedPreferences userDetails;
+    private SharedPreferences.Editor edit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_create_attestation);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+
+        initFields();
+    }
+
+    private void initFields() {
+        userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
+
+        edit = userDetails.edit();
+
+        surnameInput = findViewById(R.id.surname);
+
+        surnameInput.setText(userDetails.getString("surname", ""));
+
+        lastNameInput = findViewById(R.id.name);
+
+        lastNameInput.setText(userDetails.getString("lastName", ""));
+
+        birthDateInput = findViewById(R.id.birthdate);
+
+        birthDateInput.setText(userDetails.getString("birthDate", ""));
+
+        addressInput = findViewById(R.id.address);
+
+        addressInput.setText(userDetails.getString("address", ""));
+
+        locationInput = findViewById(R.id.signatureLocation);
+
+        locationInput.setText(userDetails.getString("location", ""));
     }
 
     public void showDatePicker(View v) {
@@ -58,20 +99,27 @@ public class CreateAttestationActivity extends AppCompatActivity {
     }
 
     public void generate(View v) {
-        TextInputEditText surnameInput = findViewById(R.id.surname);
         String surname = surnameInput.getText().toString();
 
-        TextInputEditText nameInput = findViewById(R.id.name);
-        String name = nameInput.getText().toString();
+        edit.putString("surname", surname);
 
-        TextInputEditText birthDateInput = findViewById(R.id.birthdate);
+        String lastName = lastNameInput.getText().toString();
+
+        edit.putString("lastName", lastName);
+
         String birthDate = birthDateInput.getText().toString();
 
-        TextInputEditText addressInput = findViewById(R.id.address);
+        edit.putString("birthDate", birthDate);
+
         String address = addressInput.getText().toString();
 
-        TextInputEditText locationInput = findViewById(R.id.signatureLocation);
+        edit.putString("address", address);
+
         String location = locationInput.getText().toString();
+
+        edit.putString("location", location);
+
+        edit.apply();
 
         AssetManager assetManager = getAssets();
 
@@ -94,8 +142,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
             PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
             Map<String, PdfFormField> fields = form.getFormFields();
 
-
-            fields.get("untitled1").setValue(surname + " " + name);
+            fields.get("untitled1").setValue(surname + " " + lastName);
             fields.get("untitled2").setValue(birthDate);
             fields.get("untitled6").setValue(address);
             fields.get("untitled3").setValue(location);
