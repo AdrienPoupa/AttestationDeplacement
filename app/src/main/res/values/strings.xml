@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Attestation Coronavirus</string>
-    <string name="action_settings">Settings</string>
+    <string name="warning">Avertissement</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -28,4 +28,6 @@
     <string name="reason5">Déplacement brefs, à proximité du domicile, liés à l’activité physique individuelle des personnes, à l’exclusion de toute pratique sportive collective, et aux besoins des animaux de compagnie.</string>
     <string name="sign">Signer</string>
     <string name="generate">Générer</string>
+    <string name="information">Cette application n\'est pas officielle. Vous devrez imprimer le fichier généré, vous ne pourrez pas présenter votre mobile en cas de contrôle.</string>
+    <string name="disclaimer_text">Vous devrez imprimer le fichier généré, vous ne pourrez pas présenter votre mobile en cas de contrôle.\nPressez longuement pour envoyer le fichier.</string>
 </resources>

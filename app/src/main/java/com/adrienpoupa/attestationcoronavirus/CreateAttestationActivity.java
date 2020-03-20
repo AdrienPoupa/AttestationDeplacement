@@ -78,22 +78,15 @@ public class CreateAttestationActivity extends AppCompatActivity {
         try {
             InputStream attestation = assetManager.open("attestation.pdf");
 
-            File result;
-
             Date d = new Date();
             String date = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(d);
 
             File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Documents/Attestations");
-            boolean isPresent = true;
-            if (!docsFolder.exists()) {
-                isPresent = docsFolder.mkdir();
-            }
-            if (isPresent) {
-                result = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + "-tmp.pdf");
-            } else {
-                Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-                return;
-            }
+
+            // Create folders recursively
+            docsFolder.mkdirs();
+
+            File result = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + "-tmp.pdf");
 
             PdfDocument pdf =
                     new PdfDocument(new PdfReader(attestation), new PdfWriter(result));
@@ -145,6 +138,9 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             File signatureFile = new File(Environment.getExternalStorageDirectory() + "/Documents/Attestations/signature.png");
 
+            File generatedPdf = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + "-tmp.pdf");
+            File finalPdf = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + ".pdf");
+
             if (signatureFile.exists()) {
                 byte[] bytesArray = new byte[(int) signatureFile.length()];
 
@@ -153,9 +149,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
                 fis.close();
 
                 ImageData imageData = ImageDataFactory.create(bytesArray);
-
-                File generatedPdf = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + "-tmp.pdf");
-                File finalPdf = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + ".pdf");
 
                 PdfDocument pdfDocument = new PdfDocument(new PdfReader(generatedPdf), new PdfWriter(finalPdf));
 
@@ -166,6 +159,9 @@ public class CreateAttestationActivity extends AppCompatActivity {
                 document.close();
 
                 generatedPdf.delete();
+            } else {
+                // Rename the tmp file to final
+                generatedPdf.renameTo(finalPdf);
             }
 
             Toast.makeText(this, "Attestation générée !", Toast.LENGTH_SHORT).show();

@@ -1,6 +1,7 @@
 package com.adrienpoupa.attestationcoronavirus;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -24,6 +26,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,47 +56,63 @@ public class MainActivity extends AppCompatActivity {
 
         FilenameFilter textFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                String lowercaseName = name.toLowerCase();
-                if (lowercaseName.endsWith(".pdf")) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return name.toLowerCase().endsWith(".pdf");
             }
         };
 
-        File files[] = docsFolder.listFiles(textFilter);
+        File[] files = docsFolder.listFiles(textFilter);
 
         ArrayList<String> filesList = new ArrayList<>();
-        for (int i = 0; i < files.length; i++) {
-            filesList.add(files[i].getName());
+        if (files != null) {
+            // https://stackoverflow.com/a/21534151
+            Arrays.sort(files, new Comparator<File>() {
+                public int compare(File f1, File f2) {
+                    return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
+                }
+            });
+
+            for (File file : files) {
+                filesList.add(file.getName());
+            }
         }
 
-        ListView lv = findViewById(R.id.filelist);
+        ListView lv = findViewById(R.id.file_list);
 
-        lv.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, filesList));
+        lv.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filesList));
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 // Clicking on items
                 Intent intent;
                 String fileName = (String) parent.getAdapter().getItem(position);
-                String filePath = Environment.getExternalStorageDirectory() + "/Documents/Attestations/" + fileName;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    File file = new File(filePath);
-                    Uri uri = FileProvider.getUriForFile(MainActivity.this, getPackageName() + ".provider", file);
                     intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(uri);
+                    intent.setData(MainActivity.this.getUri(fileName));
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(intent);
                 } else {
                     intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(filePath), "application/pdf");
+                    intent.setDataAndType(MainActivity.this.getUri(fileName), "application/pdf");
                     intent = Intent.createChooser(intent, "Open File");
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
+            }
+        });
+
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+                String fileName = (String) parent.getAdapter().getItem(position);
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_STREAM, MainActivity.this.getUri(fileName));
+                sendIntent.setType("application/pdf");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
+
+                return true;
             }
         });
 
@@ -106,6 +126,56 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private Uri getUri(String fileName) {
+        String filePath = Environment.getExternalStorageDirectory() + "/Documents/Attestations/" + fileName;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            File file = new File(filePath);
+            return FileProvider.getUriForFile(MainActivity.this, getPackageName() + ".provider", file);
+        }
+
+        return Uri.parse(filePath);
+    }
+
+    /**
+     * https://stackoverflow.com/a/9044235
+     */
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        // Show popup once
+        // https://androidwithdivya.wordpress.com/2017/02/14/how-to-launch-an-activity-only-once-for-the-first-time/
+        boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+        if (isFirstRun) {
+            getInformationDialog();
+        }
+
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isFirstRun", false).apply();
+    }
+
+    private void getInformationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.warning)
+                .setMessage(R.string.information)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
     /**
      * https://stackoverflow.com/a/5565700
      */
@@ -114,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         super.onContentChanged();
 
         View empty = findViewById(R.id.empty);
-        ListView list = findViewById(R.id.filelist);
+        ListView list = findViewById(R.id.file_list);
         list.setEmptyView(empty);
     }
 
@@ -127,18 +197,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_warning) {
+            getInformationDialog();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
     /**
      * Checks if the app has permission to write to device storage
      *
