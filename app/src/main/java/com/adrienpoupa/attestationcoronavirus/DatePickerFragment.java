@@ -25,7 +25,7 @@ public class DatePickerFragment extends DialogFragment {
     private DatePickerDialog.OnDateSetListener dateSetListener =
             new DatePickerDialog.OnDateSetListener() {
                 public void onDateSet(DatePicker view, int year, int month, int day) {
-                    String date = day + " " + new DateFormatSymbols().getMonths()[month-1] + " " + year;
+                    String date = day + " " + new DateFormatSymbols().getMonths()[month] + " " + year;
                     ((CreateAttestationActivity) getActivity()).setDate(date);
                 }
             };

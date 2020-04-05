@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             for (File file : files) {
-                filesList.add(file.getName());
+                filesList.add(file.getName().replaceFirst("[.][^.]+$", ""));
             }
         }
 
@@ -85,14 +85,15 @@ public class MainActivity extends AppCompatActivity {
                 // Clicking on items
                 Intent intent;
                 String fileName = (String) parent.getAdapter().getItem(position);
+                String fileNamePdf = fileName + ".pdf";
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(MainActivity.this.getUri(fileName));
+                    intent.setData(MainActivity.this.getUri(fileNamePdf));
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(intent);
                 } else {
                     intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(MainActivity.this.getUri(fileName), "application/pdf");
+                    intent.setDataAndType(MainActivity.this.getUri(fileNamePdf), "application/pdf");
                     intent = Intent.createChooser(intent, "Open File");
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);

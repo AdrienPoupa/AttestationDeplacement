@@ -3,6 +3,7 @@ package com.adrienpoupa.attestationcoronavirus;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -14,18 +15,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.forms.fields.PdfFormField;
-import com.itextpdf.io.image.ImageData;
-import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Image;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -33,16 +34,21 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.WHITE;
+
 public class CreateAttestationActivity extends AppCompatActivity {
 
     private TextInputEditText surnameInput;
     private TextInputEditText lastNameInput;
     private TextInputEditText birthDateInput;
+    private TextInputEditText birthPlaceInput;
     private TextInputEditText addressInput;
     private TextInputEditText locationInput;
 
-    private SharedPreferences userDetails;
     private SharedPreferences.Editor edit;
+
+    private StringBuilder motives;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +64,9 @@ public class CreateAttestationActivity extends AppCompatActivity {
     }
 
     private void initFields() {
-        userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
+        motives = new StringBuilder();
+
+        SharedPreferences userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
 
         edit = userDetails.edit();
 
@@ -73,6 +81,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
         birthDateInput = findViewById(R.id.birthdate);
 
         birthDateInput.setText(userDetails.getString("birthDate", ""));
+
+        birthPlaceInput = findViewById(R.id.birthplace);
+
+        birthPlaceInput.setText(userDetails.getString("birthPlace", ""));
 
         addressInput = findViewById(R.id.address);
 
@@ -93,11 +105,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
         birthDate.setText(date);
     }
 
-    public void showFingerPaint(View v) {
-        Intent intent = new Intent(this, FingerPaintActivity.class);
-        startActivity(intent);
-    }
-
     public void generate(View v) {
         String surname = surnameInput.getText().toString();
 
@@ -110,6 +117,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
         String birthDate = birthDateInput.getText().toString();
 
         edit.putString("birthDate", birthDate);
+
+        String birthPlace = birthPlaceInput.getText().toString();
+
+        edit.putString("birthPlace", birthPlace);
 
         String address = addressInput.getText().toString();
 
@@ -134,7 +145,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
             // Create folders recursively
             docsFolder.mkdirs();
 
-            File result = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + "-tmp.pdf");
+            File result = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + ".pdf");
 
             PdfDocument pdf =
                     new PdfDocument(new PdfReader(attestation), new PdfWriter(result));
@@ -142,38 +153,66 @@ public class CreateAttestationActivity extends AppCompatActivity {
             PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
             Map<String, PdfFormField> fields = form.getFormFields();
 
-            fields.get("untitled1").setValue(surname + " " + lastName);
-            fields.get("untitled2").setValue(birthDate);
-            fields.get("untitled6").setValue(address);
-            fields.get("untitled3").setValue(location);
+            String fullName = surname + " " + lastName;
+
+            fields.get("Nom et prénom").setValue(fullName);
+            fields.get("Signature").setValue(fullName);
+            fields.get("Date de naissance").setValue(birthDate);
+            fields.get("Lieu de naissance").setValue(birthPlace);
+            fields.get("Adresse actuelle").setValue(address);
+            fields.get("Ville").setValue(location);
 
             Date today = new Date();
             Calendar cal = Calendar.getInstance();
             cal.setTime(today);
+
             int day = cal.get(Calendar.DAY_OF_MONTH);
             int month = cal.get(Calendar.MONTH) + 1;
+            int year = cal.get(Calendar.YEAR);
 
-            fields.get("untitled4").setValue(String.format("%02d", day));
-            fields.get("untitled5").setValue(String.format("%02d", month));
+            int hour = cal.get(Calendar.HOUR);
+            int minute = cal.get(Calendar.MINUTE);
+
+            String dateString = String.format("%02d", day) + '/' + String.format("%02d", month) + '/' + String.format("%02d", year);
+
+            fields.get("Date").setValue(dateString);
+
+            fields.get("Heure").setValue(String.format("%02d", hour));
+            fields.get("Minute").setValue(String.format("%02d", minute));
 
             if (((CheckBox) findViewById(R.id.reason1)).isChecked()) {
-                fields.get("Case à cocher 1").setValue("Oui");
+                fields.get("Déplacements entre domicile et travail").setValue("Oui");
+                addMotive("travail");
             }
 
             if (((CheckBox) findViewById(R.id.reason2)).isChecked()) {
-                fields.get("Case à cocher 2").setValue("Oui");
+                fields.get("Déplacements achats nécéssaires").setValue("Oui");
+                addMotive("courses");
             }
 
             if (((CheckBox) findViewById(R.id.reason3)).isChecked()) {
-                fields.get("Case à cocher 3").setValue("Oui");
+                fields.get("Consultations et soins").setValue("Oui");
+                addMotive("sante");
             }
 
             if (((CheckBox) findViewById(R.id.reason4)).isChecked()) {
-                fields.get("Case à cocher 4").setValue("Oui");
+                fields.get("Déplacements pour motif familial").setValue("Oui");
+                addMotive("familial");
             }
 
             if (((CheckBox) findViewById(R.id.reason5)).isChecked()) {
-                fields.get("Case à cocher 5").setValue("Oui");
+                fields.get("Déplacements brefs (activité physique et animaux)").setValue("Oui");
+                addMotive("bref");
+            }
+
+            if (((CheckBox) findViewById(R.id.reason6)).isChecked()) {
+                fields.get("Convcation judiciaire ou administrative").setValue("Oui");
+                addMotive("convocation");
+            }
+
+            if (((CheckBox) findViewById(R.id.reason7)).isChecked()) {
+                fields.get("Mission d'intérêt général").setValue("Oui");
+                addMotive("intérêt général");
             }
 
             form.setNeedAppearances(true);
@@ -183,41 +222,65 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             pdf.close();
 
-            File signatureFile = new File(Environment.getExternalStorageDirectory() + "/Documents/Attestations/signature.png");
+            String dateHourString = dateString + " a " + hour + "h" + minute;
 
-            File generatedPdf = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + "-tmp.pdf");
-            File finalPdf = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + ".pdf");
+            String qrCodeString = "Cree le: " + dateHourString + "; Nom: " + lastName + "; Prenom:" + surname + "; Naissance: " + birthDate + " a " + birthPlace + "; Adresse: " + address + "; Sortie:" + dateHourString + "; Motifs: " + motives;
 
-            if (signatureFile.exists()) {
-                byte[] bytesArray = new byte[(int) signatureFile.length()];
+            Bitmap bitmap = this.generateQrCode(qrCodeString);
 
-                FileInputStream fis = new FileInputStream(signatureFile);
-                fis.read(bytesArray);
-                fis.close();
+            File qrCodeFile = new File(Environment.getExternalStorageDirectory() + "/Documents/Attestations/qrcode-" + date + ".png");
 
-                ImageData imageData = ImageDataFactory.create(bytesArray);
+            FileOutputStream ostream = new FileOutputStream(qrCodeFile);
 
-                PdfDocument pdfDocument = new PdfDocument(new PdfReader(generatedPdf), new PdfWriter(finalPdf));
+            bitmap.compress(Bitmap.CompressFormat.PNG, 10, ostream);
 
-                Document document = new Document(pdfDocument);
-                Image pdfImg = new Image(imageData).scaleAbsolute(50, 100).setFixedPosition(1, 500, 15);
-
-                document.add(pdfImg);
-                document.close();
-
-                generatedPdf.delete();
-            } else {
-                // Rename the tmp file to final
-                generatedPdf.renameTo(finalPdf);
-            }
+            ostream.close();
 
             Toast.makeText(this, "Attestation générée !", Toast.LENGTH_SHORT).show();
 
             Intent show = new Intent(this, MainActivity.class);
             startActivity(show);
-        } catch (IOException e) {
+        } catch (IOException | WriterException e) {
             e.printStackTrace();
             Toast.makeText(this, "Erreur", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Add motives
+     * @param motive motive to add
+     */
+    public void addMotive(String motive) {
+        if (motives.length() != 0) {
+            motives.append("-").append(motive);
+        }
+        motives.append(motive);
+    }
+
+
+    public final static int WIDTH = 500;
+    public final static int HEIGHT = 500;
+
+    public Bitmap generateQrCode(String str) throws WriterException {
+        BitMatrix result;
+        try {
+            result = new MultiFormatWriter().encode(str,
+                    BarcodeFormat.QR_CODE, WIDTH, HEIGHT, null);
+        } catch (IllegalArgumentException iae) {
+            // Unsupported format
+            return null;
+        }
+        int w = result.getWidth();
+        int h = result.getHeight();
+        int[] pixels = new int[w * h];
+        for (int y = 0; y < h; y++) {
+            int offset = y * w;
+            for (int x = 0; x < w; x++) {
+                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, WIDTH, 0, 0, w, h);
+        return bitmap;
     }
 }
