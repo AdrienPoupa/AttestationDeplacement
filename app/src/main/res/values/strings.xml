@@ -2,8 +2,6 @@
     <string name="app_name">Attestation Coronavirus</string>
     <string name="warning">Avertissement</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_create_attestation">CreateAttestationActivity</string>
     <string name="save">Sauvegarder</string>
     <string name="delete">Effacer</string>
@@ -24,6 +22,6 @@
     <string name="reason6">Convocation judiciaire ou administrative.</string>
     <string name="reason7">Participation à des missions d\'intérêt général sur demande de l’autorité administrative.</string>
     <string name="generate">Générer</string>
-    <string name="information">Cette application n\'est pas officielle. Vous devrez imprimer le fichier généré, vous ne pourrez pas présenter votre mobile en cas de contrôle.</string>
-    <string name="disclaimer_text">Vous devrez imprimer le fichier généré, vous ne pourrez pas présenter votre mobile en cas de contrôle.\nPressez longuement pour envoyer le fichier.</string>
+    <string name="information">Cette application n\'est pas officielle. Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.</string>
+    <string name="disclaimer_text">Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.\nPressez longuement pour envoyer le fichier.</string>
 </resources>

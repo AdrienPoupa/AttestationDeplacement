@@ -224,11 +224,11 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             String dateHourString = dateString + " a " + hour + "h" + minute;
 
-            String qrCodeString = "Cree le: " + dateHourString + "; Nom: " + lastName + "; Prenom:" + surname + "; Naissance: " + birthDate + " a " + birthPlace + "; Adresse: " + address + "; Sortie:" + dateHourString + "; Motifs: " + motives;
+            String qrCodeString = "Cree le: " + dateHourString + "; Nom: " + lastName + "; Prenom: " + surname + "; Naissance: " + birthDate + " a " + birthPlace + "; Adresse: " + address + "; Sortie:" + dateHourString + "; Motifs: " + motives;
 
             Bitmap bitmap = this.generateQrCode(qrCodeString);
 
-            File qrCodeFile = new File(Environment.getExternalStorageDirectory() + "/Documents/Attestations/qrcode-" + date + ".png");
+            File qrCodeFile = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + ".png");
 
             FileOutputStream ostream = new FileOutputStream(qrCodeFile);
 

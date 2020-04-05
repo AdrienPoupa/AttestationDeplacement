@@ -19,7 +19,11 @@ public class DatePickerFragment extends DialogFragment {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
+
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+        return datePickerDialog;
     }
 
     private DatePickerDialog.OnDateSetListener dateSetListener =

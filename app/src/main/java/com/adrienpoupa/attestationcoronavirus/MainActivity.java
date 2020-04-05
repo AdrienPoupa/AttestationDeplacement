@@ -4,22 +4,17 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -76,46 +71,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        ListView lv = findViewById(R.id.file_list);
+        ListView listView = findViewById(R.id.file_list);
 
-        lv.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filesList));
+        AttestationAdapter adapter = new AttestationAdapter(filesList, this);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                // Clicking on items
-                Intent intent;
-                String fileName = (String) parent.getAdapter().getItem(position);
-                String fileNamePdf = fileName + ".pdf";
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(MainActivity.this.getUri(fileNamePdf));
-                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    startActivity(intent);
-                } else {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(MainActivity.this.getUri(fileNamePdf), "application/pdf");
-                    intent = Intent.createChooser(intent, "Open File");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-            }
-        });
-
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-                String fileName = (String) parent.getAdapter().getItem(position);
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_STREAM, MainActivity.this.getUri(fileName));
-                sendIntent.setType("application/pdf");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
-
-                return true;
-            }
-        });
+        listView.setAdapter(adapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -125,17 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
             }
         });
-    }
-
-    private Uri getUri(String fileName) {
-        String filePath = Environment.getExternalStorageDirectory() + "/Documents/Attestations/" + fileName;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            File file = new File(filePath);
-            return FileProvider.getUriForFile(MainActivity.this, getPackageName() + ".provider", file);
-        }
-
-        return Uri.parse(filePath);
     }
 
     /**
