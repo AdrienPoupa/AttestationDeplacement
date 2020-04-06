@@ -203,22 +203,22 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
                 if (((CheckBox) findViewById(R.id.reason4)).isChecked()) {
                     fields.get("Déplacements pour motif familial").setValue("Oui");
-                    addMotive("familial");
+                    addMotive("famille");
                 }
 
                 if (((CheckBox) findViewById(R.id.reason5)).isChecked()) {
                     fields.get("Déplacements brefs (activité physique et animaux)").setValue("Oui");
-                    addMotive("bref");
+                    addMotive("sport");
                 }
 
                 if (((CheckBox) findViewById(R.id.reason6)).isChecked()) {
                     fields.get("Convcation judiciaire ou administrative").setValue("Oui");
-                    addMotive("convocation");
+                    addMotive("judiciaire");
                 }
 
                 if (((CheckBox) findViewById(R.id.reason7)).isChecked()) {
                     fields.get("Mission d'intérêt général").setValue("Oui");
-                    addMotive("intérêt général");
+                    addMotive("missions");
                 }
 
                 form.setNeedAppearances(true);
