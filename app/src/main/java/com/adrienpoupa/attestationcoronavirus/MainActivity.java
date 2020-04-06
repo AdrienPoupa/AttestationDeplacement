@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         FilenameFilter textFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return name.toLowerCase().endsWith(".pdf");
+                return name.toLowerCase().endsWith(".png");
             }
         };
 
