@@ -23,6 +23,10 @@ public class DatePickerFragment extends DialogFragment {
 
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
+        double diff = System.currentTimeMillis() - 568025136000.0;
+        datePickerDialog.getDatePicker().setMaxDate((long) diff);
+        datePickerDialog.getDatePicker().getTouchables().get( 0 ).performClick();
+
         return datePickerDialog;
     }
 
