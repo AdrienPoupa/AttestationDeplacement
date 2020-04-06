@@ -229,7 +229,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
                 pdf.close();
             }
 
-            String dateHourString = dateString + " a " + hour + "h" + minute;
+            String dateHourString = dateString + " a " + String.format("%02d", hour) + "h" + String.format("%02d", minute);
 
             String qrCodeString = "Cree le: " + dateHourString + "; Nom: " + lastName + "; Prenom: " + surname + "; Naissance: " + birthDate + " a " + birthPlace + "; Adresse: " + address + "; Sortie:" + dateHourString + "; Motifs: " + motives;
 
