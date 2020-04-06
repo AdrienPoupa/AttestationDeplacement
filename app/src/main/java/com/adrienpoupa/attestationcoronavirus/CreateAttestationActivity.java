@@ -259,7 +259,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
      */
     public void addMotive(String motive) {
         if (motives.length() != 0) {
-            motives.append("-").append(motive);
+            motives.append("-");
         }
         motives.append(motive);
     }
