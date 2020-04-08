@@ -147,8 +147,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             setDate();
 
-            createFolders();
-
             AssetManager assetManager = getAssets();
 
             InputStream attestation = assetManager.open("attestation.pdf");
@@ -235,16 +233,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
         dateString = String.format("%02d", day) + '/' + String.format("%02d", month) + '/' + String.format("%02d", year);
 
         fullTime = String.format("%02d", hour) + "h" + String.format("%02d", minute);
-    }
-
-    /**
-     * Create the necessary folders
-     */
-    private void createFolders() {
-        File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Documents/Attestations");
-
-        // Create folders recursively
-        docsFolder.mkdirs();
     }
 
     /**
@@ -369,7 +357,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * @return
      */
     public String getQrCodePath() {
-        return Environment.getExternalStorageDirectory() + "/Documents/Attestations/Attestation-" + date + ".png";
+        return getApplicationContext().getFilesDir() + "/Attestation-" + date + ".png";
     }
 
     /**
@@ -377,7 +365,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * @return
      */
     public String getPdfPath() {
-        return Environment.getExternalStorageDirectory() + "/Documents/Attestations/Attestation-" + date + ".pdf";
+        return getApplicationContext().getFilesDir() + "/Attestation-" + date + ".pdf";
     }
 
     /**

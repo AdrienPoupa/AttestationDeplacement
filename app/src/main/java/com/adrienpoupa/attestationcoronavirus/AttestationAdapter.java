@@ -118,10 +118,10 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             public void onClick(View v) {
                 String fileName = (String) getItem(position);
 
-                File pdfFile = new File(Environment.getExternalStorageDirectory() + "/Documents/Attestations/" + fileName + ".pdf");
+                File pdfFile = new File(context.getFilesDir() + "/" + fileName + ".pdf");
                 pdfFile.delete();
 
-                File qrCodeFile = new File(Environment.getExternalStorageDirectory() + "/Documents/Attestations/" + fileName + ".png");
+                File qrCodeFile = new File(context.getFilesDir() + "/" + fileName + ".png");
                 qrCodeFile.delete();
 
                 list.remove(position);
@@ -156,12 +156,12 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
     }
 
     private Uri getUri(String fileName) {
-        String filePath = Environment.getExternalStorageDirectory() + "/Documents/Attestations/" + fileName;
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            File file = new File(filePath);
+            File file = new File(context.getFilesDir(), fileName);
             return FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
         }
+
+        String filePath = context.getFilesDir() + "/" + fileName;
 
         return Uri.parse(filePath);
     }
