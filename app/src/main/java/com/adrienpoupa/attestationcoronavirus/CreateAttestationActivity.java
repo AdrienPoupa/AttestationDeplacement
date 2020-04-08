@@ -19,11 +19,10 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.itextpdf.forms.PdfAcroForm;
-import com.itextpdf.forms.fields.PdfFormField;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +31,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
 import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
@@ -161,73 +159,64 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             String dateString = String.format("%02d", day) + '/' + String.format("%02d", month) + '/' + String.format("%02d", year);
 
-            // PDF generation is only supported in Android 7+
-            // https://stackoverflow.com/a/41565209
-            if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.M) {
-                File result = new File(docsFolder.getAbsolutePath(),"Attestation-" + date + ".pdf");
+            PdfReader reader = new PdfReader(attestation);
 
-                PdfDocument pdf =
-                        new PdfDocument(new PdfReader(attestation), new PdfWriter(result));
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(docsFolder.getAbsolutePath()+"/Attestation-" + date + ".pdf"));
 
-                PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
-                Map<String, PdfFormField> fields = form.getFormFields();
+            AcroFields form = stamper.getAcroFields();
 
-                String fullName = surname + " " + lastName;
+            String fullName = surname + " " + lastName;
 
-                fields.get("Nom et prénom").setValue(fullName);
-                fields.get("Signature").setValue(fullName);
-                fields.get("Date de naissance").setValue(birthDate);
-                fields.get("Lieu de naissance").setValue(birthPlace);
-                fields.get("Adresse actuelle").setValue(address);
-                fields.get("Ville").setValue(location);
+            form.setField("Nom et prénom", fullName);
+            form.setField("Signature", fullName);
+            form.setField("Date de naissance", birthDate);
+            form.setField("Lieu de naissance", birthPlace);
+            form.setField("Adresse actuelle", address);
+            form.setField("Ville", location);
 
-                fields.get("Date").setValue(dateString);
+            form.setField("Date", dateString);
 
-                fields.get("Heure").setValue(String.format("%02d", hour));
-                fields.get("Minute").setValue(String.format("%02d", minute));
+            form.setField("Heure", String.format("%02d", hour));
+            form.setField("Minute", String.format("%02d", minute));
 
-                if (((CheckBox) findViewById(R.id.reason1)).isChecked()) {
-                    fields.get("Déplacements entre domicile et travail").setValue("Oui");
-                    addMotive("travail");
-                }
-
-                if (((CheckBox) findViewById(R.id.reason2)).isChecked()) {
-                    fields.get("Déplacements achats nécéssaires").setValue("Oui");
-                    addMotive("courses");
-                }
-
-                if (((CheckBox) findViewById(R.id.reason3)).isChecked()) {
-                    fields.get("Consultations et soins").setValue("Oui");
-                    addMotive("sante");
-                }
-
-                if (((CheckBox) findViewById(R.id.reason4)).isChecked()) {
-                    fields.get("Déplacements pour motif familial").setValue("Oui");
-                    addMotive("famille");
-                }
-
-                if (((CheckBox) findViewById(R.id.reason5)).isChecked()) {
-                    fields.get("Déplacements brefs (activité physique et animaux)").setValue("Oui");
-                    addMotive("sport");
-                }
-
-                if (((CheckBox) findViewById(R.id.reason6)).isChecked()) {
-                    fields.get("Convcation judiciaire ou administrative").setValue("Oui");
-                    addMotive("judiciaire");
-                }
-
-                if (((CheckBox) findViewById(R.id.reason7)).isChecked()) {
-                    fields.get("Mission d'intérêt général").setValue("Oui");
-                    addMotive("missions");
-                }
-
-                form.setNeedAppearances(true);
-                form.setGenerateAppearance(true);
-
-                form.flattenFields();
-
-                pdf.close();
+            if (((CheckBox) findViewById(R.id.reason1)).isChecked()) {
+                form.setField("Déplacements entre domicile et travail", "Oui");
+                addMotive("travail");
             }
+
+            if (((CheckBox) findViewById(R.id.reason2)).isChecked()) {
+                form.setField("Déplacements achats nécéssaires", "Oui");
+                addMotive("courses");
+            }
+
+            if (((CheckBox) findViewById(R.id.reason3)).isChecked()) {
+                form.setField("Consultations et soins", "Oui");
+                addMotive("sante");
+            }
+
+            if (((CheckBox) findViewById(R.id.reason4)).isChecked()) {
+                form.setField("Déplacements pour motif familial", "Oui");
+                addMotive("famille");
+            }
+
+            if (((CheckBox) findViewById(R.id.reason5)).isChecked()) {
+                form.setField("Déplacements brefs (activité physique et animaux)", "Oui");
+                addMotive("sport");
+            }
+
+            if (((CheckBox) findViewById(R.id.reason6)).isChecked()) {
+                form.setField("Convcation judiciaire ou administrative", "Oui");
+                addMotive("judiciaire");
+            }
+
+            if (((CheckBox) findViewById(R.id.reason7)).isChecked()) {
+                form.setField("Mission d'intérêt général", "Oui");
+                addMotive("missions");
+            }
+
+            stamper.setFormFlattening(true);
+
+            stamper.close();
 
             String dateHourString = dateString + " a " + String.format("%02d", hour) + "h" + String.format("%02d", minute);
 
@@ -247,7 +236,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             Intent show = new Intent(this, MainActivity.class);
             startActivity(show);
-        } catch (IOException | WriterException e) {
+        } catch (IOException | WriterException | DocumentException e) {
             e.printStackTrace();
             Toast.makeText(this, "Erreur", Toast.LENGTH_SHORT).show();
         }

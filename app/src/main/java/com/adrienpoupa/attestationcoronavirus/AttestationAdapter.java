@@ -94,12 +94,6 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
-                if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.M) {
-                    Toast.makeText(context, "Le fichier PDF n'est disponible que sur Android 7+", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-
                 String fileName = getItem(position) + ".pdf";
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
@@ -139,11 +133,6 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
         pdfBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.M) {
-                    Toast.makeText(context, "Le fichier du fichier PDF n'est disponible que sur Android 7+", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 // Clicking on items
                 Intent intent;
                 String fileName = getItem(position) + ".pdf";
