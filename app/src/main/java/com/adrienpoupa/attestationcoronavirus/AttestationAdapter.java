@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
@@ -63,12 +62,12 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             public void onClick(View v) {
                 // Show QR Code
                 // https://stackoverflow.com/a/24946375
-
-                Dialog builder = new Dialog(context);
-                builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                builder.getWindow().setBackgroundDrawable(
+                final Dialog dialog = new Dialog(context);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.getWindow().setBackgroundDrawable(
                         new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
                         //nothing;
@@ -76,18 +75,27 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
                 });
 
                 // Set brightness to max
-                WindowManager.LayoutParams lp = builder.getWindow().getAttributes();
+                WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
                 lp.screenBrightness = 1;
-                builder.getWindow().setAttributes(lp);
+                dialog.getWindow().setAttributes(lp);
 
                 String fileName = getItem(position) + ".png";
 
-                ImageView imageView = new ImageView(context);
-                imageView.setImageURI(AttestationAdapter.this.getUri(fileName));
-                builder.addContentView(imageView, new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT));
-                builder.show();
+                DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+                int width = metrics.widthPixels;
+                int height = metrics.heightPixels;
+
+                ImageView image = new ImageView(context);
+                image.setOnClickListener(new View.OnClickListener(){
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                image.setImageURI(AttestationAdapter.this.getUri(fileName));
+                dialog.addContentView(image, new RelativeLayout.LayoutParams(
+                        (4 * width)/7,
+                        (2 * height)/5));
+                dialog.show();
             }
         });
 
