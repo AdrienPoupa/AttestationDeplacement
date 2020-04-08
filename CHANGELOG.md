@@ -2,6 +2,14 @@
 
 ## [Non sorti]
 
+## [1.1.0] - 2020-04-07
+### Changé
+- Agrandissement du QR code
+- Ajout du QR code au fichier PDF
+- Utilisation du stockage interne, plus besoin de permissions
+### Réglé
+- Compatibilité PDF avec Android < 7
+
 ## [1.0.2] - 2020-04-07
 ### Réglé
 - Motifs identiques au formulaire officiel
