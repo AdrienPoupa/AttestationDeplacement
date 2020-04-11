@@ -377,7 +377,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         return "Cree le: " + dateHourString + "; Nom: " + lastName + "; Prenom: " + surname + "; " +
                 "Naissance: " + birthDate + " a " + birthPlace + "; Adresse: " + address + "; " +
-                "Sortie:" + dateHourString + "; Motifs: " + motives;
+                "Sortie: " + dateHourString + "; Motifs: " + motives;
     }
 
     /**

@@ -7,7 +7,6 @@ import android.widget.DatePicker;
 
 import androidx.fragment.app.DialogFragment;
 
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment {
@@ -33,7 +32,8 @@ public class DatePickerFragment extends DialogFragment {
     private DatePickerDialog.OnDateSetListener dateSetListener =
             new DatePickerDialog.OnDateSetListener() {
                 public void onDateSet(DatePicker view, int year, int month, int day) {
-                    String date = day + " " + new DateFormatSymbols().getMonths()[month] + " " + year;
+                    int finalMonth = month + 1;
+                    String date = String.format("%02d", day) + '/' + String.format("%02d", finalMonth) + '/' + String.format("%02d", year);
                     ((CreateAttestationActivity) getActivity()).setDate(date);
                 }
             };
