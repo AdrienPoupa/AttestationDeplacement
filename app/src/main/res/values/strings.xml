@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Attestation Coronavirus</string>
+    <string name="app_name">Attestation de déplacement</string>
     <string name="warning">Avertissement</string>
 
     <string name="title_activity_create_attestation">CreateAttestationActivity</string>

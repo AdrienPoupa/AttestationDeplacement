@@ -1,4 +1,4 @@
-## Attestation Coronavirus
+## Attestation de Déplacement
 
 <a href="https://f-droid.org/fr/packages/com.adrienpoupa.attestationcoronavirus/" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="90"/></a>
@@ -15,11 +15,12 @@ Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de cont
 Cette application n'est pas officielle et n'a aucun lien avec le gouvernement français.
 
 F-Droid est lent à build les versions, la dernière sera 
-[toujours ici](https://github.com/AdrienPoupa/AttestationCoronavirus/releases).
+[toujours ici](https://github.com/AdrienPoupa/AttestationDeplacement/releases).
 
 ### FAQ
 
 1. Comment je peux être sûr que tu ne me voles pas mes données ?
+
 C'est impossible pour deux raisons:
 - Le code source est ouvert, l'application sur F-Droid est garantie de correspondre au code de ce
 repository; pour les APK sur GitHub et Google Play vous devez me croire mais si jamais vous pensez
@@ -29,8 +30,10 @@ ne peut pas envoyer de données où que ce soit.
 C'est à ma connaissance la seule application mobile open source et sans publicités.
 
 2. J'ai trouvé un bug, que faire ?
+
 Si tu es sûr d'avoir la dernière version et que le problème est toujours présent tu peux 
-[ouvrir un ticket](https://github.com/AdrienPoupa/AttestationCoronavirus/issues/new).
+[ouvrir un ticket](https://github.com/AdrienPoupa/AttestationDeplacement/issues/new).
 
 3. Pourquoi avoir créé cette appli ?
+
 Pour le fun et pourquoi pas, être utile :-)

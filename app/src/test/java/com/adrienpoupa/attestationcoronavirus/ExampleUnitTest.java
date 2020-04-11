@@ -1,4 +1,4 @@
-package com.adrienpoupa.attestationcoronavirus;
+package com.poupa.attestationdeplacement;
 
 import org.junit.Test;
 

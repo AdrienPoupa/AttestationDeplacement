@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.adrienpoupa.attestationcoronavirus"
+        applicationId "com.poupa.attestationdeplacement"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 8

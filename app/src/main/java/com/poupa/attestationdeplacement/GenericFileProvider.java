@@ -1,4 +1,4 @@
-package com.adrienpoupa.attestationcoronavirus;
+package com.poupa.attestationdeplacement;
 
 import androidx.core.content.FileProvider;
 
