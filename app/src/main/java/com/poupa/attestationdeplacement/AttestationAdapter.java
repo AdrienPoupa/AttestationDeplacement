@@ -99,26 +99,11 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             }
         });
 
-        convertView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String fileName = getItem(position) + ".pdf";
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_STREAM, AttestationAdapter.this.getUri(fileName));
-                sendIntent.setType("application/pdf");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                context.startActivity(shareIntent);
-
-                return true;
-            }
-        });
-
         TextView listItemText = convertView.findViewById(R.id.text1);
         listItemText.setText(list.get(position));
 
         ImageButton deleteBtn = convertView.findViewById(R.id.delete_btn);
+        ImageButton sendBtn = convertView.findViewById(R.id.send_btn);
         ImageButton pdfBtn = convertView.findViewById(R.id.pdf_btn);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
@@ -157,6 +142,20 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
                     context.startActivity(intent);
                 }
                 notifyDataSetChanged();
+            }
+        });
+
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fileName = getItem(position) + ".pdf";
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_STREAM, AttestationAdapter.this.getUri(fileName));
+                sendIntent.setType("application/pdf");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                context.startActivity(shareIntent);
             }
         });
 

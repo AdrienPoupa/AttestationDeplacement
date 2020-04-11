@@ -267,6 +267,7 @@
             android:layout_height="wrap_content"
             android:onClick="generate"
             android:text="@string/generate"
+            android:textColor="@color/design_default_color_on_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/reason7"
             app:layout_constraintTop_toBottomOf="@+id/reason7" />

@@ -18,7 +18,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Attestation de déplacement" />
+            app:title="@string/app_name"
+            app:titleTextColor="@color/design_default_color_on_primary" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

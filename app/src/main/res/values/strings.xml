@@ -24,4 +24,5 @@
     <string name="generate">Générer</string>
     <string name="information">Cette application n\'est pas officielle. Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.</string>
     <string name="disclaimer_text">Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.\nPressez longuement pour envoyer le fichier.</string>
+    <string name="generate_attestation">Générer une attestation</string>
 </resources>

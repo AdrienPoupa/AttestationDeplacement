@@ -31,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         File docsFolder = new File(getApplicationContext().getFilesDir(), "");
-        if (!docsFolder.exists()) {
-            docsFolder.mkdir();
-        }
 
         FilenameFilter textFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
@@ -42,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
         };
 
         File[] files = docsFolder.listFiles(textFilter);
+
+        // Redirect to creation page if no attestation found
+        if (files != null && files.length == 0) {
+            goToCreateAttestation();
+            return;
+        }
 
         ArrayList<String> filesList = new ArrayList<>();
         if (files != null) {
@@ -67,10 +70,17 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CreateAttestationActivity.class);
-                MainActivity.this.startActivity(intent);
+                goToCreateAttestation();
             }
         });
+    }
+
+    /**
+     * Start the create attestation activity
+     */
+    private void goToCreateAttestation() {
+        Intent intent = new Intent(MainActivity.this, CreateAttestationActivity.class);
+        MainActivity.this.startActivity(intent);
     }
 
     /**
