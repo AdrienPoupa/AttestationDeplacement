@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [1.2.1] - 2020-04-11
+### Changé
+- Forcage des nombres pour le champ de date de naissance
+
 ## [1.2.0] - 2020-04-11
 ### Ajouté
 - Ajout de l'application sur le Google Play Store
