@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.zxing.BarcodeFormat;
@@ -122,18 +121,9 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         locationInput.setText(userDetails.getString("location", ""));
 
-        birthDateInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new DatePickerFragment();
-                newFragment.show(getSupportFragmentManager(), "date picker");
-            }
-        });
-    }
+        BirthDateTextWatcher birthDateTextWatcher = new BirthDateTextWatcher(birthDateInput);
 
-    public void setDate(String date) {
-        TextInputEditText birthDate = findViewById(R.id.birthdate);
-        birthDate.setText(date);
+        birthDateInput.addTextChangedListener(birthDateTextWatcher);
     }
 
     /**
