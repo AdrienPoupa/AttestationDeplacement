@@ -4,7 +4,7 @@
 
 ## [1.2.0] - 2020-04-11
 ### Ajouté
-- Ajour de l'application sur le Google Play Store
+- Ajout de l'application sur le Google Play Store
 ### Changé
 - Remplacement du calendrier pour la date de maissance par un input manuel
 - Renommage de l'application en "Attestation de déplacement"
