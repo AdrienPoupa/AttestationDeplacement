@@ -2,6 +2,16 @@
 
 ## [Non sorti]
 
+## [1.2.0] - 2020-04-11
+### Ajouté
+- Ajour de l'application sur le Google Play Store
+### Changé
+- Remplacement du calendrier pour la date de maissance par un input manuel
+- Renommage de l'application en "Attestation de déplacement"
+### Réglé
+- Support du dark mode de Android 10
+- Correction QRCode pour le rendre identique à l'original
+
 ## [1.1.0] - 2020-04-08
 ### Changé
 - Agrandissement du QR code
