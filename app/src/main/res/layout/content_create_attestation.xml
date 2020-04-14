@@ -185,7 +185,7 @@
             android:layout_marginLeft="1dp"
             android:text="@string/reason1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/reasonsTextView"
             app:layout_constraintTop_toBottomOf="@+id/reasonsTextView" />
 
@@ -195,9 +195,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="1dp"
+            android:layout_marginTop="8dp"
             android:text="@string/reason2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/reason1"
             app:layout_constraintTop_toBottomOf="@+id/reason1" />
 
@@ -207,9 +208,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="1dp"
+            android:layout_marginTop="8dp"
             android:text="@string/reason3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/reason2"
             app:layout_constraintTop_toBottomOf="@+id/reason2" />
 
@@ -219,9 +221,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="1dp"
+            android:layout_marginTop="8dp"
             android:text="@string/reason4"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/reason3"
             app:layout_constraintTop_toBottomOf="@+id/reason3" />
 
@@ -231,9 +234,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="1dp"
+            android:layout_marginTop="8dp"
             android:text="@string/reason5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/reason4"
             app:layout_constraintTop_toBottomOf="@+id/reason4" />
 
@@ -243,6 +247,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="1dp"
+            android:layout_marginTop="8dp"
             android:text="@string/reason6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -255,9 +260,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="1dp"
+            android:layout_marginTop="8dp"
             android:text="@string/reason7"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/reason6"
             app:layout_constraintTop_toBottomOf="@+id/reason6" />
 
