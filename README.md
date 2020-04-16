@@ -28,6 +28,8 @@ que je suis un être vil:
 - L'application ne demande aucune autorisation : elle ne peut donc pas communiquer sur internet, donc
 ne peut pas envoyer de données où que ce soit.
 C'est à ma connaissance la seule application mobile open source et sans publicités.
+Même la Defensive Lab Agency [le dit](https://twitter.com/defensive_lab/status/1250482375139655681) 
+dans son [rapport](https://forensic.defensive-lab.agency/covid/reports/4c5136979e951032607bd89c1ed0c828a644d46917b1814d526f02821a20b745/) !
 
 2. J'ai trouvé un bug, que faire ?
 
