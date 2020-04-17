@@ -1,6 +1,7 @@
 package com.poupa.attestationdeplacement;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,8 +20,11 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -109,17 +113,32 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String fileName = (String) getItem(position);
+                new MaterialAlertDialogBuilder(context)
+                        .setTitle(R.string.warning)
+                        .setMessage(R.string.delete_information)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                String fileName = (String) getItem(position);
 
-                File pdfFile = new File(context.getFilesDir() + "/" + fileName + ".pdf");
-                pdfFile.delete();
+                                File pdfFile = new File(context.getFilesDir() + "/" + fileName + ".pdf");
+                                pdfFile.delete();
 
-                File qrCodeFile = new File(context.getFilesDir() + "/" + fileName + ".png");
-                qrCodeFile.delete();
+                                File qrCodeFile = new File(context.getFilesDir() + "/" + fileName + ".png");
+                                qrCodeFile.delete();
 
-                list.remove(position);
+                                list.remove(position);
 
-                notifyDataSetChanged();
+                                notifyDataSetChanged();
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -127,19 +146,16 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public void onClick(View v) {
                 // Clicking on items
-                Intent intent;
                 String fileName = getItem(position) + ".pdf";
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(AttestationAdapter.this.getUri(fileName));
-                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(AttestationAdapter.this.getUri(fileName), "application/pdf");
+                intent = Intent.createChooser(intent, "Open File");
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
                     context.startActivity(intent);
-                } else {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(AttestationAdapter.this.getUri(fileName), "application/pdf");
-                    intent = Intent.createChooser(intent, "Open File");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(context, R.string.no_pdf_reader, Toast.LENGTH_SHORT).show();
                 }
                 notifyDataSetChanged();
             }
@@ -149,6 +165,7 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public void onClick(View v) {
                 String fileName = getItem(position) + ".pdf";
+
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_STREAM, AttestationAdapter.this.getUri(fileName));

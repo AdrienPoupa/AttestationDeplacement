@@ -8,10 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -104,8 +104,11 @@ public class MainActivity extends AppCompatActivity {
                 .putBoolean("isFirstRun", false).apply();
     }
 
+    /**
+     * Display warning dialog
+     */
     private void getInformationDialog() {
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.information)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -118,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                         finishAffinity();
                     }
                 })
-                .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
 
