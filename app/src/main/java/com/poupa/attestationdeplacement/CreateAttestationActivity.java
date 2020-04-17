@@ -527,7 +527,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * @return
      */
     public String getFullAddress() {
-        return address + " " + postalCode + " " + city;
+        return String.format("%s %s %s", address, postalCode, city);
     }
 
     /**
