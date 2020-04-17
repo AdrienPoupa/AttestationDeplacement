@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.util.DisplayMetrics;
@@ -66,41 +68,29 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
         listItemText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Show QR Code
-                // https://stackoverflow.com/a/24946375
+                Drawable backgroundColor;
+                backgroundColor = new ColorDrawable(Color.BLACK);
+                backgroundColor.setAlpha(192); // Transparency
+    
                 final Dialog dialog = new Dialog(context);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.getWindow().setBackgroundDrawable(
-                        new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                dialog.getWindow().setBackgroundDrawable(backgroundColor);
+                dialog.setContentView(R.layout.dialog_qrcode);
+                dialog.getWindow().setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT); // Full screen
+
+                ImageView img = dialog.findViewById(R.id.dialog_qrcode_img);
+                img.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        //nothing;
-                    }
-                });
-
-                // Set brightness to max
-                WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-                lp.screenBrightness = 1;
-                dialog.getWindow().setAttributes(lp);
-
-                String fileName = getItem(position) + ".png";
-
-                DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-                int width = metrics.widthPixels;
-                int height = metrics.heightPixels;
-
-                ImageView image = new ImageView(context);
-                image.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v) {
                         dialog.dismiss();
                     }
                 });
-                image.setImageURI(AttestationAdapter.this.getUri(fileName));
-                dialog.addContentView(image, new RelativeLayout.LayoutParams(
-                        (4 * width)/7,
-                        (2 * height)/5));
+
+                // Set QRCode image
+                String fileName = getItem(position) + ".png";
+                img.setImageURI(AttestationAdapter.this.getUri(fileName));
+
                 dialog.show();
             }
         });
