@@ -10,21 +10,29 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/pdf_btn"
+        android:layout_toLeftOf="@id/pdf_btn"
+        android:layout_marginRight="24dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:paddingLeft="8dp"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <ImageButton
         android:id="@+id/pdf_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:layout_alignParentRight="true"
+        android:layout_toStartOf="@id/send_btn"
+        android:layout_toLeftOf="@id/send_btn"
         android:layout_centerVertical="true"
-        android:layout_marginRight="80dp"
+        android:layout_marginRight="10dp"
         app:srcCompat="@drawable/ic_pdf" />
 
     <ImageButton
@@ -32,9 +40,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:layout_alignParentRight="true"
+        android:layout_toStartOf="@id/delete_btn"
+        android:layout_toLeftOf="@id/delete_btn"
         android:layout_centerVertical="true"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         app:srcCompat="@drawable/ic_send" />
 
     <ImageButton
@@ -43,8 +53,10 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
         app:srcCompat="@drawable/ic_delete" />
 
 </RelativeLayout>

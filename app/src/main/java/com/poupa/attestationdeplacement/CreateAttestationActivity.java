@@ -8,11 +8,14 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -62,7 +65,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private TextInputEditText postalCodeInput;
     private TextInputEditText travelDateInput;
     private TextInputEditText travelHourInput;
-
+    private ImageView reasonsInfos;
+    
     private SharedPreferences.Editor edit;
 
     private StringBuilder motives;
@@ -83,7 +87,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private Rectangle mediabox;
     private String currentTime;
     private String currentDate;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +99,15 @@ public class CreateAttestationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         initFields();
+    
+    
+        reasonsInfos = findViewById(R.id.reasonInfoImageView);
+        reasonsInfos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getReasonsDialog();
+            }
+        });
     }
 
     /**
@@ -562,5 +575,15 @@ public class CreateAttestationActivity extends AppCompatActivity {
         Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         bitmap.setPixels(pixels, 0, width, 0, 0, w, h);
         return bitmap;
+    }
+    
+    private void getReasonsDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.dialog_reasons, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogLayout);
+        builder.setCancelable(false);
+        builder.setPositiveButton(getString(android.R.string.ok),null);
+        builder.show();
     }
 }
