@@ -351,7 +351,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:onClick="generate"
+            android:onClick="startGenerate"
             android:text="@string/generate"
             android:textColor="@color/design_default_color_on_primary"
             app:layout_constraintBottom_toBottomOf="parent"

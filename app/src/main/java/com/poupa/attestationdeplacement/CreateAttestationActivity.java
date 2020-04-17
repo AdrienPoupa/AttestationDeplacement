@@ -1,10 +1,12 @@
 package com.poupa.attestationdeplacement;
 
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -20,7 +22,6 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -168,10 +169,67 @@ public class CreateAttestationActivity extends AppCompatActivity {
     }
 
     /**
-     * Generates the PDF file and the QRCode
+     * Generates the PDF by calling the async task
      * @param v
      */
-    public void generate(View v) {
+    public void startGenerate(View v) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final GeneratePdfTask task = new GeneratePdfTask();
+                task.execute();
+            }
+        }).start();
+    }
+
+    private class GeneratePdfTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog nDialog;
+
+        @Override
+        protected void onPreExecute() {
+            CreateAttestationActivity.this.runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    nDialog = new ProgressDialog(CreateAttestationActivity.this);
+                    nDialog.setMessage(getString(R.string.loading));
+                    nDialog.setTitle(getString(R.string.generating));
+                    nDialog.setIndeterminate(true);
+                    nDialog.setCancelable(false);
+                    nDialog.show();
+                }
+            });
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            CreateAttestationActivity.this.runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    nDialog.dismiss();
+
+                    Toast.makeText(CreateAttestationActivity.this, "Attestation générée !", Toast.LENGTH_SHORT).show();
+
+                    Intent show = new Intent(CreateAttestationActivity.this, MainActivity.class);
+
+                    startActivity(show);
+                }
+            });
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            generate();
+
+            return null;
+        }
+    }
+
+    /**
+     * Generates the PDF file and the QRCode
+     */
+    private void generate() {
         try {
             saveFields();
 
@@ -199,11 +257,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
             stamper.setFormFlattening(true);
 
             stamper.close();
-
-            Toast.makeText(this, "Attestation générée !", Toast.LENGTH_SHORT).show();
-
-            Intent show = new Intent(this, MainActivity.class);
-            startActivity(show);
         } catch (IOException | WriterException | DocumentException e) {
             e.printStackTrace();
             Toast.makeText(this, "Erreur", Toast.LENGTH_SHORT).show();
@@ -489,8 +542,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
         BitMatrix result;
         try {
             Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
-            hints.put(EncodeHintType.MARGIN, 1);
+            hints.put(EncodeHintType.MARGIN, 0);
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
             result = new MultiFormatWriter().encode(str,
                     BarcodeFormat.QR_CODE, width, height, hints);

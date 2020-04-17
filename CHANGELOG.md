@@ -12,6 +12,7 @@
 ### Changé
 - Ajout de marges autour des motifs de sortie
 - Méthode d'ouverture du PDF, ajout d'un message informatif si pas de lecteur PDF installé
+- Création du PDF dans un thread, ajout d'une fenêtre de chargement
 
 ## [1.2.1] - 2020-04-11
 ### Changé
