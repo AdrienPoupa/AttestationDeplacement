@@ -36,4 +36,11 @@
     <string name="loading">Chargement..</string>
     <string name="about">À propos</string>
     <string name="version_number__1p">Version %s</string>
+    <string name="reason1_smalltext">Professionnel</string>
+    <string name="reason2_smalltext">Achats</string>
+    <string name="reason3_smalltext">Soins</string>
+    <string name="reason4_smalltext">Familial</string>
+    <string name="reason5_smalltext">Sport</string>
+    <string name="reason6_smalltext">Administratif</string>
+    <string name="reason7_smalltext">Mission I.G.</string>
 </resources>
