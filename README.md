@@ -10,3 +10,10 @@ Aucune information personnelle ne transite via des serveurs externes.
 Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.
 
 Cette application n'est pas officielle et n'a aucun lien avec le gouvernement français.
+
+Merci aux contributeurs !
+
+- [@Nico207](https://github.com/Nico207)
+- [@Victor-Bonnelle](https://github.com/Victor-Bonnelle)
+
+... et plein d'autres !

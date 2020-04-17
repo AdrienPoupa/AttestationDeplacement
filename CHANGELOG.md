@@ -2,6 +2,17 @@
 
 ## [Non sorti]
 
+## [1.4.0] - 2020-04-17
+### Réglé
+- Format de l'adresse: rue, code postal, ville
+- Amélioration du formulaire pour ne plus avoir de nouvelles lignes
+### Changé
+- Abbréviation des motifs
+- Affichage du QR code plus grand
+- Limitation du code postal à 5 caractères
+### Ajouté
+- Fenêtre à propos
+
 ## [1.3.0] - 2020-04-17
 ### Ajouté
 - Date et heure de sortie
