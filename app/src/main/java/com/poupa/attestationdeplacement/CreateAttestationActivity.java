@@ -540,7 +540,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * @return
      */
     public String getFullAddress() {
-        return address + " " + city + " " + postalCode;
+        return String.format("%s %s %s", address, postalCode, city);
     }
 
     /**
