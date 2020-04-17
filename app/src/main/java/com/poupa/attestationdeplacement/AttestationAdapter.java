@@ -1,10 +1,11 @@
 package com.poupa.attestationdeplacement;
 
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -147,16 +148,27 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             public void onClick(View v) {
                 // Clicking on items
                 String fileName = getItem(position) + ".pdf";
+
+                PackageManager pm = context.getPackageManager();
+
                 Intent intent = new Intent(Intent.ACTION_VIEW);
+
                 intent.setDataAndType(AttestationAdapter.this.getUri(fileName), "application/pdf");
-                intent = Intent.createChooser(intent, "Open File");
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
+
+                ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+                if (info != null) {
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(AttestationAdapter.this.getUri(fileName), "application/pdf");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    }
+                    intent = Intent.createChooser(intent, "Open File");
                     context.startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(context, R.string.no_pdf_reader, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, R.string.no_pdf_reader, Toast.LENGTH_LONG).show();
                 }
+
                 notifyDataSetChanged();
             }
         });
