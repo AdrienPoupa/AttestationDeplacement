@@ -10,6 +10,8 @@
     <string name="surname">Prénom</string>
     <string name="name">Nom</string>
     <string name="birthDate">Date de naissance</string>
+    <string name="travel_date">Date de sortie</string>
+    <string name="travel_hour">Heure de sortie</string>
     <string name="birthPlace">Lieu de naissance</string>
     <string name="address">Adresse</string>
     <string name="city">Ville</string>

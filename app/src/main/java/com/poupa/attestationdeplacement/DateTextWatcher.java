@@ -11,15 +11,15 @@ import java.util.Calendar;
  * Date mask
  * https://stackoverflow.com/a/16889503/11989865
  */
-public class BirthDateTextWatcher implements TextWatcher {
+public class DateTextWatcher implements TextWatcher {
     private String current = "";
     private String ddmmyyyy = "JJMMAAAA";
     private Calendar cal = Calendar.getInstance();
 
-    private TextInputEditText birthDateInput;
+    private TextInputEditText input;
 
-    public BirthDateTextWatcher(TextInputEditText birthDateInput) {
-        this.birthDateInput = birthDateInput;
+    public DateTextWatcher(TextInputEditText input) {
+        this.input = input;
     }
 
     @Override
@@ -63,8 +63,8 @@ public class BirthDateTextWatcher implements TextWatcher {
 
             sel = Math.max(sel, 0);
             current = clean;
-            birthDateInput.setText(current);
-            birthDateInput.setSelection(Math.min(sel, current.length()));
+            input.setText(current);
+            input.setSelection(Math.min(sel, current.length()));
         }
     }
 

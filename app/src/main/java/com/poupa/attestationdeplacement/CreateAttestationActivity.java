@@ -1,5 +1,6 @@
 package com.poupa.attestationdeplacement;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,6 +59,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private TextInputEditText addressInput;
     private TextInputEditText cityInput;
     private TextInputEditText postalCodeInput;
+    private TextInputEditText travelDateInput;
+    private TextInputEditText travelHourInput;
 
     private SharedPreferences.Editor edit;
 
@@ -70,12 +74,14 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private String address;
     private String birthPlace;
     private String birthDate;
-    private String dateString;
-    private int hour;
-    private int minute;
+    private String travelDate;
+    private String travelHour;
+    private String hour;
+    private String minute;
     private String date;
     private Rectangle mediabox;
-    private String fullTime;
+    private String currentTime;
+    private String currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +134,37 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         postalCodeInput.setText(userDetails.getString("postalCode", ""));
 
-        BirthDateTextWatcher birthDateTextWatcher = new BirthDateTextWatcher(birthDateInput);
+        travelDateInput = findViewById(R.id.travel_date);
+
+        travelHourInput = findViewById(R.id.travel_hour);
+
+        DateTextWatcher birthDateTextWatcher = new DateTextWatcher(birthDateInput);
 
         birthDateInput.addTextChangedListener(birthDateTextWatcher);
+
+        DateTextWatcher travelDateTextWatcher = new DateTextWatcher(travelDateInput);
+
+        travelDateInput.addTextChangedListener(travelDateTextWatcher);
+
+        travelHourInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(CreateAttestationActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        travelHourInput.setText(String.format("%02d", hour) + "h" + String.format("%02d", minute));
+                    }
+                }, hour, minute, true);
+                mTimePicker.setTitle(R.string.travel_hour);
+                mTimePicker.show();
+            }
+        });
+
+        setDate();
     }
 
     /**
@@ -140,8 +174,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
     public void generate(View v) {
         try {
             saveFields();
-
-            setDate();
 
             AssetManager assetManager = getAssets();
 
@@ -160,7 +192,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
             addSmallQrCode();
 
             addText("Date de création:", 464, 150);
-            addText(dateString + " à " + fullTime, 455, 144);
+            addText(currentDate + " à " + currentTime, 455, 144);
 
             addBigQrCode();
 
@@ -211,6 +243,15 @@ public class CreateAttestationActivity extends AppCompatActivity {
         edit.putString("postalCode", postalCode);
 
         edit.apply();
+
+        // Do not save this for further uses
+        travelDate = travelDateInput.getText().toString();
+        travelHour = travelHourInput.getText().toString();
+
+        String[] hourMinute = travelHour.split("h");
+
+        hour = hourMinute[0];
+        minute = hourMinute[1];
     }
 
     /**
@@ -227,12 +268,16 @@ public class CreateAttestationActivity extends AppCompatActivity {
         int month = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
 
-        hour = cal.get(Calendar.HOUR_OF_DAY);
-        minute = cal.get(Calendar.MINUTE);
+        int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = cal.get(Calendar.MINUTE);
 
-        dateString = String.format("%02d", day) + '/' + String.format("%02d", month) + '/' + String.format("%02d", year);
+        currentDate = String.format("%02d", day) + '/' + String.format("%02d", month) + '/' + String.format("%02d", year);
 
-        fullTime = String.format("%02d", hour) + "h" + String.format("%02d", minute);
+        travelDateInput.setText(currentDate);
+
+        currentTime = String.format("%02d", currentHour) + "h" + String.format("%02d", currentMinute);
+
+        travelHourInput.setText(currentTime);
     }
 
     /**
@@ -252,10 +297,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
         form.setField("Adresse actuelle", getFullAddress());
         form.setField("Ville", city);
 
-        form.setField("Date", dateString);
+        form.setField("Date", travelDate);
 
-        form.setField("Heure", String.format("%02d", hour));
-        form.setField("Minute", String.format("%02d", minute));
+        form.setField("Heure", hour);
+        form.setField("Minute", minute);
 
         if (((CheckBox) findViewById(R.id.reason1)).isChecked()) {
             form.setField("Déplacements entre domicile et travail", "Oui");
@@ -373,11 +418,9 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * @return
      */
     public String getQrCodeText() {
-        String dateHourString = dateString + " a " + fullTime;
-
-        return "Cree le: " + dateHourString + "; Nom: " + lastName + "; Prenom: " + surname + "; " +
+        return "Cree le: " + currentDate + " a " + currentTime + "; Nom: " + lastName + "; Prenom: " + surname + "; " +
                 "Naissance: " + birthDate + " a " + birthPlace + "; Adresse: " + getFullAddress() + "; " +
-                "Sortie: " + dateHourString + "; Motifs: " + motives;
+                "Sortie: " + travelDate + " a " + travelHour + "; Motifs: " + motives;
     }
 
     /**
