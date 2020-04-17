@@ -2,12 +2,16 @@ package com.poupa.attestationdeplacement;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -124,6 +128,26 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void getAboutDialog() {
+        TextView tvVersion;
+        TextView tvTitle;
+    
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.dialog_about, null);
+    
+        tvTitle = dialogLayout.findViewById(R.id.about_tv_title);
+        tvTitle.setText(getString(R.string.app_name));
+        
+        tvVersion = dialogLayout.findViewById(R.id.about_tv_version);
+        tvVersion.setText(getString(R.string.version_number__1p, BuildConfig.VERSION_NAME));
+    
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogLayout);
+        builder.setCancelable(false);
+        builder.setPositiveButton(getString(android.R.string.ok),null);
+        builder.show();
+    }
+    
     /**
      * https://stackoverflow.com/a/5565700
      */
@@ -147,8 +171,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_warning) {
-            getInformationDialog();
+        switch (id){
+            case R.id.action_warning:
+                getInformationDialog();
+                break;
+    
+            case R.id.action_about:
+                getAboutDialog();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
