@@ -18,6 +18,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -294,7 +295,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         FileOutputStream ostream = new FileOutputStream(qrCodeFile);
 
-        bitmapQrCode.compress(Bitmap.CompressFormat.PNG, 10, ostream);
+        bitmapQrCode.compress(Bitmap.CompressFormat.PNG, 92, ostream);
 
         ostream.close();
     }
@@ -376,7 +377,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
      */
     public byte[] convertBitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream streamQrCode = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 10, streamQrCode);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 92, streamQrCode);
         byte[] byteArray = streamQrCode.toByteArray();
         bitmap.recycle();
 
@@ -426,8 +427,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
     public Bitmap generateQrCode(String str, int width, int height) throws WriterException {
         BitMatrix result;
         try {
-            Map<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
-            hints.put(EncodeHintType.MARGIN, 0); /* default = 4 */
+            Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+            hints.put(EncodeHintType.MARGIN, 1);
+            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
             result = new MultiFormatWriter().encode(str,
                     BarcodeFormat.QR_CODE, width, height, hints);
         } catch (IllegalArgumentException iae) {
