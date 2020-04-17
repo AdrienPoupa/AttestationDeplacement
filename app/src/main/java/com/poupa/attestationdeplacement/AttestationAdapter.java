@@ -61,8 +61,9 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.attestation_list_layout, null);
         }
-
-        convertView.setOnClickListener(new View.OnClickListener() {
+    
+        TextView listItemText = convertView.findViewById(R.id.text1);
+        listItemText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Show QR Code
@@ -104,7 +105,6 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             }
         });
 
-        TextView listItemText = convertView.findViewById(R.id.text1);
         listItemText.setText(list.get(position));
 
         ImageButton deleteBtn = convertView.findViewById(R.id.delete_btn);
