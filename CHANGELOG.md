@@ -2,6 +2,17 @@
 
 ## [Non sorti]
 
+## [1.3.0] - 2020-04-17
+### Ajouté
+- Date et heure de sortie
+- Adresse, ville et code postal
+- Confirmation de suppression d'attestation
+### Réglé
+- QRcode généré en UTF-8 conformément au formulaire officiel
+### Changé
+- Ajout de marges autour des motifs de sortie
+- Méthode d'ouverture du PDF, ajout d'un message informatif si pas de lecteur PDF installé
+
 ## [1.2.1] - 2020-04-11
 ### Changé
 - Forcage des nombres pour le champ de date de naissance
