@@ -9,9 +9,11 @@
     <string name="info_create">Entrez vos informations pour générer votre attestation</string>
     <string name="surname">Prénom</string>
     <string name="name">Nom</string>
-    <string name="birthDate">Né(e) le</string>
-    <string name="birthPlace">À</string>
-    <string name="address">Demeurant</string>
+    <string name="birthDate">Date de naissance</string>
+    <string name="birthPlace">Lieu de naissance</string>
+    <string name="address">Adresse</string>
+    <string name="city">Ville</string>
+    <string name="postal_code">Code Postal</string>
     <string name="signature_location">Fait à</string>
     <string name="reasons">Motifs de déplacement</string>
     <string name="reason1">Déplacements entre le domicile et le lieu d’exercice de l\'activité professionnelle, lorsqu\'ils sont indispensables à l\'exercice d’activités ne pouvant être organisées sous forme de télétravail ou déplacements professionnels ne pouvant être différés.</string>

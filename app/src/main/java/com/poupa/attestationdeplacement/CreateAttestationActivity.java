@@ -55,7 +55,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private TextInputEditText birthDateInput;
     private TextInputEditText birthPlaceInput;
     private TextInputEditText addressInput;
-    private TextInputEditText locationInput;
+    private TextInputEditText cityInput;
+    private TextInputEditText postalCodeInput;
 
     private SharedPreferences.Editor edit;
 
@@ -64,7 +65,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private PdfReader reader;
     private String surname;
     private String lastName;
-    private String location;
+    private String city;
+    private String postalCode;
     private String address;
     private String birthPlace;
     private String birthDate;
@@ -118,9 +120,13 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         addressInput.setText(userDetails.getString("address", ""));
 
-        locationInput = findViewById(R.id.signatureLocation);
+        cityInput = findViewById(R.id.city);
 
-        locationInput.setText(userDetails.getString("location", ""));
+        cityInput.setText(userDetails.getString("city", ""));
+
+        postalCodeInput = findViewById(R.id.postal_code);
+
+        postalCodeInput.setText(userDetails.getString("postalCode", ""));
 
         BirthDateTextWatcher birthDateTextWatcher = new BirthDateTextWatcher(birthDateInput);
 
@@ -196,9 +202,13 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         edit.putString("address", address);
 
-        location = locationInput.getText().toString();
+        city = cityInput.getText().toString();
 
-        edit.putString("location", location);
+        edit.putString("city", city);
+
+        postalCode = postalCodeInput.getText().toString();
+
+        edit.putString("postalCode", postalCode);
 
         edit.apply();
     }
@@ -239,8 +249,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
         form.setField("Signature", fullName);
         form.setField("Date de naissance", birthDate);
         form.setField("Lieu de naissance", birthPlace);
-        form.setField("Adresse actuelle", address);
-        form.setField("Ville", location);
+        form.setField("Adresse actuelle", getFullAddress());
+        form.setField("Ville", city);
 
         form.setField("Date", dateString);
 
@@ -366,7 +376,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
         String dateHourString = dateString + " a " + fullTime;
 
         return "Cree le: " + dateHourString + "; Nom: " + lastName + "; Prenom: " + surname + "; " +
-                "Naissance: " + birthDate + " a " + birthPlace + "; Adresse: " + address + "; " +
+                "Naissance: " + birthDate + " a " + birthPlace + "; Adresse: " + getFullAddress() + "; " +
                 "Sortie: " + dateHourString + "; Motifs: " + motives;
     }
 
@@ -414,6 +424,14 @@ public class CreateAttestationActivity extends AppCompatActivity {
             motives.append("-");
         }
         motives.append(motive);
+    }
+
+    /**
+     * Get the full address
+     * @return
+     */
+    public String getFullAddress() {
+        return address + " " + city + " " + postalCode;
     }
 
     /**
