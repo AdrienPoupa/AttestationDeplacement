@@ -1,9 +1,11 @@
 ## Attestation de Déplacement
 
+<a href="https://github.com/AdrienPoupa/AttestationDeplacement/releases" target="_blank">
+<img src="https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/images/get-it-on-github.png" alt="Get it on GitHub" height="90"/></a>
 <a href="https://f-droid.org/fr/packages/com.adrienpoupa.attestationcoronavirus/" target="_blank">
-<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="90"/></a>
+<img src="https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/images/get-it-on-fdroid.png" alt="Get it on F-Droid" height="90"/></a>
 <a href='https://play.google.com/store/apps/details?id=com.poupa.attestationdeplacement'>
-<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="90"/></a>
+<img src='https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/images/get-it-on-playstore.png' alt="Get it on Google Play" height="90"/></a>
 
 Générez votre attestation de déplacement sur votre mobile à partir du document officiel.
 
