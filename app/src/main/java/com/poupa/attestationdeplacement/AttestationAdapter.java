@@ -11,17 +11,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +27,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AttestationAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list;
@@ -139,19 +136,22 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
                 // Clicking on items
                 String fileName = getItem(position) + ".pdf";
 
-                PackageManager pm = context.getPackageManager();
-
                 Intent intent = new Intent(Intent.ACTION_VIEW);
 
-                intent.setDataAndType(AttestationAdapter.this.getUri(fileName), "application/pdf");
+                Uri uri = getUri(fileName);
 
-                ResolveInfo info = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                intent.setDataAndType(uri, "application/pdf");
 
-                if (info != null) {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(AttestationAdapter.this.getUri(fileName), "application/pdf");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+                if (resInfoList.size() > 0) {
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    // https://stackoverflow.com/a/32950381/11989865
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                        for (ResolveInfo resolveInfo : resInfoList) {
+                            String packageName = resolveInfo.activityInfo.packageName;
+                            context.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        }
                     }
                     intent = Intent.createChooser(intent, "Open File");
                     context.startActivity(intent);
@@ -181,14 +181,13 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
         return convertView;
     }
 
+    /**
+     * Get the file Uri
+     * @param fileName
+     * @return
+     */
     private Uri getUri(String fileName) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            File file = new File(context.getFilesDir(), fileName);
-            return FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
-        }
-
-        String filePath = context.getFilesDir() + "/" + fileName;
-
-        return Uri.parse(filePath);
+        File file = new File(context.getFilesDir(), fileName);
+        return FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
     }
 }
