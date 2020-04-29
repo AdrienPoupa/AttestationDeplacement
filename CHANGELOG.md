@@ -37,7 +37,7 @@
 ### Ajouté
 - Ajout de l'application sur le Google Play Store
 ### Changé
-- Remplacement du calendrier pour la date de maissance par un input manuel
+- Remplacement du calendrier pour la date de naissance par un input manuel
 - Renommage de l'application en "Attestation de déplacement"
 ### Réglé
 - Support du dark mode de Android 10
