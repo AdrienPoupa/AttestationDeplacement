@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [1.4.1] - 2020-04-29
+### Réglé
+- Affichage du fichier PDF sur Android <= 6
+
 ## [1.4.0] - 2020-04-17
 ### Réglé
 - Format de l'adresse: rue, code postal, ville
