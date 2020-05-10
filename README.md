@@ -2,7 +2,7 @@
 
 <a href="https://github.com/AdrienPoupa/AttestationDeplacement/releases" target="_blank">
 <img src="https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/images/get-it-on-github.png" alt="Get it on GitHub" height="90"/></a>
-<a href="https://f-droid.org/fr/packages/com.adrienpoupa.attestationcoronavirus/" target="_blank">
+<a href="https://f-droid.org/packages/com.poupa.attestationdeplacement" target="_blank">
 <img src="https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/images/get-it-on-fdroid.png" alt="Get it on F-Droid" height="90"/></a>
 <a href='https://play.google.com/store/apps/details?id=com.poupa.attestationdeplacement'>
 <img src='https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/images/get-it-on-playstore.png' alt="Get it on Google Play" height="90"/></a>
