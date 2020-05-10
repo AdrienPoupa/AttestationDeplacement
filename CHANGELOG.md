@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [1.5.0] - 2020-05-09
+### Changé
+- Amélioration de la liste des attestations
+
 ## [1.4.1] - 2020-04-29
 ### Réglé
 - Affichage du fichier PDF sur Android <= 6
