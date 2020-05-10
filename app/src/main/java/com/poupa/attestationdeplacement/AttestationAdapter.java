@@ -101,9 +101,11 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
         listItemText.setText(attestationEntity.getReason());
 
         TextView userNameText = convertView.findViewById(R.id.attestation_user_name);
+        userNameText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_person, 0, 0, 0);
         userNameText.setText(attestationEntity.getFirstName());
 
         TextView dateTimeText = convertView.findViewById(R.id.attestation_date_time);
+        dateTimeText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_access_time, 0, 0, 0);
         dateTimeText.setText(attestationEntity.getGenerationDate() + " à " + attestationEntity.getGenerationTime());
 
         MaterialButton deleteBtn = convertView.findViewById(R.id.delete_btn);

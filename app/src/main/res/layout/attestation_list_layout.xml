@@ -30,9 +30,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textAppearance="?attr/textAppearanceBody1"
-                android:drawablePadding="2dp"
-                android:drawableLeft="@drawable/ic_person"
-                />
+                android:drawablePadding="2dp" />
             <TextView
                 android:id="@+id/attestation_date_time"
                 android:layout_width="wrap_content"
@@ -40,9 +38,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textAppearance="?attr/textAppearanceBody1"
-                android:drawablePadding="2dp"
-                android:drawableLeft="@drawable/ic_access_time"
-                />
+                android:drawablePadding="2dp" />
 
         </LinearLayout>
 
