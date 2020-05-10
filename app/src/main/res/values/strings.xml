@@ -43,4 +43,6 @@
     <string name="reason5_smalltext">Sport</string>
     <string name="reason6_smalltext">Administratif</string>
     <string name="reason7_smalltext">Mission I.G.</string>
+    <string name="see_pdf">Voir PDF</string>
+    <string name="share">Partager</string>
 </resources>

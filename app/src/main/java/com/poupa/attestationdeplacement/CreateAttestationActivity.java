@@ -39,13 +39,15 @@ import com.itextpdf.text.pdf.PdfImage;
 import com.itextpdf.text.pdf.PdfIndirectObject;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.poupa.attestationdeplacement.db.AttestationDao;
+import com.poupa.attestationdeplacement.db.AttestationDatabase;
+import com.poupa.attestationdeplacement.db.AttestationEntity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumMap;
@@ -69,7 +71,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
     
     private SharedPreferences.Editor edit;
 
-    private StringBuilder motives;
+    private StringBuilder motivesQrCode;
+    private StringBuilder motivesDatabase;
     private PdfStamper stamper;
     private PdfReader reader;
     private String surname;
@@ -83,11 +86,11 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private String travelHour;
     private String hour;
     private String minute;
-    private String date;
     private Rectangle mediabox;
     private String currentTime;
     private String currentDate;
-    
+    private AttestationDao dao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,22 +102,14 @@ public class CreateAttestationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         initFields();
-    
-    
-        reasonsInfos = findViewById(R.id.reasonInfoImageView);
-        reasonsInfos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getReasonsDialog();
-            }
-        });
     }
 
     /**
      * Initialize the input fields
      */
     private void initFields() {
-        motives = new StringBuilder();
+        motivesQrCode = new StringBuilder();
+        motivesDatabase = new StringBuilder();
 
         SharedPreferences userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
 
@@ -179,6 +174,14 @@ public class CreateAttestationActivity extends AppCompatActivity {
         });
 
         setDate();
+
+        reasonsInfos = findViewById(R.id.reasonInfoImageView);
+        reasonsInfos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getReasonsDialog();
+            }
+        });
     }
 
     /**
@@ -240,6 +243,18 @@ public class CreateAttestationActivity extends AppCompatActivity {
     }
 
     /**
+     * Save the attestation in DB
+     * @return
+     */
+    private AttestationEntity saveInDb() {
+        long id = dao.insert(new AttestationEntity(
+                surname, currentDate, currentTime, null
+        ));
+
+        return dao.find(id);
+    }
+
+    /**
      * Generates the PDF file and the QRCode
      */
     private void generate() {
@@ -252,20 +267,26 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             reader = new PdfReader(attestation);
 
-            stamper = new PdfStamper(reader, new FileOutputStream(getPdfPath()));
+            AttestationEntity attestationEntity = saveInDb();
+            long attestationId = attestationEntity.getId();
+
+            stamper = new PdfStamper(reader, new FileOutputStream(getPdfPath(attestationId)));
 
             mediabox = reader.getPageSize(1);
 
             fillForm();
 
-            saveQrCode();
+            attestationEntity.setReason(motivesDatabase.toString());
+            dao.update(attestationEntity);
+
+            saveQrCode(attestationId);
 
             addSmallQrCode();
 
             addText("Date de création:", 464, 150);
             addText(currentDate + " à " + currentTime, 455, 144);
 
-            addBigQrCode();
+            addBigQrCode(attestationId);
 
             stamper.setFormFlattening(true);
 
@@ -318,6 +339,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         hour = hourMinute[0];
         minute = hourMinute[1];
+
+        dao = AttestationDatabase.getInstance(CreateAttestationActivity.this).daoAccess();
     }
 
     /**
@@ -325,7 +348,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
      */
     public void setDate() {
         Date today = new Date();
-        date = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(today);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
@@ -409,10 +431,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * @throws WriterException
      * @throws IOException
      */
-    private void saveQrCode() throws WriterException, IOException {
+    private void saveQrCode(long id) throws WriterException, IOException {
         Bitmap bitmapQrCode = this.generateQrCode(getQrCodeText(), 300, 300);
 
-        File qrCodeFile = new File(getQrCodePath());
+        File qrCodeFile = new File(getQrCodePath(id));
 
         FileOutputStream ostream = new FileOutputStream(qrCodeFile);
 
@@ -442,12 +464,12 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * @throws IOException
      * @throws DocumentException
      */
-    private void addBigQrCode() throws IOException, DocumentException {
+    private void addBigQrCode(long id) throws IOException, DocumentException {
         // Insert page 2
         stamper.insertPage(reader.getNumberOfPages() + 1,
                 reader.getPageSizeWithRotation(1));
 
-        Image image = Image.getInstance(getQrCodePath());
+        Image image = Image.getInstance(getQrCodePath(id));
 
         addImage(image, 2, 50, mediabox.getHeight() - 350);
     }
@@ -467,16 +489,16 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * Path of the QR code file
      * @return
      */
-    public String getQrCodePath() {
-        return getApplicationContext().getFilesDir() + "/Attestation-" + date + ".png";
+    public String getQrCodePath(long id) {
+        return getApplicationContext().getFilesDir() + "/" + id + ".png";
     }
 
     /**
      * Path of the PDF file
      * @return
      */
-    public String getPdfPath() {
-        return getApplicationContext().getFilesDir() + "/Attestation-" + date + ".pdf";
+    public String getPdfPath(long id) {
+        return getApplicationContext().getFilesDir() + "/" + id + ".pdf";
     }
 
     /**
@@ -486,7 +508,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
     public String getQrCodeText() {
         return "Cree le: " + currentDate + " a " + currentTime + "; Nom: " + lastName + "; Prenom: " + surname + "; " +
                 "Naissance: " + birthDate + " a " + birthPlace + "; Adresse: " + getFullAddress() + "; " +
-                "Sortie: " + travelDate + " a " + travelHour + "; Motifs: " + motives;
+                "Sortie: " + travelDate + " a " + travelHour + "; Motifs: " + motivesQrCode;
     }
 
     /**
@@ -529,10 +551,14 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * @param motive motive to add
      */
     public void addMotive(String motive) {
-        if (motives.length() != 0) {
-            motives.append("-");
+        if (motivesQrCode.length() != 0) {
+            motivesQrCode.append("-");
+            motivesDatabase.append(", ");
         }
-        motives.append(motive);
+        motivesQrCode.append(motive);
+
+        // Capitalize first letter
+        motivesDatabase.append(motive.substring(0, 1).toUpperCase()).append(motive.substring(1));
     }
 
     /**

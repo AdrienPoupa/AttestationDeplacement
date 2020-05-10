@@ -2,7 +2,7 @@ package com.poupa.attestationdeplacement;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,12 +17,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.poupa.attestationdeplacement.db.AttestationDatabase;
+import com.poupa.attestationdeplacement.db.AttestationEntity;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.lang.ref.WeakReference;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,57 +33,66 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        File docsFolder = new File(getApplicationContext().getFilesDir(), "");
-
-        FilenameFilter textFilter = new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.toLowerCase().endsWith(".png");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final LoadAttestationsTask task = new LoadAttestationsTask(MainActivity.this);
+                task.execute();
             }
-        };
-
-        File[] files = docsFolder.listFiles(textFilter);
-
-        // Redirect to creation page if no attestation found
-        if (files != null && files.length == 0) {
-            goToCreateAttestation();
-            return;
-        }
-
-        ArrayList<String> filesList = new ArrayList<>();
-        if (files != null) {
-            // https://stackoverflow.com/a/21534151
-            Arrays.sort(files, new Comparator<File>() {
-                public int compare(File f1, File f2) {
-                    return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
-                }
-            });
-
-            for (File file : files) {
-                filesList.add(file.getName().replaceFirst("[.][^.]+$", ""));
-            }
-        }
-
-        ListView listView = findViewById(R.id.file_list);
-
-        AttestationAdapter adapter = new AttestationAdapter(filesList, this);
-
-        listView.setAdapter(adapter);
+        }).start();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToCreateAttestation();
+                goToCreateAttestation(MainActivity.this);
             }
         });
+    }
+
+    static class LoadAttestationsTask extends AsyncTask<Void, Void, Void> {
+        // Weak references will still allow the Activity to be garbage-collected
+        private final WeakReference<MainActivity> weakActivity;
+
+        ListView listView;
+
+        AttestationAdapter adapter;
+
+        LoadAttestationsTask(MainActivity myActivity) {
+            this.weakActivity = new WeakReference<>(myActivity);
+        }
+
+        @Override
+        public Void doInBackground(Void... params) {
+            List<AttestationEntity> attestations = AttestationDatabase.getInstance(weakActivity.get()).daoAccess().loadAll();
+
+            if (attestations != null && attestations.size() == 0) {
+                goToCreateAttestation(weakActivity.get());
+                return null;
+            }
+
+            listView = weakActivity.get().findViewById(R.id.file_list);
+
+            adapter = new AttestationAdapter(attestations, weakActivity.get());
+
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Void result) {
+            if (listView != null) {
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     /**
      * Start the create attestation activity
      */
-    private void goToCreateAttestation() {
-        Intent intent = new Intent(MainActivity.this, CreateAttestationActivity.class);
-        MainActivity.this.startActivity(intent);
+    private static void goToCreateAttestation(MainActivity mainActivity) {
+        Intent intent = new Intent(mainActivity, CreateAttestationActivity.class);
+        mainActivity.startActivity(intent);
     }
 
     /**

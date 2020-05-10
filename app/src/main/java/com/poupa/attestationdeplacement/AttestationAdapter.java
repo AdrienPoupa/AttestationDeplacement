@@ -10,12 +10,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -23,17 +23,20 @@ import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.poupa.attestationdeplacement.db.AttestationDatabase;
+import com.poupa.attestationdeplacement.db.AttestationEntity;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AttestationAdapter extends BaseAdapter implements ListAdapter {
-    private ArrayList<String> list;
+    private List<AttestationEntity> list;
     private Context context;
 
-    public AttestationAdapter(ArrayList<String> list, Context context) {
+    public AttestationAdapter(List<AttestationEntity> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -44,13 +47,13 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
     }
 
     @Override
-    public Object getItem(int pos) {
+    public AttestationEntity getItem(int pos) {
         return list.get(pos);
     }
 
     @Override
     public long getItemId(int pos) {
-        return 0;
+        return list.get(pos).getId();
     }
 
     @Override
@@ -60,9 +63,9 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.attestation_list_layout, null);
         }
-    
-        TextView listItemText = convertView.findViewById(R.id.text1);
-        listItemText.setOnClickListener(new View.OnClickListener() {
+
+        MaterialCardView card = convertView.findViewById(R.id.card);
+        card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Drawable backgroundColor;
@@ -85,18 +88,27 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
                 });
 
                 // Set QRCode image
-                String fileName = getItem(position) + ".png";
+                String fileName = getItemId(position) + ".png";
                 img.setImageURI(AttestationAdapter.this.getUri(fileName));
 
                 dialog.show();
             }
         });
 
-        listItemText.setText(list.get(position));
+        AttestationEntity attestationEntity = list.get(position);
 
-        ImageButton deleteBtn = convertView.findViewById(R.id.delete_btn);
-        ImageButton sendBtn = convertView.findViewById(R.id.send_btn);
-        ImageButton pdfBtn = convertView.findViewById(R.id.pdf_btn);
+        TextView listItemText = convertView.findViewById(R.id.attestation_title);
+        listItemText.setText(attestationEntity.getReason());
+
+        TextView userNameText = convertView.findViewById(R.id.attestation_user_name);
+        userNameText.setText(attestationEntity.getFirstName());
+
+        TextView dateTimeText = convertView.findViewById(R.id.attestation_date_time);
+        dateTimeText.setText(attestationEntity.getGenerationDate() + " à " + attestationEntity.getGenerationTime());
+
+        MaterialButton deleteBtn = convertView.findViewById(R.id.delete_btn);
+        MaterialButton sendBtn = convertView.findViewById(R.id.send_btn);
+        MaterialButton pdfBtn = convertView.findViewById(R.id.pdf_btn);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -106,7 +118,9 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
                         .setMessage(R.string.delete_information)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                String fileName = (String) getItem(position);
+                                final AttestationEntity attestationEntity = getItem(position);
+
+                                String fileName = String.valueOf(attestationEntity.getId());
 
                                 File pdfFile = new File(context.getFilesDir() + "/" + fileName + ".pdf");
                                 pdfFile.delete();
@@ -117,6 +131,13 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
                                 list.remove(position);
 
                                 notifyDataSetChanged();
+
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AttestationDatabase.getInstance(context).daoAccess().delete(attestationEntity);
+                                    }
+                                });
 
                                 dialog.dismiss();
                             }
@@ -134,7 +155,7 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public void onClick(View v) {
                 // Clicking on items
-                String fileName = getItem(position) + ".pdf";
+                String fileName = getItemId(position) + ".pdf";
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -166,7 +187,7 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fileName = getItem(position) + ".pdf";
+                String fileName = getItemId(position) + ".pdf";
 
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);

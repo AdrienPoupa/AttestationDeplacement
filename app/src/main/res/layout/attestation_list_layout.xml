@@ -1,62 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
 
-    <TextView
-        android:id="@+id/text1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@id/pdf_btn"
-        android:layout_toLeftOf="@id/pdf_btn"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center_vertical"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:textSize="16sp" />
+        android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/pdf_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:layout_toStartOf="@id/send_btn"
-        android:layout_toLeftOf="@id/send_btn"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        app:srcCompat="@drawable/ic_pdf" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <ImageButton
-        android:id="@+id/send_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:layout_toStartOf="@id/delete_btn"
-        android:layout_toLeftOf="@id/delete_btn"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        app:srcCompat="@drawable/ic_send" />
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:id="@+id/attestation_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                />
+            <TextView
+                android:id="@+id/attestation_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:drawablePadding="2dp"
+                android:drawableLeft="@drawable/ic_person"
+                />
+            <TextView
+                android:id="@+id/attestation_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:drawablePadding="2dp"
+                android:drawableLeft="@drawable/ic_access_time"
+                />
 
-    <ImageButton
-        android:id="@+id/delete_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
-        app:srcCompat="@drawable/ic_delete" />
+        </LinearLayout>
 
-</RelativeLayout>
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pdf_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/see_pdf"
+                style="?attr/borderlessButtonStyle"
+                android:layout_marginRight="8dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/send_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/share"
+                style="?attr/borderlessButtonStyle"
+                android:layout_marginRight="8dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_btn"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/delete"
+                android:textColor="#FF0000" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
