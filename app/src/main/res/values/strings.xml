@@ -25,6 +25,8 @@
     <string name="reason5">Déplacements brefs, dans la limite d\'une heure quotidienne et dans un rayon maximal d\'un kilomètre autour du domicile, liés soit à l\'activité physique individuelle des personnes, à l\'exclusion de toute pratique sportive collective et de toute proximité avec d\'autres personnes, soit à la promenade avec les seules personnes regroupées dans un même domicile, soit aux besoins des animaux de compagnie.</string>
     <string name="reason6">Convocation judiciaire ou administrative.</string>
     <string name="reason7">Participation à des missions d\'intérêt général sur demande de l’autorité administrative.</string>
+    <string name="reason8">Trajets entre le lieu de résidence et l’établissement scolaire effectué par une personne qui y est scolarisée ou qui accompagne une personne scolarisée et trajets nécessaires pour se rendre à des examens ou des concours.</string>
+    <string name="reason9">Déplacements résultant d’une obligation de présentation aux services de police ou de gendarmerie nationales ou à tout autre service ou professionnel, imposée par l’autorité de police administrative ou l’autorité judiciaire.</string>
     <string name="generate">Générer</string>
     <string name="information">Cette application n\'est pas officielle. Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.</string>
     <string name="disclaimer_text">Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.\nPressez longuement pour envoyer le fichier.</string>
@@ -43,6 +45,14 @@
     <string name="reason5_smalltext">Sport</string>
     <string name="reason6_smalltext">Administratif</string>
     <string name="reason7_smalltext">Mission I.G.</string>
+    <string name="reason8_smalltext">Scolaire</string>
+    <string name="reason9_smalltext">Police</string>
     <string name="see_pdf">Voir PDF</string>
     <string name="share">Partager</string>
+
+    <string-array name="attestation_type">
+        <item>Auto-attestation Transports Paris</item>
+        <item>Attestation de déplacement</item>
+    </string-array>
+
 </resources>

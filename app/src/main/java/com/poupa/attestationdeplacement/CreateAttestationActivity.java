@@ -10,8 +10,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -67,8 +70,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private TextInputEditText postalCodeInput;
     private TextInputEditText travelDateInput;
     private TextInputEditText travelHourInput;
-    private ImageView reasonsInfos;
-    
+
     private SharedPreferences.Editor edit;
 
     private StringBuilder motivesQrCode;
@@ -90,6 +92,13 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private String currentTime;
     private String currentDate;
     private AttestationDao dao;
+
+    private AttestationType attestationType;
+
+    enum AttestationType {
+        TRANSPORTS,
+        ATTESTATION_DEPLACEMENT
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,11 +184,36 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         setDate();
 
-        reasonsInfos = findViewById(R.id.reasonInfoImageView);
+        ImageView reasonsInfos = findViewById(R.id.reasonInfoImageView);
         reasonsInfos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getReasonsDialog();
+            }
+        });
+
+        attestationType = AttestationType.TRANSPORTS;
+
+        Spinner spinner = findViewById(R.id.attestation_type);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.attestation_type, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    attestationType = AttestationType.TRANSPORTS;
+                } else {
+                    attestationType = AttestationType.ATTESTATION_DEPLACEMENT;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
@@ -263,7 +297,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             AssetManager assetManager = getAssets();
 
-            InputStream attestation = assetManager.open("attestation.pdf");
+            String pdfFilename = (attestationType == AttestationType.TRANSPORTS) ?
+                    "attestation-transports.pdf" : "attestation.pdf";
+
+            InputStream attestation = assetManager.open(pdfFilename);
 
             reader = new PdfReader(attestation);
 
@@ -387,15 +424,17 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         form.setField("Date", travelDate);
 
-        form.setField("Heure", hour);
-        form.setField("Minute", minute);
+        if (attestationType == AttestationType.ATTESTATION_DEPLACEMENT) {
+            form.setField("Heure", hour);
+            form.setField("Minute", minute);
+        }
 
         if (((CheckBox) findViewById(R.id.reason1)).isChecked()) {
             form.setField("Déplacements entre domicile et travail", "Oui");
             addMotive("travail");
         }
 
-        if (((CheckBox) findViewById(R.id.reason2)).isChecked()) {
+        if (((CheckBox) findViewById(R.id.reason2)).isChecked() && attestationType == AttestationType.ATTESTATION_DEPLACEMENT) {
             form.setField("Déplacements achats nécéssaires", "Oui");
             addMotive("courses");
         }
@@ -410,7 +449,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
             addMotive("famille");
         }
 
-        if (((CheckBox) findViewById(R.id.reason5)).isChecked()) {
+        if (((CheckBox) findViewById(R.id.reason5)).isChecked() && attestationType == AttestationType.ATTESTATION_DEPLACEMENT) {
             form.setField("Déplacements brefs (activité physique et animaux)", "Oui");
             addMotive("sport");
         }
@@ -423,6 +462,16 @@ public class CreateAttestationActivity extends AppCompatActivity {
         if (((CheckBox) findViewById(R.id.reason7)).isChecked()) {
             form.setField("Mission d'intérêt général", "Oui");
             addMotive("missions");
+        }
+
+        if (((CheckBox) findViewById(R.id.reason8)).isChecked() && attestationType == AttestationType.TRANSPORTS) {
+            form.setField("Déplacements entre domicile et école", "Oui");
+            addMotive("scolaire");
+        }
+
+        if (((CheckBox) findViewById(R.id.reason9)).isChecked() && attestationType == AttestationType.TRANSPORTS) {
+            form.setField("Convcation police", "Oui");
+            addMotive("police");
         }
     }
 

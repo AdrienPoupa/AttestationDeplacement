@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [1.6.0] - 2020-05-10
+### Ajouté
+- Auto-attestation pour les transports en Ile-de-France
+
 ## [1.5.0] - 2020-05-09
 ### Changé
 - Amélioration de la liste des attestations

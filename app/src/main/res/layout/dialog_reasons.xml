@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -115,6 +113,36 @@
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/reason7"/>
+
+        <TextView
+            android:id="@+id/reasons8_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reason8_smalltext"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reasons8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/reason8"/>
+
+        <TextView
+            android:id="@+id/reasons9_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reason9_smalltext"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reasons9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/reason9"/>
 
     </LinearLayout>
 </ScrollView>

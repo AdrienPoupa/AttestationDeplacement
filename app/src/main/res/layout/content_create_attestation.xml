@@ -24,6 +24,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Spinner
+            android:id="@+id/attestation_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="@dimen/space_between_view"
+            android:layout_marginEnd="1dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+             />
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/surnameLayout"
             android:layout_width="0dp"
@@ -35,7 +50,7 @@
             android:paddingRight="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView"
+            app:layout_constraintTop_toBottomOf="@id/attestation_type"
             app:startIconDrawable="@drawable/ic_person"
             app:endIconMode="clear_text"
             android:hint="@string/surname"
@@ -384,8 +399,34 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/reason7_smalltext" />
-                android:text="@string/reason7_smalltext" />
 
+            <CheckBox
+                android:id="@+id/reason8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/reason8_smalltext" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reasons_line5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/reasonsTextView"
+            app:layout_constraintTop_toBottomOf="@+id/reasons_line4">
+
+            <CheckBox
+                android:id="@+id/reason9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/reason9_smalltext" />
         </LinearLayout>
 
         <Button
@@ -399,8 +440,8 @@
             android:textColor="@color/design_default_color_on_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/reasons_line4"
-            app:layout_constraintTop_toBottomOf="@+id/reasons_line4" />
+            app:layout_constraintStart_toStartOf="@+id/reasons_line5"
+            app:layout_constraintTop_toBottomOf="@+id/reasons_line5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
