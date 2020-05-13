@@ -49,10 +49,14 @@
     <string name="reason9_smalltext">Police</string>
     <string name="see_pdf">Voir PDF</string>
     <string name="share">Partager</string>
+    <string name="destination_city">Ville de destination</string>
+    <string name="destination_department">Département de destination</string>
+    <string name="recurring">Déplacement récurrent</string>
 
     <string-array name="attestation_type">
+        <item>Déclaration de déplacement > 100km</item>
         <item>Auto-attestation Transports Paris</item>
-        <item>Attestation de déplacement</item>
+        <item>Attestation de déplacement dérogatoire</item>
     </string-array>
 
 </resources>
