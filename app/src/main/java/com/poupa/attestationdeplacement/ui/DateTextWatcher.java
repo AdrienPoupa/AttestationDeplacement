@@ -1,4 +1,4 @@
-package com.poupa.attestationdeplacement;
+package com.poupa.attestationdeplacement.ui;
 
 import android.text.Editable;
 import android.text.TextWatcher;

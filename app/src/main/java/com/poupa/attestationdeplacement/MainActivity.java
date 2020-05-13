@@ -19,6 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.poupa.attestationdeplacement.db.AttestationDatabase;
 import com.poupa.attestationdeplacement.db.AttestationEntity;
+import com.poupa.attestationdeplacement.ui.AttestationAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

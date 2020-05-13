@@ -1,4 +1,4 @@
-package com.poupa.attestationdeplacement;
+package com.poupa.attestationdeplacement.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -26,6 +26,7 @@ import androidx.core.content.FileProvider;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.poupa.attestationdeplacement.R;
 import com.poupa.attestationdeplacement.db.AttestationDatabase;
 import com.poupa.attestationdeplacement.db.AttestationEntity;
 

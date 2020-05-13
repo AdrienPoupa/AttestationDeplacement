@@ -55,7 +55,7 @@
 
     <string-array name="attestation_type">
         <item>Déclaration de déplacement > 100km</item>
-        <item>Auto-attestation Transports Paris</item>
+        <item>Auto-attestation Transports Île-de-France</item>
         <item>Attestation de déplacement dérogatoire</item>
     </string-array>
 
