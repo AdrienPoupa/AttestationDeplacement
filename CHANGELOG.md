@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [1.7.0] - 2020-05-13
+### Ajouté
+- Déclaration de déplacement supérieur à 100km
+
 ## [1.6.0] - 2020-05-10
 ### Ajouté
 - Auto-attestation pour les transports en Ile-de-France
