@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [2.0.0] - 2020-10-20
+### Ajouté
+- Attestation de déplacement dérogatoire - Couvre Feu
+
 ## [1.7.0] - 2020-05-13
 ### Ajouté
 - Déclaration de déplacement supérieur à 100km
