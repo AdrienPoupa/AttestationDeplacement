@@ -19,7 +19,6 @@ import com.itextpdf.text.pdf.PdfImage;
 import com.itextpdf.text.pdf.PdfIndirectObject;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-import com.poupa.attestationdeplacement.CreateAttestationActivity;
 import com.poupa.attestationdeplacement.db.AttestationDao;
 import com.poupa.attestationdeplacement.db.AttestationDatabase;
 import com.poupa.attestationdeplacement.db.AttestationEntity;
@@ -105,15 +104,7 @@ public abstract class AttestationGenerator {
         // Small QR Code
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
-        if (attestation.getAttestationType() == CreateAttestationActivity.AttestationType.DECLARATION_DEPLACEMENT) {
-            addImage(smallQrCode, 1, mediabox.getWidth() - 163, 135);
-            addText("Date de création:", 479, 130, 6);
-            addText(attestation.getCurrentDate() + " à " + attestation.getCurrentTime(), 470, 124, 6);
-        } else {
-            addImage(smallQrCode, 1, mediabox.getWidth() - 170, 155);
-            addText("Date de création:", 464, 150, 7);
-            addText(attestation.getCurrentDate() + " à " + attestation.getCurrentTime(), 455, 144, 7);
-        }
+        addImage(smallQrCode, 1, mediabox.getWidth() - 156, 122);
 
         // Insert page 2
         stamper.insertPage(reader.getNumberOfPages() + 1,
@@ -206,32 +197,7 @@ public abstract class AttestationGenerator {
     /**
      * Fill the PDF motives
      */
-    protected void fillMotives() throws IOException, DocumentException {
-        if (attestation.isReason1()) {
-            form.setField("Déplacements entre domicile et travail", "Oui");
-            attestation.addMotive("travail");
-        }
-
-        if (attestation.isReason3()) {
-            form.setField("Consultations et soins", "Oui");
-            attestation.addMotive("sante");
-        }
-
-        if (attestation.isReason4()) {
-            form.setField("Déplacements pour motif familial", "Oui");
-            attestation.addMotive("famille");
-        }
-
-        if (attestation.isReason6()) {
-            form.setField("Convcation judiciaire ou administrative", "Oui");
-            attestation.addMotive("judiciaire");
-        }
-
-        if (attestation.isReason7()) {
-            form.setField("Mission d'intérêt général", "Oui");
-            attestation.addMotive("missions");
-        }
-    }
+    abstract void fillMotives() throws IOException, DocumentException;
 
     /**
      * Fill the PDF form

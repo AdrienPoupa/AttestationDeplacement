@@ -8,12 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,12 +20,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.poupa.attestationdeplacement.generator.Attestation;
 import com.poupa.attestationdeplacement.generator.AttestationDeplacementDerogatoireGenerator;
 import com.poupa.attestationdeplacement.generator.AttestationGenerator;
-import com.poupa.attestationdeplacement.generator.AutoAttestationTransportsGenerator;
-import com.poupa.attestationdeplacement.generator.DeclarationDeplacementGenerator;
 import com.poupa.attestationdeplacement.ui.DateTextWatcher;
 
 import java.util.Calendar;
@@ -43,16 +36,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private TextInputEditText birthPlaceInput;
     private TextInputEditText addressInput;
     private TextInputEditText cityInput;
-    private TextInputEditText destinationCityInput;
-    private TextInputEditText destinationDepartmentInput;
     private TextInputEditText postalCodeInput;
     private TextInputEditText travelDateInput;
     private TextInputEditText travelHourInput;
-    private TextInputLayout travelHourLayout;
 
-    private TextInputLayout destinationCityLayout;
-    private TextInputLayout destinationDepartmentLayout;
-    private LinearLayout recurringLayout;
     private ConstraintLayout constraintLayout;
     private ConstraintSet constraintSet;
 
@@ -61,12 +48,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private AttestationGenerator attestationGenerator;
 
     private Attestation attestation;
-
-    public enum AttestationType {
-        DECLARATION_DEPLACEMENT,
-        AUTO_ATTESTATION_TRANSPORTS,
-        ATTESTATION_DEPLACEMENT_DEROGATOIRE
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +67,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
      */
     private void initFields() {
         attestation = new Attestation();
-        attestation.setAttestationType(AttestationType.AUTO_ATTESTATION_TRANSPORTS);
+
+        attestationGenerator = new AttestationDeplacementDerogatoireGenerator(this, attestation);
 
         SharedPreferences userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
 
@@ -119,14 +101,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
         postalCodeInput = findViewById(R.id.postal_code);
 
         postalCodeInput.setText(userDetails.getString("postalCode", ""));
-
-        destinationCityInput = findViewById(R.id.destination_city);
-
-        destinationCityInput.setText(userDetails.getString("destinationCity", ""));
-
-        destinationDepartmentInput = findViewById(R.id.destination_department);
-
-        destinationDepartmentInput.setText(userDetails.getString("destinationDepartment", ""));
 
         travelDateInput = findViewById(R.id.travel_date);
 
@@ -168,22 +142,12 @@ public class CreateAttestationActivity extends AppCompatActivity {
             }
         });
 
-        travelHourLayout = findViewById(R.id.travel_hour_layout);
-        destinationCityLayout = findViewById(R.id.destination_city_layout);
-        destinationDepartmentLayout = findViewById(R.id.destination_department_layout);
-        recurringLayout = findViewById(R.id.recurring_layout);
-        constraintLayout = findViewById(R.id.constraint_layout);
-
         constraintSet = new ConstraintSet();
-
-        Spinner spinner = findViewById(R.id.attestation_type);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.attestation_type, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new SpinnerOnItemSelectedListener());
+        constraintLayout = findViewById(R.id.constraint_layout);
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(R.id.reasonsTextView, ConstraintSet.TOP,
+                R.id.travel_hour_layout, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(constraintLayout);
     }
 
     /**
@@ -271,12 +235,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
         attestation.setPostalCode(postalCodeInput.getText().toString());
         edit.putString("postalCode", attestation.getPostalCode());
 
-        attestation.setDestinationCity(destinationCityInput.getText().toString());
-        edit.putString("destinationCity", attestation.getDestinationCity());
-
-        attestation.setDestinationDepartment(destinationDepartmentInput.getText().toString());
-        edit.putString("destinationDepartment", attestation.getDestinationDepartment());
-
         edit.apply();
 
         // Do not save this for further uses
@@ -298,9 +256,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
         attestation.setReason6(((CheckBox) findViewById(R.id.reason6)).isChecked());
         attestation.setReason7(((CheckBox) findViewById(R.id.reason7)).isChecked());
         attestation.setReason8(((CheckBox) findViewById(R.id.reason8)).isChecked());
-        attestation.setReason9(((CheckBox) findViewById(R.id.reason9)).isChecked());
-
-        attestation.setRecurring(((CheckBox) findViewById(R.id.recurring)).isChecked());
     }
 
     /**
@@ -341,61 +296,5 @@ public class CreateAttestationActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setPositiveButton(getString(android.R.string.ok),null);
         builder.show();
-    }
-
-    private class SpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (position == 0) {
-                attestation.setAttestationType(AttestationType.DECLARATION_DEPLACEMENT);
-
-                attestationGenerator = new DeclarationDeplacementGenerator(parent.getContext(), attestation);
-
-                travelHourLayout.setVisibility(View.INVISIBLE);
-                destinationCityLayout.setVisibility(View.VISIBLE);
-                destinationDepartmentLayout.setVisibility(View.VISIBLE);
-                recurringLayout.setVisibility(View.VISIBLE);
-
-                constraintSet.clone(constraintLayout);
-                constraintSet.connect(R.id.reasonsTextView, ConstraintSet.TOP,
-                        R.id.recurring_layout, ConstraintSet.BOTTOM);
-                constraintSet.applyTo(constraintLayout);
-
-            } else if (position == 1) {
-                attestation.setAttestationType(AttestationType.AUTO_ATTESTATION_TRANSPORTS);
-
-                attestationGenerator = new AutoAttestationTransportsGenerator(parent.getContext(), attestation);
-
-                travelHourLayout.setVisibility(View.INVISIBLE);
-                destinationCityLayout.setVisibility(View.INVISIBLE);
-                destinationDepartmentLayout.setVisibility(View.INVISIBLE);
-                recurringLayout.setVisibility(View.INVISIBLE);
-
-                constraintSet.clone(constraintLayout);
-                constraintSet.connect(R.id.reasonsTextView, ConstraintSet.TOP,
-                        R.id.travel_date_layout, ConstraintSet.BOTTOM);
-                constraintSet.applyTo(constraintLayout);
-
-            } else {
-                attestation.setAttestationType(AttestationType.ATTESTATION_DEPLACEMENT_DEROGATOIRE);
-
-                attestationGenerator = new AttestationDeplacementDerogatoireGenerator(parent.getContext(), attestation);
-
-                travelHourLayout.setVisibility(View.VISIBLE);
-                destinationCityLayout.setVisibility(View.INVISIBLE);
-                destinationDepartmentLayout.setVisibility(View.INVISIBLE);
-                recurringLayout.setVisibility(View.INVISIBLE);
-
-                constraintSet.clone(constraintLayout);
-                constraintSet.connect(R.id.reasonsTextView, ConstraintSet.TOP,
-                        R.id.travel_hour_layout, ConstraintSet.BOTTOM);
-                constraintSet.applyTo(constraintLayout);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
     }
 }

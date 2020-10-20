@@ -1,14 +1,10 @@
 package com.poupa.attestationdeplacement.generator;
 
-import com.poupa.attestationdeplacement.CreateAttestationActivity;
-
 public class Attestation {
     private int id;
     private String surname;
     private String lastName;
     private String city;
-    private String destinationCity;
-    private String destinationDepartment;
     private String postalCode;
     private String address;
     private String birthPlace;
@@ -22,7 +18,6 @@ public class Attestation {
 
     private StringBuilder motivesQrCode;
     private StringBuilder motivesDatabase;
-    private CreateAttestationActivity.AttestationType attestationType;
     private boolean isReason1;
     private boolean isReason2;
     private boolean isReason3;
@@ -31,8 +26,6 @@ public class Attestation {
     private boolean isReason6;
     private boolean isReason7;
     private boolean isReason8;
-    private boolean isReason9;
-    private boolean isRecurring;
 
     public Attestation() {
         this.motivesDatabase = new StringBuilder();
@@ -84,22 +77,6 @@ public class Attestation {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getDestinationCity() {
-        return destinationCity;
-    }
-
-    public void setDestinationCity(String destinationCity) {
-        this.destinationCity = destinationCity;
-    }
-
-    public String getDestinationDepartment() {
-        return destinationDepartment;
-    }
-
-    public void setDestinationDepartment(String destinationDepartment) {
-        this.destinationDepartment = destinationDepartment;
     }
 
     public String getPostalCode() {
@@ -182,14 +159,6 @@ public class Attestation {
         this.motivesDatabase = motivesDatabase;
     }
 
-    public CreateAttestationActivity.AttestationType getAttestationType() {
-        return attestationType;
-    }
-
-    public void setAttestationType(CreateAttestationActivity.AttestationType attestationType) {
-        this.attestationType = attestationType;
-    }
-
     public boolean isReason1() {
         return isReason1;
     }
@@ -252,22 +221,6 @@ public class Attestation {
 
     public void setReason8(boolean reason8) {
         isReason8 = reason8;
-    }
-
-    public boolean isReason9() {
-        return isReason9;
-    }
-
-    public void setReason9(boolean reason9) {
-        isReason9 = reason9;
-    }
-
-    public boolean isRecurring() {
-        return isRecurring;
-    }
-
-    public void setRecurring(boolean recurring) {
-        isRecurring = recurring;
     }
 
     public String getCurrentDate() {
