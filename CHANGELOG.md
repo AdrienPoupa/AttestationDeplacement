@@ -2,7 +2,7 @@
 
 ## [Non sorti]
 
-## [3.0.0] - 2020-10-20
+## [3.0.0] - 2020-10-29
 ### Ajouté
 - Attestation de déplacement dérogatoire : le retour de la vengeance
 
