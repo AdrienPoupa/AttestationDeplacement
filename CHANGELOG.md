@@ -2,6 +2,12 @@
 
 ## [Non sorti]
 
+## [3.0.1] - 2020-10-30
+### Réglé
+- QRcode généré conformément au formulaire officiel
+- Affichage du QR code plus grand
+- Fautes d'orthographes
+
 ## [3.0.0] - 2020-10-29
 ### Ajouté
 - Attestation de déplacement dérogatoire : le retour de la vengeance
