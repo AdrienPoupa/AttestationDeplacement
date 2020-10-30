@@ -93,6 +93,6 @@ public class AttestationDeplacementDerogatoireGenerator extends AttestationGener
     protected String getQrCodeText() {
         return "Cree le: " + attestation.getCurrentDate() + " a " + attestation.getCurrentTime() + ";\n Nom: " + attestation.getLastName() + ";\n Prenom: " + attestation.getSurname() + ";\n " +
                 "Naissance: " + attestation.getBirthDate() + " a " + attestation.getBirthPlace() + ";\n Adresse: " + attestation.getFullAddress() + ";\n " +
-                "Sortie: " + attestation.getTravelDate() + " a " + attestation.getTravelHour() + ";\n Motifs: " + attestation.getMotivesQrCode();
+                "Sortie: " + attestation.getTravelDate() + " a " + attestation.getHour() + ":" + attestation.getMinute() + ";\n Motifs: " + attestation.getMotivesQrCode();
     }
 }

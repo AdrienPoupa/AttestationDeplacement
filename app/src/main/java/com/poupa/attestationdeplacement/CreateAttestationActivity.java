@@ -283,7 +283,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         travelDateInput.setText(currentDate);
 
-        String currentTime = String.format("%02d", currentHour) + ':' + String.format("%02d", currentMinute);
+        String currentTime = String.format("%02d", currentHour) + 'h' + String.format("%02d", currentMinute);
         attestation.setCurrentTime(currentTime);
 
         travelHourInput.setText(currentTime);

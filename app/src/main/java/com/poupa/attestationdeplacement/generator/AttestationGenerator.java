@@ -49,7 +49,7 @@ public abstract class AttestationGenerator {
         this.context = context;
         this.attestation = attestation;
         setDates();
-        smallQrCodeSize = 92;
+        smallQrCodeSize = 100;
     }
 
     /**
