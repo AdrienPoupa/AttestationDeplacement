@@ -26,6 +26,7 @@ public class Attestation {
     private boolean isReason6;
     private boolean isReason7;
     private boolean isReason8;
+    private boolean isReason9;
 
     public Attestation() {
         this.motivesDatabase = new StringBuilder();
@@ -221,6 +222,14 @@ public class Attestation {
 
     public void setReason8(boolean reason8) {
         isReason8 = reason8;
+    }
+
+    public boolean isReason9() {
+        return isReason9;
+    }
+
+    public void setReason9(boolean reason9) {
+        isReason9 = reason9;
     }
 
     public String getCurrentDate() {

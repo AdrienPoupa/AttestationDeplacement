@@ -26,38 +26,43 @@ public class AttestationDeplacementDerogatoireGenerator extends AttestationGener
         }
 
         if (attestation.isReason2()) {
+            form.setField("achats", "Oui");
+            attestation.addMotive("achats");
+        }
+
+        if (attestation.isReason3()) {
             form.setField("sante", "Oui");
             attestation.addMotive("sante");
         }
 
-        if (attestation.isReason3()) {
+        if (attestation.isReason4()) {
             form.setField("famille", "Oui");
             attestation.addMotive("famille");
         }
 
-        if (attestation.isReason4()) {
+        if (attestation.isReason5()) {
             form.setField("handicap", "Oui");
             attestation.addMotive("handicap");
         }
 
-        if (attestation.isReason5()) {
+        if (attestation.isReason6()) {
+            form.setField("sport_animaux", "Oui");
+            attestation.addMotive("sport_animaux");
+        }
+
+        if (attestation.isReason7()) {
             form.setField("convocation", "Oui");
             attestation.addMotive("convocation");
         }
 
-        if (attestation.isReason6()) {
+        if (attestation.isReason8()) {
             form.setField("missions", "Oui");
             attestation.addMotive("missions");
         }
 
-        if (attestation.isReason7()) {
-            form.setField("transits", "Oui");
-            attestation.addMotive("transits");
-        }
-
-        if (attestation.isReason8()) {
-            form.setField("animaux", "Oui");
-            attestation.addMotive("animaux");
+        if (attestation.isReason9()) {
+            form.setField("enfants", "Oui");
+            attestation.addMotive("enfants");
         }
     }
 

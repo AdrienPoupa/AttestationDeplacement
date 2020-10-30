@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [3.0.0] - 2020-10-20
+### Ajouté
+- Attestation de déplacement dérogatoire : le retour de la vengeance
+
 ## [2.0.0] - 2020-10-20
 ### Ajouté
 - Attestation de déplacement dérogatoire - Couvre Feu

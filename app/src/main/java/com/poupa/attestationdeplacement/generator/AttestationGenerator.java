@@ -49,7 +49,7 @@ public abstract class AttestationGenerator {
         this.context = context;
         this.attestation = attestation;
         setDates();
-        smallQrCodeSize = 100;
+        smallQrCodeSize = 92;
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class AttestationGenerator {
         // Small QR Code
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
-        addImage(smallQrCode, 1, mediabox.getWidth() - 156, 122);
+        addImage(smallQrCode, 1, mediabox.getWidth() - 156, 100);
 
         // Insert page 2
         stamper.insertPage(reader.getNumberOfPages() + 1,

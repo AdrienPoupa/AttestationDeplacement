@@ -256,6 +256,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
         attestation.setReason6(((CheckBox) findViewById(R.id.reason6)).isChecked());
         attestation.setReason7(((CheckBox) findViewById(R.id.reason7)).isChecked());
         attestation.setReason8(((CheckBox) findViewById(R.id.reason8)).isChecked());
+        attestation.setReason9(((CheckBox) findViewById(R.id.reason9)).isChecked());
     }
 
     /**
