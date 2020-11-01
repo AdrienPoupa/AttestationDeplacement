@@ -122,7 +122,7 @@ public abstract class AttestationGenerator {
      * @param x
      * @param y
      */
-    private void addText(String text, float x, float y, int size) {
+    protected void addText(String text, float x, float y, int size) {
         Phrase phrase = new Phrase(text, FontFactory.getFont(FontFactory.HELVETICA, size, BaseColor.BLACK));
         ColumnText.showTextAligned(stamper.getOverContent(1), Element.ALIGN_LEFT, phrase, x, y, 0);
     }

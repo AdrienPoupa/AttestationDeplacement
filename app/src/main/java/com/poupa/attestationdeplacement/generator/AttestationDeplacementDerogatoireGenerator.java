@@ -2,10 +2,6 @@ package com.poupa.attestationdeplacement.generator;
 
 import android.content.Context;
 
-import com.itextpdf.text.DocumentException;
-
-import java.io.IOException;
-
 public class AttestationDeplacementDerogatoireGenerator extends AttestationGenerator {
     public AttestationDeplacementDerogatoireGenerator(Context context, Attestation attestation) {
         super(context, attestation);
@@ -19,71 +15,68 @@ public class AttestationDeplacementDerogatoireGenerator extends AttestationGener
         return "attestation.pdf";
     }
 
-    protected void fillMotives() throws IOException, DocumentException {
+    protected void fillMotives() {
         if (attestation.isReason1()) {
-            form.setField("travail", "Oui");
+            addText("x", 78, 578, 18);
             attestation.addMotive("travail");
         }
 
         if (attestation.isReason2()) {
-            form.setField("achats", "Oui");
+            addText("x", 78, 533, 18);
             attestation.addMotive("achats");
         }
 
         if (attestation.isReason3()) {
-            form.setField("sante", "Oui");
+            addText("x", 78, 477, 18);
             attestation.addMotive("sante");
         }
 
         if (attestation.isReason4()) {
-            form.setField("famille", "Oui");
+            addText("x", 78, 435, 18);
             attestation.addMotive("famille");
         }
 
         if (attestation.isReason5()) {
-            form.setField("handicap", "Oui");
+            addText("x", 78, 396, 18);
             attestation.addMotive("handicap");
         }
 
         if (attestation.isReason6()) {
-            form.setField("sport_animaux", "Oui");
+            addText("x", 78, 358, 18);
             attestation.addMotive("sport_animaux");
         }
 
         if (attestation.isReason7()) {
-            form.setField("convocation", "Oui");
+            addText("x", 78, 295, 18);
             attestation.addMotive("convocation");
         }
 
         if (attestation.isReason8()) {
-            form.setField("missions", "Oui");
+            addText("x", 78, 255, 18);
             attestation.addMotive("missions");
         }
 
         if (attestation.isReason9()) {
-            form.setField("enfants", "Oui");
+            addText("x", 78, 211, 18);
             attestation.addMotive("enfants");
         }
     }
 
     /**
      * Fill the PDF form
-     * @throws IOException
-     * @throws DocumentException
      */
-    protected void fillForm() throws IOException, DocumentException {
+    protected void fillForm() {
         String fullName = attestation.getSurname() + " " + attestation.getLastName();
 
-        form.setField("Nom et prénom", fullName);
-        form.setField("Signature", fullName);
-        form.setField("Date de naissance", attestation.getBirthDate());
-        form.setField("Lieu de naissance", attestation.getBirthPlace());
-        form.setField("Adresse actuelle", attestation.getFullAddress());
+        addText(fullName, 119, 696, 11);
+        addText(attestation.getBirthDate(), 119, 674, 11);
+        addText(attestation.getBirthPlace(), 297, 674, 11);
+        addText(attestation.getFullAddress(), 133, 652, 11);
 
-        form.setField("HeureMinute", attestation.getHour() + ':' + attestation.getMinute());
+        addText(attestation.getHour() + ':' + attestation.getMinute(), 264, 153, 11);
 
-        form.setField("Ville", attestation.getCity());
-        form.setField("Date", attestation.getTravelDate());
+        addText(attestation.getCity(), 105, 177, 11);
+        addText(attestation.getTravelDate(), 91, 153, 11);
     }
 
     /**
@@ -91,8 +84,12 @@ public class AttestationDeplacementDerogatoireGenerator extends AttestationGener
      * @return
      */
     protected String getQrCodeText() {
-        return "Cree le: " + attestation.getCurrentDate() + " a " + attestation.getCurrentTime() + ";\n Nom: " + attestation.getLastName() + ";\n Prenom: " + attestation.getSurname() + ";\n " +
-                "Naissance: " + attestation.getBirthDate() + " a " + attestation.getBirthPlace() + ";\n Adresse: " + attestation.getFullAddress() + ";\n " +
-                "Sortie: " + attestation.getTravelDate() + " a " + attestation.getHour() + ":" + attestation.getMinute() + ";\n Motifs: " + attestation.getMotivesQrCode();
+        return "Cree le: " + attestation.getCurrentDate() + " a " + attestation.getCurrentTime() +
+                ";\n Nom: " + attestation.getLastName() + ";\n Prenom: " + attestation.getSurname() + ";\n " +
+                "Naissance: " + attestation.getBirthDate() + " a " + attestation.getBirthPlace() +
+                ";\n Adresse: " + attestation.getFullAddress() + ";\n " +
+                "Sortie: " + attestation.getTravelDate() + " a " +
+                attestation.getHour() + ":" + attestation.getMinute() + ";\n " +
+                "Motifs: " + attestation.getMotivesQrCode();
     }
 }
