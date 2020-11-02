@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [3.1.0] - 2020-11-01
+### Changé
+- Utilisation de la dernière version de l'attestation
+
 ## [3.0.1] - 2020-10-30
 ### Réglé
 - QRcode généré conformément au formulaire officiel
