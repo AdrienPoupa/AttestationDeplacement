@@ -51,6 +51,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final LoadAttestationsTask task = new LoadAttestationsTask(MainActivity.this);
+                task.execute();
+            }
+        }).start();
+
+    }
+
     static class LoadAttestationsTask extends AsyncTask<Void, Void, Void> {
         // Weak references will still allow the Activity to be garbage-collected
         private final WeakReference<MainActivity> weakActivity;
