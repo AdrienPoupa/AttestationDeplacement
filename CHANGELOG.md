@@ -2,6 +2,16 @@
 
 ## [Non sorti]
 
+## [3.2.0] - 2020-11-03
+### Ajouté
+- Sauvegarde des motifs
+- Validation du formulaire
+### Réglé
+- Ajout de la description du motif "Enfants"
+- Motifs dupliqués après un retour
+### Changé
+- Label des motifs
+
 ## [3.1.0] - 2020-11-01
 ### Changé
 - Utilisation de la dernière version de l'attestation
