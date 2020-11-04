@@ -34,13 +34,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final LoadAttestationsTask task = new LoadAttestationsTask(MainActivity.this);
-                task.execute();
-            }
-        }).start();
+        loadAttestations();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
+        loadAttestations();
+    }
 
+    private void loadAttestations() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -62,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
                 task.execute();
             }
         }).start();
-
     }
 
     static class LoadAttestationsTask extends AsyncTask<Void, Void, Void> {
