@@ -7,7 +7,7 @@
 <a href='https://play.google.com/store/apps/details?id=com.poupa.attestationdeplacement'>
 <img src='https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/images/get-it-on-playstore.png' alt="Get it on Google Play" height="90"/></a>
 
-Générez votre attestation de déplacement sur votre mobile à partir du document officiel.
+Pendant le confinement, générez votre attestation de déplacement sur votre mobile Android à partir du document officiel.
 
 Cette application respecte votre vie privée en conservant vos données sur votre téléphone.
 Aucune information personnelle ne transite via des serveurs externes.
@@ -16,7 +16,7 @@ Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de cont
 
 Cette application n'est pas officielle et n'a aucun lien avec le gouvernement français.
 
-F-Droid est lent à build les versions, la dernière sera 
+F-Droid est lent à builder les versions, la dernière sera 
 [toujours ici](https://github.com/AdrienPoupa/AttestationDeplacement/releases).
 
 ### Impressions d'écran
@@ -30,10 +30,10 @@ F-Droid est lent à build les versions, la dernière sera
 C'est impossible pour deux raisons:
 - Le code source est ouvert, l'application sur F-Droid est garantie de correspondre au code de ce
 repository; pour les APK sur GitHub et Google Play vous devez me croire mais si jamais vous pensez
-que je suis un être vil:
-- L'application ne demande aucune autorisation : elle ne peut donc pas communiquer sur internet, donc
-ne peut pas envoyer de données où que ce soit.
-C'est à ma connaissance la seule application mobile open source et sans publicités.
+que je suis un être vil :
+- L'application ne demande aucune autorisation : elle ne peut donc pas utiliser votre connexion à Internet et donc
+ne peut envoyer aucune donnée où que ce soit.
+C'est à ma connaissance la seule application mobile, open source et sans publicités permettant de générer l'attestion.
 Même la Defensive Lab Agency [le dit](https://twitter.com/defensive_lab/status/1250482375139655681) 
 dans son [rapport](https://forensic.defensive-lab.agency/covid/reports/4c5136979e951032607bd89c1ed0c828a644d46917b1814d526f02821a20b745/) !
 
