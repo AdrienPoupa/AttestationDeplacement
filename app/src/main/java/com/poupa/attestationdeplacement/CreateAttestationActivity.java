@@ -62,6 +62,12 @@ public class CreateAttestationActivity extends AppCompatActivity {
         initFields();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        initFields();
+    }
+
     /**
      * Initialize the input fields
      */
@@ -158,8 +164,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final GeneratePdfTask task = new GeneratePdfTask();
-                task.execute();
+            final GeneratePdfTask task = new GeneratePdfTask();
+            task.execute();
             }
         }).start();
     }
@@ -173,12 +179,12 @@ public class CreateAttestationActivity extends AppCompatActivity {
             {
                 public void run()
                 {
-                    nDialog = new ProgressDialog(CreateAttestationActivity.this);
-                    nDialog.setMessage(getString(R.string.loading));
-                    nDialog.setTitle(getString(R.string.generating));
-                    nDialog.setIndeterminate(true);
-                    nDialog.setCancelable(false);
-                    nDialog.show();
+                nDialog = new ProgressDialog(CreateAttestationActivity.this);
+                nDialog.setMessage(getString(R.string.loading));
+                nDialog.setTitle(getString(R.string.generating));
+                nDialog.setIndeterminate(true);
+                nDialog.setCancelable(false);
+                nDialog.show();
                 }
             });
         }
