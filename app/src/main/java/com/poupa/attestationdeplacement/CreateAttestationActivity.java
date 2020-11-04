@@ -138,6 +138,16 @@ public class CreateAttestationActivity extends AppCompatActivity {
             }
         });
 
+        ((CheckBox) findViewById(R.id.reason1)).setChecked(userDetails.getBoolean("reason1", false));
+        ((CheckBox) findViewById(R.id.reason2)).setChecked(userDetails.getBoolean("reason2", false));
+        ((CheckBox) findViewById(R.id.reason3)).setChecked(userDetails.getBoolean("reason3", false));
+        ((CheckBox) findViewById(R.id.reason4)).setChecked(userDetails.getBoolean("reason4", false));
+        ((CheckBox) findViewById(R.id.reason5)).setChecked(userDetails.getBoolean("reason5", false));
+        ((CheckBox) findViewById(R.id.reason6)).setChecked(userDetails.getBoolean("reason6", false));
+        ((CheckBox) findViewById(R.id.reason7)).setChecked(userDetails.getBoolean("reason7", false));
+        ((CheckBox) findViewById(R.id.reason8)).setChecked(userDetails.getBoolean("reason8", false));
+        ((CheckBox) findViewById(R.id.reason9)).setChecked(userDetails.getBoolean("reason9", false));
+
         setDate();
 
         ImageView reasonsInfos = findViewById(R.id.reasonInfoImageView);
@@ -241,6 +251,25 @@ public class CreateAttestationActivity extends AppCompatActivity {
         attestation.setPostalCode(postalCodeInput.getText().toString());
         edit.putString("postalCode", attestation.getPostalCode());
 
+        attestation.setReason1(((CheckBox) findViewById(R.id.reason1)).isChecked());
+        edit.putBoolean("reason1", attestation.isReason1());
+        attestation.setReason2(((CheckBox) findViewById(R.id.reason2)).isChecked());
+        edit.putBoolean("reason2", attestation.isReason2());
+        attestation.setReason3(((CheckBox) findViewById(R.id.reason3)).isChecked());
+        edit.putBoolean("reason3", attestation.isReason3());
+        attestation.setReason4(((CheckBox) findViewById(R.id.reason4)).isChecked());
+        edit.putBoolean("reason4", attestation.isReason4());
+        attestation.setReason5(((CheckBox) findViewById(R.id.reason5)).isChecked());
+        edit.putBoolean("reason5", attestation.isReason5());
+        attestation.setReason6(((CheckBox) findViewById(R.id.reason6)).isChecked());
+        edit.putBoolean("reason6", attestation.isReason6());
+        attestation.setReason7(((CheckBox) findViewById(R.id.reason7)).isChecked());
+        edit.putBoolean("reason7", attestation.isReason7());
+        attestation.setReason8(((CheckBox) findViewById(R.id.reason8)).isChecked());
+        edit.putBoolean("reason8", attestation.isReason8());
+        attestation.setReason9(((CheckBox) findViewById(R.id.reason9)).isChecked());
+        edit.putBoolean("reason9", attestation.isReason9());
+
         edit.apply();
 
         // Do not save this for further uses
@@ -253,16 +282,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         attestation.setHour(hourMinute[0]);
         attestation.setMinute(hourMinute[1]);
-
-        attestation.setReason1(((CheckBox) findViewById(R.id.reason1)).isChecked());
-        attestation.setReason2(((CheckBox) findViewById(R.id.reason2)).isChecked());
-        attestation.setReason3(((CheckBox) findViewById(R.id.reason3)).isChecked());
-        attestation.setReason4(((CheckBox) findViewById(R.id.reason4)).isChecked());
-        attestation.setReason5(((CheckBox) findViewById(R.id.reason5)).isChecked());
-        attestation.setReason6(((CheckBox) findViewById(R.id.reason6)).isChecked());
-        attestation.setReason7(((CheckBox) findViewById(R.id.reason7)).isChecked());
-        attestation.setReason8(((CheckBox) findViewById(R.id.reason8)).isChecked());
-        attestation.setReason9(((CheckBox) findViewById(R.id.reason9)).isChecked());
     }
 
     /**
