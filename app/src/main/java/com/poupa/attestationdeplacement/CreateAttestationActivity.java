@@ -2,6 +2,7 @@ package com.poupa.attestationdeplacement;
 
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.poupa.attestationdeplacement.generator.Attestation;
 import com.poupa.attestationdeplacement.generator.AttestationDeplacementDerogatoireGenerator;
@@ -171,13 +173,97 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * @param v
      */
     public void startGenerate(View v) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-            final GeneratePdfTask task = new GeneratePdfTask();
-            task.execute();
-            }
-        }).start();
+        boolean valid = checkFields();
+
+        if (valid) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final GeneratePdfTask task = new GeneratePdfTask();
+                    task.execute();
+                }
+            }).start();
+        }
+    }
+
+    public boolean checkFields() {
+        if (surnameInput.getText().toString().isEmpty()) {
+            displayAlertDialog(getString(R.string.surname_missing));
+            return false;
+        }
+
+        if (lastNameInput.getText().toString().isEmpty()) {
+            displayAlertDialog(getString(R.string.lastname_missing));
+            return false;
+        }
+
+        if (birthDateInput.getText().toString().equals("JJ/MM/AAAA")) {
+            displayAlertDialog(getString(R.string.birthdate_missing));
+            return false;
+        }
+
+        if (birthPlaceInput.getText().toString().isEmpty()) {
+            displayAlertDialog(getString(R.string.birthplace_missing));
+            return false;
+        }
+
+        if (addressInput.getText().toString().isEmpty()) {
+            displayAlertDialog(getString(R.string.address_missing));
+            return false;
+        }
+
+        if (cityInput.getText().toString().isEmpty()) {
+            displayAlertDialog(getString(R.string.city_missing));
+            return false;
+        }
+
+        if (postalCodeInput.getText().toString().isEmpty()) {
+            displayAlertDialog(getString(R.string.postal_code_missing));
+            return false;
+        }
+
+        if (travelDateInput.getText().toString().isEmpty()) {
+            displayAlertDialog(getString(R.string.travel_date_missing));
+            return false;
+        }
+
+        if (travelHourInput.getText().toString().isEmpty()) {
+            displayAlertDialog(getString(R.string.travel_hour_missing));
+            return false;
+        }
+
+        if (! ((CheckBox) findViewById(R.id.reason1)).isChecked() &&
+            ! ((CheckBox) findViewById(R.id.reason2)).isChecked() &&
+            ! ((CheckBox) findViewById(R.id.reason3)).isChecked() &&
+            ! ((CheckBox) findViewById(R.id.reason4)).isChecked() &&
+            ! ((CheckBox) findViewById(R.id.reason5)).isChecked() &&
+            ! ((CheckBox) findViewById(R.id.reason6)).isChecked() &&
+            ! ((CheckBox) findViewById(R.id.reason7)).isChecked() &&
+            ! ((CheckBox) findViewById(R.id.reason8)).isChecked() &&
+            ! ((CheckBox) findViewById(R.id.reason9)).isChecked()
+        ) {
+            displayAlertDialog(getString(R.string.reaon_missing));
+            return false;
+        }
+
+        return true;
+    }
+
+    private void displayAlertDialog(String text) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.warning)
+                .setMessage(text)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private class GeneratePdfTask extends AsyncTask<Void, Void, Void> {

@@ -50,4 +50,14 @@
     <string name="see_pdf">Voir le PDF</string>
     <string name="share">Partager</string>
     <string name="attestation_generated">Attestation générée !</string>
+    <string name="surname_missing">Merci de préciser votre prénom</string>
+    <string name="lastname_missing">Merci de préciser votre nom de famille</string>
+    <string name="birthdate_missing">Merci de préciser votre date de naissance</string>
+    <string name="birthplace_missing">Merci de préciser votre lieu de naissance</string>
+    <string name="address_missing">Merci de préciser votre adresse</string>
+    <string name="city_missing">Merci de préciser votre ville</string>
+    <string name="postal_code_missing">Merci de préciser votre code postal</string>
+    <string name="travel_date_missing">Merci de préciser votre date de sortie</string>
+    <string name="travel_hour_missing">Merci de préciser votre heure de sortie</string>
+    <string name="reaon_missing">Merci de préciser un motif de déplacement</string>
 </resources>
