@@ -3,10 +3,10 @@
     <string name="warning">Avertissement</string>
 
     <string name="title_activity_create_attestation">CreateAttestationActivity</string>
-    <string name="save">Sauvegarder</string>
-    <string name="delete">Effacer</string>
-    <string name="empty_list">Vous n\'avez pas encore généré d\'attestations</string>
-    <string name="info_create">Entrez vos informations pour générer votre attestation</string>
+    <string name="save">Enregistrer</string>
+    <string name="delete">Supprimer</string>
+    <string name="empty_list">Vous n\'avez pas encore généré d\'attestation</string>
+    <string name="info_create">Saisissez vos informations pour générer votre attestation</string>
     <string name="surname">Prénom</string>
     <string name="name">Nom</string>
     <string name="birthDate">Date de naissance</string>
@@ -15,9 +15,9 @@
     <string name="birthPlace">Lieu de naissance</string>
     <string name="address">Adresse</string>
     <string name="city">Ville</string>
-    <string name="postal_code">Code Postal</string>
+    <string name="postal_code">Code postal</string>
     <string name="signature_location">Fait à</string>
-    <string name="reasons">Motifs de déplacement</string>
+    <string name="reasons">Motifs du déplacement</string>
     <string name="reason1">Déplacements entre le domicile et le lieu d\'exercice de l\'activité professionnelle ou un établissement d\'enseignement ou de formation, déplacements professionnels ne pouvant être différés, déplacements pour un concours ou un examen</string>
     <string name="reason2">Déplacements pour effectuer des achats de fournitures nécessaires à l\'activité professionnelle, des achats de première nécessité dans des établissements dont les activités demeurent autorisées, le retrait de commande et les livraisons à domicile.</string>
     <string name="reason3">Consultations et soins ne pouvant être assurés à distance et ne pouvant être différés et l\'achat de médicaments</string>
@@ -33,13 +33,13 @@
     <string name="generate_attestation">Générer une attestation</string>
 
     <string name="delete_information">Voulez-vous vraiment supprimer cette attestation ?</string>
-    <string name="no_pdf_reader">Vous n\'avez pas d\'application permettant de lire des fichiers PDF. Veuillez en installer une avant de réessayer.</string>
+    <string name="no_pdf_reader">Vous n\'avez pas d\'application permettant de lire les fichiers PDF. Veuillez en installer une puis réessayer.</string>
     <string name="generating">Génération de l\'attestation</string>
     <string name="loading">Chargement…</string>
     <string name="about">À propos</string>
     <string name="version_number__1p">Version %s</string>
     <string name="reason1_smalltext">Travail</string>
-    <string name="reason2_smalltext">Achats</string>
+    <string name="reason2_smalltext">Courses</string>
     <string name="reason3_smalltext">Santé</string>
     <string name="reason4_smalltext">Famille</string>
     <string name="reason5_smalltext">Handicap</string>
@@ -47,6 +47,6 @@
     <string name="reason7_smalltext">Convocation</string>
     <string name="reason8_smalltext">Mission I.G.</string>
     <string name="reason9_smalltext">Enfants</string>
-    <string name="see_pdf">Voir PDF</string>
+    <string name="see_pdf">Voir le PDF</string>
     <string name="share">Partager</string>
 </resources>
