@@ -61,19 +61,20 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        initFields();
+        initFields(true);
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        initFields();
+
+        initFields(false);
     }
 
     /**
      * Initialize the input fields
      */
-    private void initFields() {
+    private void initFields(boolean initDate) {
         attestation = new Attestation();
 
         attestationGenerator = new AttestationDeplacementDerogatoireGenerator(this, attestation);
@@ -114,13 +115,15 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         travelHourInput = findViewById(R.id.travel_hour);
 
-        DateTextWatcher birthDateTextWatcher = new DateTextWatcher(birthDateInput);
+        if (initDate) {
+            DateTextWatcher birthDateTextWatcher = new DateTextWatcher(birthDateInput);
 
-        birthDateInput.addTextChangedListener(birthDateTextWatcher);
+            birthDateInput.addTextChangedListener(birthDateTextWatcher);
 
-        DateTextWatcher travelDateTextWatcher = new DateTextWatcher(travelDateInput);
+            DateTextWatcher travelDateTextWatcher = new DateTextWatcher(travelDateInput);
 
-        travelDateInput.addTextChangedListener(travelDateTextWatcher);
+            travelDateInput.addTextChangedListener(travelDateTextWatcher);
+        }
 
         travelHourInput.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,15 +143,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
             }
         });
 
-        ((CheckBox) findViewById(R.id.reason1)).setChecked(userDetails.getBoolean("reason1", false));
-        ((CheckBox) findViewById(R.id.reason2)).setChecked(userDetails.getBoolean("reason2", false));
-        ((CheckBox) findViewById(R.id.reason3)).setChecked(userDetails.getBoolean("reason3", false));
-        ((CheckBox) findViewById(R.id.reason4)).setChecked(userDetails.getBoolean("reason4", false));
-        ((CheckBox) findViewById(R.id.reason5)).setChecked(userDetails.getBoolean("reason5", false));
-        ((CheckBox) findViewById(R.id.reason6)).setChecked(userDetails.getBoolean("reason6", false));
-        ((CheckBox) findViewById(R.id.reason7)).setChecked(userDetails.getBoolean("reason7", false));
-        ((CheckBox) findViewById(R.id.reason8)).setChecked(userDetails.getBoolean("reason8", false));
-        ((CheckBox) findViewById(R.id.reason9)).setChecked(userDetails.getBoolean("reason9", false));
+        setReasonsCheckboxes(userDetails);
 
         setDate();
 
@@ -166,6 +161,18 @@ public class CreateAttestationActivity extends AppCompatActivity {
         constraintSet.connect(R.id.reasonsTextView, ConstraintSet.TOP,
                 R.id.travel_hour_layout, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
+    }
+
+    private void setReasonsCheckboxes(SharedPreferences userDetails) {
+        ((CheckBox) findViewById(R.id.reason1)).setChecked(userDetails.getBoolean("reason1", false));
+        ((CheckBox) findViewById(R.id.reason2)).setChecked(userDetails.getBoolean("reason2", false));
+        ((CheckBox) findViewById(R.id.reason3)).setChecked(userDetails.getBoolean("reason3", false));
+        ((CheckBox) findViewById(R.id.reason4)).setChecked(userDetails.getBoolean("reason4", false));
+        ((CheckBox) findViewById(R.id.reason5)).setChecked(userDetails.getBoolean("reason5", false));
+        ((CheckBox) findViewById(R.id.reason6)).setChecked(userDetails.getBoolean("reason6", false));
+        ((CheckBox) findViewById(R.id.reason7)).setChecked(userDetails.getBoolean("reason7", false));
+        ((CheckBox) findViewById(R.id.reason8)).setChecked(userDetails.getBoolean("reason8", false));
+        ((CheckBox) findViewById(R.id.reason9)).setChecked(userDetails.getBoolean("reason9", false));
     }
 
     /**
