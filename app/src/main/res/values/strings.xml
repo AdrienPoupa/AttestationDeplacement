@@ -49,4 +49,5 @@
     <string name="reason9_smalltext">Enfants</string>
     <string name="see_pdf">Voir le PDF</string>
     <string name="share">Partager</string>
+    <string name="attestation_generated">Attestation générée !</string>
 </resources>

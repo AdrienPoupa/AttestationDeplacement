@@ -207,7 +207,11 @@ public class CreateAttestationActivity extends AppCompatActivity {
                 {
                     nDialog.dismiss();
 
-                    Toast.makeText(CreateAttestationActivity.this, "Attestation générée !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                            CreateAttestationActivity.this,
+                            CreateAttestationActivity.this.getString(R.string.attestation_generated),
+                            Toast.LENGTH_SHORT
+                    ).show();
 
                     Intent show = new Intent(CreateAttestationActivity.this, MainActivity.class);
 
