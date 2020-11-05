@@ -3,13 +3,11 @@ package com.poupa.attestationdeplacement.db;
 import android.app.Application;
 import android.os.AsyncTask;
 
-import androidx.lifecycle.LiveData;
-
 import java.util.List;
 
 public class ProfileRepository {
-    private ProfileDao profileDao;
-    private LiveData<List<ProfileEntity>> allProfile;
+    private final ProfileDao profileDao;
+    private final List<ProfileEntity> allProfile;
 
     public ProfileRepository(Application application) {
         ProfileDatabase database = ProfileDatabase.getInstance(application);
@@ -29,9 +27,19 @@ public class ProfileRepository {
         new DeleteAsyncTask(profileDao).execute(profileEntity);
     }
 
-    public LiveData<List<ProfileEntity>> getAllProfile() {
+    public ProfileEntity getById(int id) {
+        for (ProfileEntity elt : getAllProfile()) {
+            if (elt.getId() == id) {
+                return elt;
+            }
+        }
+        return null;
+    }
+
+    public List<ProfileEntity> getAllProfile() {
         return allProfile;
     }
+
 
     private static class InsertAsyncTask extends AsyncTask<ProfileEntity, Void, Void> {
         private final ProfileDao profileDao;

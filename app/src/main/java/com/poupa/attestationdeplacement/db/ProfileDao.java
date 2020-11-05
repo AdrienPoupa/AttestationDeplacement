@@ -1,6 +1,5 @@
 package com.poupa.attestationdeplacement.db;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -22,11 +21,12 @@ public interface ProfileDao {
 
     /**
      * Returns all the profile entities save in the database
+     *
      * @return profile entities in a LiveData
      */
     @Query("SELECT * FROM profiles")
-    LiveData<List<ProfileEntity>> getAll();
+    List<ProfileEntity> getAll();
 
     @Query("SELECT * FROM profiles ORDER BY firstname")
-    LiveData<List<ProfileEntity>> getAllOrderByFirstname();
+    List<ProfileEntity> getAllOrderByFirstname();
 }

@@ -19,32 +19,32 @@ public class ProfileEntity {
     private String birthplace;
     @ColumnInfo(name = "address")
     private String address;
-    @ColumnInfo(name = "countrycode")
-    private String countrycode;
+    @ColumnInfo(name = "postalcode")
+    private String postalcode;
     @ColumnInfo(name = "city")
     private String city;
 
     /**
      * Constructor for profile entity
      *
-     * @param firstname   : the firstname of the user
-     * @param lastname    : the lastname of the user
-     * @param birthdate   : the birthdate of the user
-     * @param birthplace  : the birthplace of the user
-     * @param address     : the current address of the user
-     * @param countrycode : the country code of the user's address
-     * @param city        : the city of the user's address
+     * @param firstname  : the firstname of the user
+     * @param lastname   : the lastname of the user
+     * @param birthdate  : the birthdate of the user
+     * @param birthplace : the birthplace of the user
+     * @param address    : the current address of the user
+     * @param postalcode : the postal code of the user's address
+     * @param city       : the city of the user's address
      */
     public ProfileEntity(@NonNull String firstname, @NonNull String lastname,
                          @NonNull String birthdate, @NonNull String birthplace,
-                         @NonNull String address, @NonNull String countrycode,
+                         @NonNull String address, @NonNull String postalcode,
                          @NonNull String city) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
         this.birthplace = birthplace;
         this.address = address;
-        this.countrycode = countrycode;
+        this.postalcode = postalcode;
         this.city = city;
     }
 
@@ -74,8 +74,8 @@ public class ProfileEntity {
         this.address = address;
     }
 
-    public void setCountrycode(String countrycode) {
-        this.countrycode = countrycode;
+    public void setPostalcode(String postalcode) {
+        this.postalcode = postalcode;
     }
 
     public void setCity(String city) {
@@ -108,8 +108,8 @@ public class ProfileEntity {
         return address;
     }
 
-    public String getCountrycode() {
-        return countrycode;
+    public String getPostalcode() {
+        return postalcode;
     }
 
     public String getCity() {
@@ -129,7 +129,7 @@ public class ProfileEntity {
     public int hashCode() {
         return id + firstname.hashCode() + lastname.hashCode() +
                 birthdate.hashCode() + birthplace.hashCode() +
-                address.hashCode() + countrycode.hashCode() +
+                address.hashCode() + postalcode.hashCode() +
                 city.hashCode();
     }
 
@@ -142,7 +142,7 @@ public class ProfileEntity {
                 ", birthdate='" + birthdate + '\'' +
                 ", birthplace='" + birthplace + '\'' +
                 ", address='" + address + '\'' +
-                ", countrycode='" + countrycode + '\'' +
+                ", countrycode='" + postalcode + '\'' +
                 ", city='" + city + '\'' +
                 '}';
     }

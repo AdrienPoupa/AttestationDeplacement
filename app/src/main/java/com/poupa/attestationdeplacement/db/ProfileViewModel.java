@@ -3,21 +3,24 @@ package com.poupa.attestationdeplacement.db;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
 public class ProfileViewModel {
     private ProfileRepository profileRepository;
-    private LiveData<List<ProfileEntity>> allEntities;
+    private List<ProfileEntity> allProfile;
 
     public ProfileViewModel(@NonNull Application application) {
         this.profileRepository = new ProfileRepository(application);
-        this.allEntities = profileRepository.getAllProfile();
+        this.allProfile = profileRepository.getAllProfile();
     }
 
-    public LiveData<List<ProfileEntity>> getAllEntities() {
-        return allEntities;
+    public List<ProfileEntity> getAllProfile() {
+        return allProfile;
+    }
+
+    public ProfileEntity getById(int id) {
+        return this.profileRepository.getById(id);
     }
 
     public void insert(ProfileEntity profileEntity) {
