@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -22,6 +23,8 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.poupa.attestationdeplacement.db.ProfileEntity;
+import com.poupa.attestationdeplacement.db.ProfileViewModel;
 import com.poupa.attestationdeplacement.generator.Attestation;
 import com.poupa.attestationdeplacement.generator.AttestationDeplacementDerogatoireGenerator;
 import com.poupa.attestationdeplacement.generator.AttestationGenerator;
@@ -29,6 +32,7 @@ import com.poupa.attestationdeplacement.ui.DateTextWatcher;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class CreateAttestationActivity extends AppCompatActivity {
 
@@ -51,6 +55,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
     private Attestation attestation;
 
+    private ProfileViewModel profileViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,13 +67,29 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                final LoadFilesTask loadFilesTask = new LoadFilesTask();
+                loadFilesTask.execute();
+            }
+        });
+
+
         initFields();
+
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        initFields();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                final LoadFilesTask loadFilesTask = new LoadFilesTask();
+                loadFilesTask.execute();
+            }
+        });
     }
 
     /**
@@ -170,6 +192,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
     /**
      * Generates the PDF by calling the async task
+     *
      * @param v
      */
     public void startGenerate(View v) {
@@ -181,8 +204,33 @@ public class CreateAttestationActivity extends AppCompatActivity {
                 public void run() {
                     final GeneratePdfTask task = new GeneratePdfTask();
                     task.execute();
+                    profileViewModel = new ProfileViewModel(getApplication());
+                    List<ProfileEntity> profileEntityList = profileViewModel.getAllProfile();
+                    for (ProfileEntity profile : profileEntityList) {
+                        if (profile.getFirstname().equals(surnameInput.getText().toString()) &&
+                                profile.getLastname().equals(lastNameInput.getText().toString())) {
+                            profile.setBirthdate(birthDateInput.getText().toString());
+                            profile.setBirthplace(birthPlaceInput.getText().toString());
+                            profile.setAddress(addressInput.getText().toString());
+                            profile.setPostalcode(postalCodeInput.getText().toString());
+                            profile.setCity(cityInput.getText().toString());
+                            profileViewModel.update(profile);
+                            return;
+                        }
+                    }
+
+                    ProfileEntity currentProfile = new ProfileEntity(
+                            surnameInput.getText().toString(),
+                            lastNameInput.getText().toString(),
+                            birthDateInput.getText().toString(),
+                            birthPlaceInput.getText().toString(),
+                            addressInput.getText().toString(),
+                            postalCodeInput.getText().toString(),
+                            cityInput.getText().toString());
+                    profileViewModel.insert(currentProfile);
                 }
             }).start();
+
         }
     }
 
@@ -232,15 +280,15 @@ public class CreateAttestationActivity extends AppCompatActivity {
             return false;
         }
 
-        if (! ((CheckBox) findViewById(R.id.reason1)).isChecked() &&
-            ! ((CheckBox) findViewById(R.id.reason2)).isChecked() &&
-            ! ((CheckBox) findViewById(R.id.reason3)).isChecked() &&
-            ! ((CheckBox) findViewById(R.id.reason4)).isChecked() &&
-            ! ((CheckBox) findViewById(R.id.reason5)).isChecked() &&
-            ! ((CheckBox) findViewById(R.id.reason6)).isChecked() &&
-            ! ((CheckBox) findViewById(R.id.reason7)).isChecked() &&
-            ! ((CheckBox) findViewById(R.id.reason8)).isChecked() &&
-            ! ((CheckBox) findViewById(R.id.reason9)).isChecked()
+        if (!((CheckBox) findViewById(R.id.reason1)).isChecked() &&
+                !((CheckBox) findViewById(R.id.reason2)).isChecked() &&
+                !((CheckBox) findViewById(R.id.reason3)).isChecked() &&
+                !((CheckBox) findViewById(R.id.reason4)).isChecked() &&
+                !((CheckBox) findViewById(R.id.reason5)).isChecked() &&
+                !((CheckBox) findViewById(R.id.reason6)).isChecked() &&
+                !((CheckBox) findViewById(R.id.reason7)).isChecked() &&
+                !((CheckBox) findViewById(R.id.reason8)).isChecked() &&
+                !((CheckBox) findViewById(R.id.reason9)).isChecked()
         ) {
             displayAlertDialog(getString(R.string.reaon_missing));
             return false;
@@ -266,31 +314,62 @@ public class CreateAttestationActivity extends AppCompatActivity {
                 .show();
     }
 
+    private class LoadFilesTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            profileViewModel = new ProfileViewModel(getApplication());
+
+            int position = getIntent().getIntExtra("position_profile", -1);
+            if (position != -1) {
+                ProfileEntity profileEntity = profileViewModel.getById(position);
+
+                surnameInput = findViewById(R.id.surname);
+                surnameInput.setText(profileEntity.getFirstname());
+
+                lastNameInput = findViewById(R.id.name);
+                lastNameInput.setText(profileEntity.getLastname());
+
+                birthDateInput = findViewById(R.id.birthdate);
+                birthDateInput.setText(profileEntity.getBirthdate());
+
+                birthPlaceInput = findViewById(R.id.birthplace);
+                birthPlaceInput.setText(profileEntity.getBirthplace());
+
+                addressInput = findViewById(R.id.address);
+                addressInput.setText(profileEntity.getAddress());
+
+                cityInput = findViewById(R.id.city);
+                cityInput.setText(profileEntity.getCity());
+
+                postalCodeInput = findViewById(R.id.postal_code);
+                postalCodeInput.setText(profileEntity.getPostalcode());
+            }
+            return null;
+        }
+    }
+
     private class GeneratePdfTask extends AsyncTask<Void, Void, Void> {
         ProgressDialog nDialog;
 
         @Override
         protected void onPreExecute() {
-            CreateAttestationActivity.this.runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
-                nDialog = new ProgressDialog(CreateAttestationActivity.this);
-                nDialog.setMessage(getString(R.string.loading));
-                nDialog.setTitle(getString(R.string.generating));
-                nDialog.setIndeterminate(true);
-                nDialog.setCancelable(false);
-                nDialog.show();
+            CreateAttestationActivity.this.runOnUiThread(new Runnable() {
+                public void run() {
+                    nDialog = new ProgressDialog(CreateAttestationActivity.this);
+                    nDialog.setMessage(getString(R.string.loading));
+                    nDialog.setTitle(getString(R.string.generating));
+                    nDialog.setIndeterminate(true);
+                    nDialog.setCancelable(false);
+                    nDialog.show();
                 }
             });
         }
 
         @Override
         protected void onPostExecute(Void result) {
-            CreateAttestationActivity.this.runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
+            CreateAttestationActivity.this.runOnUiThread(new Runnable() {
+                public void run() {
                     nDialog.dismiss();
 
                     Toast.makeText(
@@ -403,14 +482,14 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         travelHourInput.setText(currentTime);
     }
-    
+
     private void getReasonsDialog() {
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.dialog_reasons, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogLayout);
         builder.setCancelable(false);
-        builder.setPositiveButton(getString(android.R.string.ok),null);
+        builder.setPositiveButton(getString(android.R.string.ok), null);
         builder.show();
     }
 }

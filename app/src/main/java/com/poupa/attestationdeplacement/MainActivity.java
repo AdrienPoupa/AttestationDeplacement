@@ -15,11 +15,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.poupa.attestationdeplacement.db.AttestationDatabase;
 import com.poupa.attestationdeplacement.db.AttestationEntity;
+import com.poupa.attestationdeplacement.db.ProfileDatabase;
+import com.poupa.attestationdeplacement.db.ProfileEntity;
 import com.poupa.attestationdeplacement.ui.AttestationAdapter;
+import com.poupa.attestationdeplacement.ui.ProfileAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         loadAttestations();
     }
@@ -59,6 +63,32 @@ public class MainActivity extends AppCompatActivity {
                 task.execute();
             }
         }).start();
+        MaterialButton switchBtn = findViewById(R.id.switch_btn);
+        switchBtn.setText(R.string.view_profiles_btn);
+        switchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startProfileView(v);
+            }
+        });
+    }
+
+    public void startProfileView(View v) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final LoadProfileTask task = new LoadProfileTask(MainActivity.this);
+                task.execute();
+            }
+        }).start();
+        MaterialButton switchBtn = findViewById(R.id.switch_btn);
+        switchBtn.setText(R.string.see_attestation);
+        switchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadAttestations();
+            }
+        });
     }
 
     static class LoadAttestationsTask extends AsyncTask<Void, Void, Void> {
@@ -85,6 +115,46 @@ public class MainActivity extends AppCompatActivity {
             listView = weakActivity.get().findViewById(R.id.file_list);
 
             adapter = new AttestationAdapter(attestations, weakActivity.get());
+            TextView textEmpty = weakActivity.get().findViewById(R.id.empty);
+            textEmpty.setText(R.string.empty_list);
+
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Void result) {
+            if (listView != null) {
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    static class LoadProfileTask extends AsyncTask<Void, Void, Void> {
+        // Weak references will still allow the Activity to be garbage-collected
+        private final WeakReference<MainActivity> weakActivity;
+        ListView listView;
+        ProfileAdapter adapter;
+
+        LoadProfileTask(MainActivity myActivity) {
+            this.weakActivity = new WeakReference<>(myActivity);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            List<ProfileEntity> profiles = ProfileDatabase.getInstance(weakActivity.get()).profileDao().getAll();
+
+            if (profiles != null && profiles.size() == 0) {
+                goToCreateAttestation(weakActivity.get());
+                return null;
+            }
+
+            listView = weakActivity.get().findViewById(R.id.file_list);
+
+            adapter = new ProfileAdapter(profiles, weakActivity.get());
+            TextView textEmpty = weakActivity.get().findViewById(R.id.empty);
+            textEmpty.setText(R.string.empty_list_profile);
+
 
             return null;
         }
@@ -110,8 +180,7 @@ public class MainActivity extends AppCompatActivity {
      * https://stackoverflow.com/a/9044235
      */
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
         // Show popup once
@@ -145,23 +214,23 @@ public class MainActivity extends AppCompatActivity {
     private void getAboutDialog() {
         TextView tvVersion;
         TextView tvTitle;
-    
+
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.dialog_about, null);
-    
+
         tvTitle = dialogLayout.findViewById(R.id.about_tv_title);
         tvTitle.setText(getString(R.string.app_name));
-        
+
         tvVersion = dialogLayout.findViewById(R.id.about_tv_version);
         tvVersion.setText(getString(R.string.version_number__1p, BuildConfig.VERSION_NAME));
-    
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogLayout);
         builder.setCancelable(false);
-        builder.setPositiveButton(getString(android.R.string.ok),null);
+        builder.setPositiveButton(getString(android.R.string.ok), null);
         builder.show();
     }
-    
+
     /**
      * https://stackoverflow.com/a/5565700
      */
@@ -185,11 +254,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.action_warning:
                 getInformationDialog();
                 break;
-    
+
             case R.id.action_about:
                 getAboutDialog();
                 break;
