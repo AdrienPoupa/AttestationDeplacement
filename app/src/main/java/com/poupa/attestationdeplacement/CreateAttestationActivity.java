@@ -77,7 +77,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
 
         initFields(true);
-
     }
 
     @Override

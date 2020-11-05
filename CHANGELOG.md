@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [3.2.1] - 2020-11-04
+### Réglé
+- Problème de date
+
 ## [3.2.0] - 2020-11-03
 ### Ajouté
 - Sauvegarde des motifs
