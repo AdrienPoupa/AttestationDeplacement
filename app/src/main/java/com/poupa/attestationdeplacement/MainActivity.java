@@ -107,11 +107,6 @@ public class MainActivity extends AppCompatActivity {
         public Void doInBackground(Void... params) {
             List<AttestationEntity> attestations = AttestationDatabase.getInstance(weakActivity.get()).daoAccess().loadAll();
 
-            if (attestations != null && attestations.size() == 0) {
-                goToCreateAttestation(weakActivity.get());
-                return null;
-            }
-
             listView = weakActivity.get().findViewById(R.id.file_list);
 
             adapter = new AttestationAdapter(attestations, weakActivity.get());
@@ -143,11 +138,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             List<ProfileEntity> profiles = ProfileDatabase.getInstance(weakActivity.get()).profileDao().getAll();
-
-            if (profiles != null && profiles.size() == 0) {
-                goToCreateAttestation(weakActivity.get());
-                return null;
-            }
 
             listView = weakActivity.get().findViewById(R.id.file_list);
 
