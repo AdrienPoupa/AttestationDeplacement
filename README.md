@@ -50,6 +50,6 @@ Pour le fun et pourquoi pas, être utile :-)
 Merci aux contributeurs !
 
 - [@Nico207](https://github.com/Nico207)
-- [@Victor-Bonnelle](https://github.com/Victor-Bonnelle)
+- [@Victor-Bo](https://github.com/Victor-Bo)
 
 ... et plein d'autres !
