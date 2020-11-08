@@ -307,8 +307,9 @@ public class CreateAttestationActivity extends AppCompatActivity {
                     ).show();
 
                     Intent show = new Intent(CreateAttestationActivity.this, MainActivity.class);
-
+                    show.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(show);
+                    finish();
                 }
             });
         }

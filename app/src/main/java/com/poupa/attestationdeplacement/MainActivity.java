@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToCreateAttestation(MainActivity.this);
+                goToCreateAttestation(MainActivity.this, false);
             }
         });
     }
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             List<AttestationEntity> attestations = AttestationDatabase.getInstance(weakActivity.get()).daoAccess().loadAll();
 
             if (attestations != null && attestations.size() == 0) {
-                goToCreateAttestation(weakActivity.get());
+                goToCreateAttestation(weakActivity.get(), true);
                 return null;
             }
 
@@ -101,9 +101,15 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Start the create attestation activity
      */
-    private static void goToCreateAttestation(MainActivity mainActivity) {
+    private static void goToCreateAttestation(MainActivity mainActivity, boolean finish) {
         Intent intent = new Intent(mainActivity, CreateAttestationActivity.class);
+        if (finish) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
         mainActivity.startActivity(intent);
+        if (finish) {
+            mainActivity.finish();
+        }
     }
 
     /**
