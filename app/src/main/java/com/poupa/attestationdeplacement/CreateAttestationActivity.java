@@ -5,6 +5,10 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
+import android.graphics.drawable.Icon;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,7 +32,13 @@ import com.poupa.attestationdeplacement.generator.AttestationGenerator;
 import com.poupa.attestationdeplacement.ui.DateTextWatcher;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class CreateAttestationActivity extends AppCompatActivity {
 
@@ -319,6 +329,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             attestationGenerator.generate();
 
+            createOrUpdateShortcut();
+
             return null;
         }
     }
@@ -379,6 +391,87 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         attestation.setHour(hourMinute[0]);
         attestation.setMinute(hourMinute[1]);
+    }
+
+    /**
+     * Create or update a dynamic shortcut
+     */
+    public void createOrUpdateShortcut() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
+            ShortcutManager shortcutManager = getSystemService(ShortcutManager.class);
+
+            Uri.Builder uriBuilder = new Uri.Builder();
+            uriBuilder.scheme(MainActivity.URI_SCHEME)
+                    .path(MainActivity.URI_GENERATE)
+                    .appendQueryParameter(MainActivity.URI_PARAM_SURNAME, attestation.getSurname())
+                    .appendQueryParameter(MainActivity.URI_PARAM_LAST_NAME, attestation.getLastName())
+                    .appendQueryParameter(MainActivity.URI_PARAM_BIRTH_DATE, attestation.getBirthDate())
+                    .appendQueryParameter(MainActivity.URI_PARAM_BIRTH_PLACE, attestation.getBirthPlace())
+                    .appendQueryParameter(MainActivity.URI_PARAM_ADDRESS, attestation.getAddress())
+                    .appendQueryParameter(MainActivity.URI_PARAM_CITY, attestation.getCity())
+                    .appendQueryParameter(MainActivity.URI_PARAM_POSTAL_CODE, attestation.getPostalCode())
+                    .appendQueryParameter(MainActivity.URI_PARAM_REASON_1, String.valueOf(attestation.isReason1()))
+                    .appendQueryParameter(MainActivity.URI_PARAM_REASON_2, String.valueOf(attestation.isReason2()))
+                    .appendQueryParameter(MainActivity.URI_PARAM_REASON_3, String.valueOf(attestation.isReason3()))
+                    .appendQueryParameter(MainActivity.URI_PARAM_REASON_4, String.valueOf(attestation.isReason4()))
+                    .appendQueryParameter(MainActivity.URI_PARAM_REASON_5, String.valueOf(attestation.isReason5()))
+                    .appendQueryParameter(MainActivity.URI_PARAM_REASON_6, String.valueOf(attestation.isReason6()))
+                    .appendQueryParameter(MainActivity.URI_PARAM_REASON_7, String.valueOf(attestation.isReason7()))
+                    .appendQueryParameter(MainActivity.URI_PARAM_REASON_8, String.valueOf(attestation.isReason8()))
+                    .appendQueryParameter(MainActivity.URI_PARAM_REASON_9, String.valueOf(attestation.isReason9()));
+
+            Uri shortcut = uriBuilder.build();
+
+            final String id = shortcut.toString();
+
+            List<ShortcutInfo> dynamicShortcuts = shortcutManager.getDynamicShortcuts();
+            ShortcutInfo matchingShortcut = dynamicShortcuts.stream().filter(new Predicate<ShortcutInfo>() {
+                @Override
+                public boolean test(ShortcutInfo shortcutInfo) {
+                    return id.equals(shortcutInfo.getId());
+                }
+            }).findFirst().orElse(null);
+
+            if (matchingShortcut != null) {
+                shortcutManager.reportShortcutUsed(id);
+            } else {
+                String shortLabel = attestation.getMotivesDatabase().toString();
+
+                Intent intent = new Intent(this, MainActivity.class)
+                        .setAction(Intent.ACTION_VIEW)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        .setData(shortcut);
+
+                ShortcutInfo newShortcut = new ShortcutInfo.Builder(this, id)
+                        .setShortLabel(shortLabel)
+                        .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
+                        .setIntent(intent)
+                        .build();
+
+                shortcutManager.addDynamicShortcuts(Collections.singletonList(newShortcut));
+
+                // manage dynamic shortcuts list size
+                int maxDynamicShortcuts = Math.max(0, 4 - shortcutManager.getManifestShortcuts().size());
+                List<String> shortcutsToDelete = shortcutManager.getDynamicShortcuts()
+                        .stream()
+                        .sorted(new Comparator<ShortcutInfo>() {
+                            @Override
+                            public int compare(ShortcutInfo lhs, ShortcutInfo rhs) {
+                                return Long.compare(rhs.getLastChangedTimestamp(), lhs.getLastChangedTimestamp());
+                            }
+                        })
+                        .skip(maxDynamicShortcuts)
+                        .map(new Function<ShortcutInfo, String>() {
+                            @Override
+                            public String apply(ShortcutInfo s) {
+                                return s.getId();
+                            }
+                        })
+                        .collect(Collectors.<String>toList());
+
+                shortcutManager.removeDynamicShortcuts(shortcutsToDelete);
+            }
+        }
     }
 
     /**
