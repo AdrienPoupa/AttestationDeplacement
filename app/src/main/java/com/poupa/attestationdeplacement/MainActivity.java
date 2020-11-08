@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        loadAttestations();
+        loadAttestations(true);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -76,14 +76,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        loadAttestations();
+        loadAttestations(false);
     }
 
-    private void loadAttestations() {
+    private void loadAttestations(final boolean firstrun) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final LoadAttestationsTask task = new LoadAttestationsTask(MainActivity.this);
+                final LoadAttestationsTask task = new LoadAttestationsTask(MainActivity.this, firstrun);
                 task.execute();
             }
         }).start();
@@ -92,19 +92,25 @@ public class MainActivity extends AppCompatActivity {
     static class LoadAttestationsTask extends AsyncTask<Void, Void, Void> {
         // Weak references will still allow the Activity to be garbage-collected
         private final WeakReference<MainActivity> weakActivity;
+        // will try to create an attestion only if needed
+        private final boolean firstrun;
 
         ListView listView;
 
         AttestationAdapter adapter;
 
-        LoadAttestationsTask(MainActivity myActivity) {
+        LoadAttestationsTask(MainActivity myActivity, boolean firstrun) {
             this.weakActivity = new WeakReference<>(myActivity);
+
+            this.firstrun = firstrun;
         }
 
         @Override
         public Void doInBackground(Void... params) {
 
-            weakActivity.get().createAttestationIfRequested();
+            if(firstrun) {
+                weakActivity.get().createAttestationIfRequested();
+            }
 
             List<AttestationEntity> attestations = AttestationDatabase.getInstance(weakActivity.get()).daoAccess().loadAll();
 
