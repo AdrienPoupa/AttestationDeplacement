@@ -59,6 +59,8 @@ public class GeneratePdfTask extends AsyncTask<Void, Void, Void> {
 
         attestationGenerator.generate();
 
+        weakActivity.get().createShortcut();
+
         return null;
     }
 }
