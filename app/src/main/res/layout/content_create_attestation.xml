@@ -26,6 +26,32 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/filled_exposed_dropdown_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="@dimen/space_between_view"
+            android:layout_marginEnd="1dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:hint="@string/profile_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView"
+            android:inputType="none"
+            >
+
+            <AutoCompleteTextView
+                android:inputType="none"
+                android:hint="@string/profile_hint"
+                android:id="@+id/filled_exposed_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/surnameLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,7 +62,7 @@
             android:paddingRight="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView"
+            app:layout_constraintTop_toBottomOf="@id/filled_exposed_dropdown_layout"
             app:startIconDrawable="@drawable/ic_person"
             app:endIconMode="clear_text"
             android:hint="@string/surname"

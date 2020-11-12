@@ -6,12 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -23,6 +28,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.poupa.attestationdeplacement.db.ProfileDatabase;
 import com.poupa.attestationdeplacement.db.ProfileEntity;
 import com.poupa.attestationdeplacement.db.ProfileViewModel;
 import com.poupa.attestationdeplacement.generator.Attestation;
@@ -30,6 +36,7 @@ import com.poupa.attestationdeplacement.generator.AttestationDeplacementDerogato
 import com.poupa.attestationdeplacement.generator.AttestationGenerator;
 import com.poupa.attestationdeplacement.ui.DateTextWatcher;
 
+import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -67,28 +74,27 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        loadProfile();
+
+        initFields(true);
+    }
+
+    private void loadProfile() {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                final LoadFilesTask loadFilesTask = new LoadFilesTask();
-                loadFilesTask.execute();
+                final LoadProfileTask loadProfileTask = new LoadProfileTask();
+                loadProfileTask.execute();
             }
         });
-
-
-        initFields(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                final LoadFilesTask loadFilesTask = new LoadFilesTask();
-                loadFilesTask.execute();
-            }
-        });
+
+        this.loadProfile();
+
         initFields(false);
     }
 
@@ -182,6 +188,26 @@ public class CreateAttestationActivity extends AppCompatActivity {
         constraintSet.connect(R.id.reasonsTextView, ConstraintSet.TOP,
                 R.id.travel_hour_layout, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
+
+        AutoCompleteTextView autoCompleteTextView = findViewById(R.id.filled_exposed_dropdown);
+        autoCompleteTextView.setOnItemClickListener(new SpinnerOnItemSelectedListener());
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final CreateAttestationActivity.LoadProfilesTask task = new CreateAttestationActivity.LoadProfilesTask(CreateAttestationActivity.this);
+                task.execute();
+            }
+        }).start();
+    }
+
+    private class SpinnerOnItemSelectedListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ProfileEntity profileEntity = (ProfileEntity) parent.getItemAtPosition(position);
+
+            CreateAttestationActivity.this.fillFieldsFromProfile(profileEntity);
+        }
     }
 
     private void setReasonsCheckboxes(SharedPreferences userDetails) {
@@ -320,38 +346,87 @@ public class CreateAttestationActivity extends AppCompatActivity {
                 .show();
     }
 
-    private class LoadFilesTask extends AsyncTask<Void, Void, Void> {
+    static class LoadProfilesTask extends AsyncTask<Void, Void, Void> {
+        // Weak references will still allow the Activity to be garbage-collected
+        private final WeakReference<CreateAttestationActivity> weakActivity;
+        private ArrayAdapter<ProfileEntity> adapter;
 
+        LoadProfilesTask(CreateAttestationActivity myActivity) {
+            this.weakActivity = new WeakReference<>(myActivity);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            List<ProfileEntity> profiles = ProfileDatabase.getInstance(weakActivity.get()).profileDao().getAll();
+
+            adapter =
+                    new ArrayAdapter<>(
+                            weakActivity.get(),
+                            R.layout.dropdown_menu_popup_item,
+                            profiles);
+
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Void result) {
+            AutoCompleteTextView editTextFilledExposedDropdown =
+                    weakActivity.get().findViewById(R.id.filled_exposed_dropdown);
+            editTextFilledExposedDropdown.setAdapter(adapter);
+        }
+    }
+
+    private void fillFieldsFromProfile(ProfileEntity profileEntity) {
+        surnameInput = findViewById(R.id.surname);
+        surnameInput.setText(profileEntity.getFirstname());
+
+        lastNameInput = findViewById(R.id.name);
+        lastNameInput.setText(profileEntity.getLastname());
+
+        birthDateInput = findViewById(R.id.birthdate);
+        birthDateInput.setText(profileEntity.getBirthdate());
+
+        birthPlaceInput = findViewById(R.id.birthplace);
+        birthPlaceInput.setText(profileEntity.getBirthplace());
+
+        addressInput = findViewById(R.id.address);
+        addressInput.setText(profileEntity.getAddress());
+
+        cityInput = findViewById(R.id.city);
+        cityInput.setText(profileEntity.getCity());
+
+        postalCodeInput = findViewById(R.id.postal_code);
+        postalCodeInput.setText(profileEntity.getPostalcode());
+    }
+
+    private class LoadProfileTask extends AsyncTask<Void, Void, Void> {
+        ProfileEntity profileEntity;
         @Override
         protected Void doInBackground(Void... voids) {
             profileViewModel = new ProfileViewModel(getApplication());
 
             int position = getIntent().getIntExtra("position_profile", -1);
             if (position != -1) {
-                ProfileEntity profileEntity = profileViewModel.getById(position);
+                profileEntity = profileViewModel.getById(position);
 
-                surnameInput = findViewById(R.id.surname);
-                surnameInput.setText(profileEntity.getFirstname());
-
-                lastNameInput = findViewById(R.id.name);
-                lastNameInput.setText(profileEntity.getLastname());
-
-                birthDateInput = findViewById(R.id.birthdate);
-                birthDateInput.setText(profileEntity.getBirthdate());
-
-                birthPlaceInput = findViewById(R.id.birthplace);
-                birthPlaceInput.setText(profileEntity.getBirthplace());
-
-                addressInput = findViewById(R.id.address);
-                addressInput.setText(profileEntity.getAddress());
-
-                cityInput = findViewById(R.id.city);
-                cityInput.setText(profileEntity.getCity());
-
-                postalCodeInput = findViewById(R.id.postal_code);
-                postalCodeInput.setText(profileEntity.getPostalcode());
+                CreateAttestationActivity.this.fillFieldsFromProfile(profileEntity);
             }
             return null;
+        }
+
+        protected void onPostExecute(Void param) {
+            if (profileEntity != null) {
+                AutoCompleteTextView autoCompleteTextView = findViewById(R.id.filled_exposed_dropdown);
+                // https://stackoverflow.com/a/23568337/11115846
+                if (Build.VERSION.SDK_INT > 16) {
+                    autoCompleteTextView.setText(profileEntity.toString(), false);
+                } else {
+                    ListAdapter adapter = autoCompleteTextView.getAdapter();
+                    autoCompleteTextView.setAdapter(null);
+                    autoCompleteTextView.setText(profileEntity.toString());
+                    autoCompleteTextView.setAdapter((ArrayAdapter) adapter);
+                }
+            }
         }
     }
 

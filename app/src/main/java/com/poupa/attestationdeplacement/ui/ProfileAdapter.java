@@ -53,13 +53,15 @@ public class ProfileAdapter extends BaseAdapter implements ListAdapter {
         ProfileEntity profileEntity = list.get(position);
 
         TextView profileTitleTextView = convertView.findViewById(R.id.profile_title);
-        profileTitleTextView.setText(String.format("Profil: %s", profileEntity.getId()));
+        profileTitleTextView.setText(String.format("%s %s", profileEntity.getFirstname(), profileEntity.getLastname()));
 
-        TextView userNameTextView = convertView.findViewById(R.id.profile_user_name);
-        userNameTextView.setText(String.format("%s %s", profileEntity.getFirstname(), profileEntity.getLastname().toUpperCase()));
+        TextView birthDateTextView = convertView.findViewById(R.id.profile_birth_date);
+        birthDateTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_date_range, 0, 0, 0);
+        birthDateTextView.setText(String.format("%s à %s", profileEntity.getBirthdate(), profileEntity.getBirthplace()));
 
-        TextView dateTimeTextView = convertView.findViewById(R.id.profile_date_time);
-        dateTimeTextView.setText(String.format("Né le %s à %s", profileEntity.getBirthdate(), profileEntity.getBirthplace()));
+        TextView addressTextView = convertView.findViewById(R.id.profile_address);
+        addressTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_home, 0, 0, 0);
+        addressTextView.setText(String.format("%s %s %s", profileEntity.getAddress(), profileEntity.getPostalcode(), profileEntity.getCity()));
 
         MaterialButton useBtn = convertView.findViewById(R.id.use_btn);
         useBtn.setOnClickListener(new View.OnClickListener() {

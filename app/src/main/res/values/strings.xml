@@ -67,4 +67,5 @@
     <string name="view_profiles_btn">Voir profils</string>|
     <string name="about_tv_title_txt">xxxxxxxxxxxxxx</string>
     <string name="about_tv_version_txt">Version 0.0.0 (build 0)</string>
+    <string name="profile_hint">Profil</string>
 </resources>

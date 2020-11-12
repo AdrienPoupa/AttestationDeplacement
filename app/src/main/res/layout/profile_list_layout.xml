@@ -24,7 +24,7 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 />
             <TextView
-                android:id="@+id/profile_user_name"
+                android:id="@+id/profile_birth_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -32,7 +32,7 @@
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:drawablePadding="2dp" />
             <TextView
-                android:id="@+id/profile_date_time"
+                android:id="@+id/profile_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

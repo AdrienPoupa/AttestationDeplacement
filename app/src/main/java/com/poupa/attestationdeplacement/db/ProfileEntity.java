@@ -135,15 +135,6 @@ public class ProfileEntity {
 
     @Override
     public String toString() {
-        return "ProfileEntity{" +
-                "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", birthdate='" + birthdate + '\'' +
-                ", birthplace='" + birthplace + '\'' +
-                ", address='" + address + '\'' +
-                ", countrycode='" + postalcode + '\'' +
-                ", city='" + city + '\'' +
-                '}';
+        return firstname + " " + lastname;
     }
 }
