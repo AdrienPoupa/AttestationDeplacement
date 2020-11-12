@@ -21,9 +21,24 @@
             app:title="@string/app_name"
             app:titleTextColor="@color/design_default_color_on_primary" />
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </com.google.android.material.tabs.TabLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <androidx.viewpager.widget.ViewPager
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.viewpager.widget.ViewPager>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -34,19 +49,5 @@
         app:tint="@null"
         app:backgroundTint="?attr/colorPrimary"
         app:srcCompat="@drawable/ic_add_black_24dp" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/switch_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_between_view"
-        android:onClick="startProfileView"
-        android:text="@string/view_profiles_btn"
-        android:textColor="@color/design_default_color_on_primary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_gravity="bottom|center_horizontal"
-        app:layout_constraintStart_toStartOf="@+id/reasons_line5"
-        app:layout_constraintTop_toBottomOf="@+id/reasons_line5" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

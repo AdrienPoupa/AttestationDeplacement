@@ -2,43 +2,48 @@ package com.poupa.attestationdeplacement;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.poupa.attestationdeplacement.db.AttestationDatabase;
-import com.poupa.attestationdeplacement.db.AttestationEntity;
-import com.poupa.attestationdeplacement.db.ProfileDatabase;
-import com.poupa.attestationdeplacement.db.ProfileEntity;
-import com.poupa.attestationdeplacement.ui.AttestationAdapter;
-import com.poupa.attestationdeplacement.ui.ProfileAdapter;
+import com.google.android.material.tabs.TabLayout;
 
-import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        loadAttestations();
+        viewPager = findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -49,114 +54,43 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadAttestations();
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new AttestationsFragment(), "Attestations");
+        adapter.addFragment(new ProfilesFragment(), "Profils");
+        viewPager.setAdapter(adapter);
     }
 
-    private void loadAttestations() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final LoadAttestationsTask task = new LoadAttestationsTask(MainActivity.this);
-                task.execute();
-            }
-        }).start();
-        MaterialButton switchBtn = findViewById(R.id.switch_btn);
-        switchBtn.setText(R.string.view_profiles_btn);
-        switchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startProfileView(v);
-            }
-        });
-    }
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    public void startProfileView(View v) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final LoadProfileTask task = new LoadProfileTask(MainActivity.this);
-                task.execute();
-            }
-        }).start();
-        MaterialButton switchBtn = findViewById(R.id.switch_btn);
-        switchBtn.setText(R.string.see_attestation);
-        switchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadAttestations();
-            }
-        });
-    }
-
-    static class LoadAttestationsTask extends AsyncTask<Void, Void, Void> {
-        // Weak references will still allow the Activity to be garbage-collected
-        private final WeakReference<MainActivity> weakActivity;
-
-        ListView listView;
-
-        AttestationAdapter adapter;
-
-        LoadAttestationsTask(MainActivity myActivity) {
-            this.weakActivity = new WeakReference<>(myActivity);
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
         @Override
-        public Void doInBackground(Void... params) {
-            List<AttestationEntity> attestations = AttestationDatabase.getInstance(weakActivity.get()).daoAccess().loadAll();
-
-            listView = weakActivity.get().findViewById(R.id.file_list);
-
-            adapter = new AttestationAdapter(attestations, weakActivity.get());
-            TextView textEmpty = weakActivity.get().findViewById(R.id.empty);
-            textEmpty.setText(R.string.empty_list);
-
-            return null;
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
         }
 
         @Override
-        public void onPostExecute(Void result) {
-            if (listView != null) {
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 
-    static class LoadProfileTask extends AsyncTask<Void, Void, Void> {
-        // Weak references will still allow the Activity to be garbage-collected
-        private final WeakReference<MainActivity> weakActivity;
-        ListView listView;
-        ProfileAdapter adapter;
 
-        LoadProfileTask(MainActivity myActivity) {
-            this.weakActivity = new WeakReference<>(myActivity);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            List<ProfileEntity> profiles = ProfileDatabase.getInstance(weakActivity.get()).profileDao().getAll();
-
-            listView = weakActivity.get().findViewById(R.id.file_list);
-
-            adapter = new ProfileAdapter(profiles, weakActivity.get());
-            TextView textEmpty = weakActivity.get().findViewById(R.id.empty);
-            textEmpty.setText(R.string.empty_list_profile);
-
-
-            return null;
-        }
-
-        @Override
-        public void onPostExecute(Void result) {
-            if (listView != null) {
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
-        }
-    }
 
     /**
      * Start the create attestation activity
@@ -228,9 +162,9 @@ public class MainActivity extends AppCompatActivity {
     public void onContentChanged() {
         super.onContentChanged();
 
-        View empty = findViewById(R.id.empty);
-        ListView list = findViewById(R.id.file_list);
-        list.setEmptyView(empty);
+//        View empty = findViewById(R.id.empty);
+//        ListView list = findViewById(R.id.file_list);
+//        list.setEmptyView(empty);
     }
 
     @Override

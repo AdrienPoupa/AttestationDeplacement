@@ -133,7 +133,7 @@ public abstract class AttestationGenerator {
      */
     private AttestationEntity saveInDb() {
         long id = dao.insert(new AttestationEntity(
-                attestation.getSurname(), currentDate, currentTime, null
+                attestation.getSurname() + " " + attestation.getLastName(), currentDate, currentTime, null
         ));
 
         return dao.find(id);

@@ -6,7 +6,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <ListView
-        android:id="@+id/file_list"
+        android:id="@+id/attestations_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -15,7 +15,7 @@
         />
 
     <TextView
-        android:id="@+id/empty"
+        android:id="@+id/attestations_empty"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center_vertical|center_horizontal"
