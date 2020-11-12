@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text="xxxxxxxxxxxxxx"
+        android:text="@string/about_tv_title_txt"
         android:textSize="30sp"
         android:gravity="center" />
 
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
-        android:text="Version 0.0.0 (build 0)"
+        android:text="@string/about_tv_version_txt"
         android:textSize="15sp"
         android:gravity="center" />
 

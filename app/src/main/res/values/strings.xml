@@ -6,6 +6,7 @@
     <string name="save">Enregistrer</string>
     <string name="delete">Supprimer</string>
     <string name="empty_list">Vous n\'avez pas encore généré d\'attestation</string>
+    <string name="empty_list_profile">Vous n\'avez pas encore généré de profil</string>
     <string name="info_create">Saisissez vos informations pour générer votre attestation</string>
     <string name="surname">Prénom</string>
     <string name="name">Nom</string>
@@ -33,6 +34,7 @@
     <string name="generate_attestation">Générer une attestation</string>
 
     <string name="delete_information">Voulez-vous vraiment supprimer cette attestation ?</string>
+    <string name="delete_profile">Voulez-vous vraiment supprimer ce profil ?</string>
     <string name="no_pdf_reader">Vous n\'avez pas d\'application permettant de lire les fichiers PDF. Veuillez en installer une puis réessayer.</string>
     <string name="generating">Génération de l\'attestation</string>
     <string name="loading">Chargement…</string>
@@ -48,6 +50,7 @@
     <string name="reason8_smalltext">Mission I.G.</string>
     <string name="reason9_smalltext">Enfants</string>
     <string name="see_pdf">Voir le PDF</string>
+    <string name="see_attestation">Voir les attestations</string>
     <string name="share">Partager</string>
     <string name="attestation_generated">Attestation générée !</string>
     <string name="surname_missing">Merci de préciser votre prénom</string>
@@ -60,4 +63,8 @@
     <string name="travel_date_missing">Merci de préciser votre date de sortie</string>
     <string name="travel_hour_missing">Merci de préciser votre heure de sortie</string>
     <string name="reaon_missing">Merci de préciser un motif de déplacement</string>
+    <string name="use_profile">utiliser</string>
+    <string name="view_profiles_btn">Voir profils</string>|
+    <string name="about_tv_title_txt">xxxxxxxxxxxxxx</string>
+    <string name="about_tv_version_txt">Version 0.0.0 (build 0)</string>
 </resources>
