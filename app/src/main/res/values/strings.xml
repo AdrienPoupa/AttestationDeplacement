@@ -6,7 +6,7 @@
     <string name="save">Enregistrer</string>
     <string name="delete">Supprimer</string>
     <string name="empty_list">Vous n\'avez pas encore généré d\'attestation</string>
-    <string name="empty_list_profile">Vous n\'avez pas encore généré de profil</string>
+    <string name="empty_list_profile">Vous n\'avez pas encore créé de profil</string>
     <string name="info_create">Saisissez vos informations pour générer votre attestation</string>
     <string name="surname">Prénom</string>
     <string name="name">Nom</string>
