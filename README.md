@@ -51,5 +51,6 @@ Merci aux contributeurs !
 
 - [@Nico207](https://github.com/Nico207)
 - [@Victor-Bo](https://github.com/Victor-Bo)
+- [@flopal](https://github.com/flopal)
 
 ... et plein d'autres !
