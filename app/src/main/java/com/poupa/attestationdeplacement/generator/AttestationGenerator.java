@@ -268,7 +268,7 @@ public class AttestationGenerator {
      * @return
      */
     protected String getQrCodeText() {
-        return "Cree le: " + attestation.getCurrentDate() + " a " + attestation.getCurrentTime() +
+        return "Cree le: " + attestation.getTravelDate() + " a " + attestation.getHour() + "h" + attestation.getMinute() +
                 ";\n Nom: " + attestation.getLastName() + ";\n Prenom: " + attestation.getSurname() + ";\n " +
                 "Naissance: " + attestation.getBirthDate() + " a " + attestation.getBirthPlace() +
                 ";\n Adresse: " + attestation.getFullAddress() + ";\n " +

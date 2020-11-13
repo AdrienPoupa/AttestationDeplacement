@@ -395,12 +395,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
         String currentMonth = String.format("%02d", month);
 
         String currentDate = currentDay + '/' + currentMonth + '/' + String.format("%02d", year);
-        attestation.setCurrentDate(currentDate);
 
         travelDateInput.setText(currentDate);
 
         String currentTime = String.format("%02d", currentHour) + 'h' + String.format("%02d", currentMinute);
-        attestation.setCurrentTime(currentTime);
 
         travelHourInput.setText(currentTime);
     }

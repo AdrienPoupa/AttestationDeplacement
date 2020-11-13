@@ -235,22 +235,6 @@ public class Attestation {
         isReason9 = reason9;
     }
 
-    public String getCurrentDate() {
-        return currentDate;
-    }
-
-    public void setCurrentDate(String currentDate) {
-        this.currentDate = currentDate;
-    }
-
-    public String getCurrentTime() {
-        return currentTime;
-    }
-
-    public void setCurrentTime(String currentTime) {
-        this.currentTime = currentTime;
-    }
-
     public int getId() {
         return id;
     }
