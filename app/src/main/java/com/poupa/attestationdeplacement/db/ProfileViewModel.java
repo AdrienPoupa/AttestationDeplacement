@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 public class ProfileViewModel {
-    private ProfileRepository profileRepository;
-    private List<ProfileEntity> allProfile;
+    private final ProfileRepository profileRepository;
+    private final List<ProfileEntity> allProfile;
 
     public ProfileViewModel(@NonNull Application application) {
         this.profileRepository = new ProfileRepository(application);

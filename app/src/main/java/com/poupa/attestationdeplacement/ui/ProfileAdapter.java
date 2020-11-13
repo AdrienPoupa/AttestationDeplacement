@@ -15,7 +15,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.poupa.attestationdeplacement.CreateAttestationActivity;
 import com.poupa.attestationdeplacement.R;
-import com.poupa.attestationdeplacement.db.ProfileDatabase;
+import com.poupa.attestationdeplacement.db.AppDatabase;
 import com.poupa.attestationdeplacement.db.ProfileEntity;
 
 import java.util.List;
@@ -89,7 +89,7 @@ public class ProfileAdapter extends BaseAdapter implements ListAdapter {
                                 AsyncTask.execute(new Runnable() {
                                     @Override
                                     public void run() {
-                                        ProfileDatabase.getInstance(context).profileDao().delete(profileEntity);
+                                        AppDatabase.getInstance(context).profileDao().delete(profileEntity);
                                     }
                                 });
                                 dialog.dismiss();

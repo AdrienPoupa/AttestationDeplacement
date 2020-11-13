@@ -19,8 +19,8 @@ import com.itextpdf.text.pdf.PdfImage;
 import com.itextpdf.text.pdf.PdfIndirectObject;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.poupa.attestationdeplacement.db.AppDatabase;
 import com.poupa.attestationdeplacement.db.AttestationDao;
-import com.poupa.attestationdeplacement.db.AttestationDatabase;
 import com.poupa.attestationdeplacement.db.AttestationEntity;
 
 import java.io.FileOutputStream;
@@ -63,7 +63,7 @@ public abstract class AttestationGenerator {
 
             reader = new PdfReader(attestationInputStream);
 
-            dao = AttestationDatabase.getInstance(context).daoAccess();
+            dao = AppDatabase.getInstance(context).attestationDao();
 
             AttestationEntity attestationEntity = saveInDb();
             attestation.setId(attestationEntity.getId());

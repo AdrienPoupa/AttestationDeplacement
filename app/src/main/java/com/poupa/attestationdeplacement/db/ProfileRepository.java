@@ -10,7 +10,7 @@ public class ProfileRepository {
     private final List<ProfileEntity> allProfile;
 
     public ProfileRepository(Application application) {
-        ProfileDatabase database = ProfileDatabase.getInstance(application);
+        AppDatabase database = AppDatabase.getInstance(application);
         this.profileDao = database.profileDao();
         this.allProfile = profileDao.getAll();
     }

@@ -27,7 +27,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.poupa.attestationdeplacement.R;
-import com.poupa.attestationdeplacement.db.AttestationDatabase;
+import com.poupa.attestationdeplacement.db.AppDatabase;
 import com.poupa.attestationdeplacement.db.AttestationEntity;
 
 import java.io.File;
@@ -138,7 +138,7 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
                                 AsyncTask.execute(new Runnable() {
                                     @Override
                                     public void run() {
-                                        AttestationDatabase.getInstance(context).daoAccess().delete(attestationEntity);
+                                        AppDatabase.getInstance(context).attestationDao().delete(attestationEntity);
                                     }
                                 });
 

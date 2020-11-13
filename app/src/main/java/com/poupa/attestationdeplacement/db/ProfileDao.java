@@ -26,7 +26,4 @@ public interface ProfileDao {
      */
     @Query("SELECT * FROM profiles")
     List<ProfileEntity> getAll();
-
-    @Query("SELECT * FROM profiles ORDER BY firstname")
-    List<ProfileEntity> getAllOrderByFirstname();
 }

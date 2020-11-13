@@ -48,8 +48,6 @@ public class ProfileEntity {
         this.city = city;
     }
 
-    /* ALL THE SETTERS */
-
     public void setId(int id) {
         this.id = id;
     }
@@ -81,8 +79,6 @@ public class ProfileEntity {
     public void setCity(String city) {
         this.city = city;
     }
-
-    /* ALL THE GETTERS */
 
     public int getId() {
         return id;

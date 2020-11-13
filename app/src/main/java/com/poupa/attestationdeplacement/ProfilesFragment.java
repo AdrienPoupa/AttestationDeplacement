@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
-import com.poupa.attestationdeplacement.db.ProfileDatabase;
+import com.poupa.attestationdeplacement.db.AppDatabase;
 import com.poupa.attestationdeplacement.db.ProfileEntity;
 import com.poupa.attestationdeplacement.ui.ProfileAdapter;
 
@@ -71,7 +71,7 @@ public class ProfilesFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            List<ProfileEntity> profiles = ProfileDatabase.getInstance(weakActivity.get().getContext()).profileDao().getAll();
+            List<ProfileEntity> profiles = AppDatabase.getInstance(weakActivity.get().getContext()).profileDao().getAll();
 
             listView = rootView.findViewById(R.id.profiles_list);
 

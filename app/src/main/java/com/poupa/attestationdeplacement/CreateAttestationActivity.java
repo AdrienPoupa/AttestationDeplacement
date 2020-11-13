@@ -28,7 +28,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.poupa.attestationdeplacement.db.ProfileDatabase;
+import com.poupa.attestationdeplacement.db.AppDatabase;
 import com.poupa.attestationdeplacement.db.ProfileEntity;
 import com.poupa.attestationdeplacement.db.ProfileViewModel;
 import com.poupa.attestationdeplacement.generator.Attestation;
@@ -357,7 +357,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            List<ProfileEntity> profiles = ProfileDatabase.getInstance(weakActivity.get()).profileDao().getAll();
+            List<ProfileEntity> profiles = AppDatabase.getInstance(weakActivity.get()).profileDao().getAll();
 
             adapter =
                     new ArrayAdapter<>(

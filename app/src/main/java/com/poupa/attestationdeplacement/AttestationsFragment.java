@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
-import com.poupa.attestationdeplacement.db.AttestationDatabase;
+import com.poupa.attestationdeplacement.db.AppDatabase;
 import com.poupa.attestationdeplacement.db.AttestationEntity;
 import com.poupa.attestationdeplacement.ui.AttestationAdapter;
 
@@ -56,7 +56,7 @@ public class AttestationsFragment extends Fragment {
 
         @Override
         public Void doInBackground(Void... params) {
-            List<AttestationEntity> attestations = AttestationDatabase.getInstance(weakActivity.get().getContext()).daoAccess().loadAll();
+            List<AttestationEntity> attestations = AppDatabase.getInstance(weakActivity.get().getContext()).attestationDao().loadAll();
 
             listView = rootView.findViewById(R.id.attestations_list);
 
