@@ -49,8 +49,10 @@ public class GeneratePdfTask extends AsyncTask<Void, Void, Void> {
                 ).show();
 
                 Intent show = new Intent(weakActivity.get(), MainActivity.class);
+                show.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 weakActivity.get().startActivity(show);
+                weakActivity.get().finish();
             }
         });
     }
