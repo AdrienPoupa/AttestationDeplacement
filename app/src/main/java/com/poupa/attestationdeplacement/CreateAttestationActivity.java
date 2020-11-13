@@ -1,24 +1,16 @@
 package com.poupa.attestationdeplacement;
 
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,15 +20,14 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.poupa.attestationdeplacement.db.AppDatabase;
 import com.poupa.attestationdeplacement.db.ProfileEntity;
 import com.poupa.attestationdeplacement.db.ProfileViewModel;
 import com.poupa.attestationdeplacement.generator.Attestation;
-import com.poupa.attestationdeplacement.generator.AttestationDeplacementDerogatoireGenerator;
 import com.poupa.attestationdeplacement.generator.AttestationGenerator;
+import com.poupa.attestationdeplacement.tasks.GeneratePdfTask;
+import com.poupa.attestationdeplacement.tasks.LoadProfilesCreateAttestationTask;
 import com.poupa.attestationdeplacement.ui.DateTextWatcher;
 
-import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -53,11 +44,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private TextInputEditText travelDateInput;
     private TextInputEditText travelHourInput;
 
-    private ConstraintLayout constraintLayout;
-    private ConstraintSet constraintSet;
-
-    private SharedPreferences.Editor edit;
-
     private AttestationGenerator attestationGenerator;
 
     private Attestation attestation;
@@ -71,29 +57,14 @@ public class CreateAttestationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_attestation);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
 
-        loadProfile();
-
         initFields(true);
-    }
-
-    private void loadProfile() {
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                final LoadProfileTask loadProfileTask = new LoadProfileTask();
-                loadProfileTask.execute();
-            }
-        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        this.loadProfile();
 
         initFields(false);
     }
@@ -104,39 +75,21 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private void initFields(boolean initDate) {
         attestation = new Attestation();
 
-        attestationGenerator = new AttestationDeplacementDerogatoireGenerator(this, attestation);
-
-        SharedPreferences userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
-
-        edit = userDetails.edit();
+        attestationGenerator = new AttestationGenerator(this, attestation);
 
         surnameInput = findViewById(R.id.surname);
 
-        surnameInput.setText(userDetails.getString("surname", ""));
-
         lastNameInput = findViewById(R.id.name);
-
-        lastNameInput.setText(userDetails.getString("lastName", ""));
 
         birthDateInput = findViewById(R.id.birthdate);
 
-        birthDateInput.setText(userDetails.getString("birthDate", ""));
-
         birthPlaceInput = findViewById(R.id.birthplace);
-
-        birthPlaceInput.setText(userDetails.getString("birthPlace", ""));
 
         addressInput = findViewById(R.id.address);
 
-        addressInput.setText(userDetails.getString("address", ""));
-
         cityInput = findViewById(R.id.city);
 
-        cityInput.setText(userDetails.getString("city", ""));
-
         postalCodeInput = findViewById(R.id.postal_code);
-
-        postalCodeInput.setText(userDetails.getString("postalCode", ""));
 
         travelDateInput = findViewById(R.id.travel_date);
 
@@ -155,9 +108,9 @@ public class CreateAttestationActivity extends AppCompatActivity {
         travelHourInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+                Calendar mCurrentTime = Calendar.getInstance();
+                int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mCurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(CreateAttestationActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
@@ -170,7 +123,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
             }
         });
 
-        setReasonsCheckboxes(userDetails);
+        setReasonsCheckboxes();
 
         setDate();
 
@@ -182,35 +135,34 @@ public class CreateAttestationActivity extends AppCompatActivity {
             }
         });
 
-        constraintSet = new ConstraintSet();
-        constraintLayout = findViewById(R.id.constraint_layout);
+        ConstraintSet constraintSet = new ConstraintSet();
+        ConstraintLayout constraintLayout = findViewById(R.id.constraint_layout);
         constraintSet.clone(constraintLayout);
         constraintSet.connect(R.id.reasonsTextView, ConstraintSet.TOP,
                 R.id.travel_hour_layout, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
 
         AutoCompleteTextView autoCompleteTextView = findViewById(R.id.filled_exposed_dropdown);
-        autoCompleteTextView.setOnItemClickListener(new SpinnerOnItemSelectedListener());
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ProfileEntity profileEntity = (ProfileEntity) parent.getItemAtPosition(position);
+
+                CreateAttestationActivity.this.fillFieldsFromProfile(profileEntity);
+            }
+        });
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final CreateAttestationActivity.LoadProfilesTask task = new CreateAttestationActivity.LoadProfilesTask(CreateAttestationActivity.this);
-                task.execute();
+                (new LoadProfilesCreateAttestationTask(CreateAttestationActivity.this)).execute();
             }
         }).start();
     }
 
-    private class SpinnerOnItemSelectedListener implements AdapterView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ProfileEntity profileEntity = (ProfileEntity) parent.getItemAtPosition(position);
+    private void setReasonsCheckboxes() {
+        SharedPreferences userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
 
-            CreateAttestationActivity.this.fillFieldsFromProfile(profileEntity);
-        }
-    }
-
-    private void setReasonsCheckboxes(SharedPreferences userDetails) {
         ((CheckBox) findViewById(R.id.reason1)).setChecked(userDetails.getBoolean("reason1", false));
         ((CheckBox) findViewById(R.id.reason2)).setChecked(userDetails.getBoolean("reason2", false));
         ((CheckBox) findViewById(R.id.reason3)).setChecked(userDetails.getBoolean("reason3", false));
@@ -234,10 +186,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    final GeneratePdfTask task = new GeneratePdfTask();
-                    task.execute();
+                    (new GeneratePdfTask(CreateAttestationActivity.this, attestationGenerator)).execute();
+
                     profileViewModel = new ProfileViewModel(getApplication());
-                    List<ProfileEntity> profileEntityList = profileViewModel.getAllProfile();
+                    List<ProfileEntity> profileEntityList = profileViewModel.getAllProfiles();
                     for (ProfileEntity profile : profileEntityList) {
                         if (profile.getFirstname().equals(surnameInput.getText().toString()) &&
                                 profile.getLastname().equals(lastNameInput.getText().toString())) {
@@ -262,7 +214,6 @@ public class CreateAttestationActivity extends AppCompatActivity {
                     profileViewModel.insert(currentProfile);
                 }
             }).start();
-
         }
     }
 
@@ -346,37 +297,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
                 .show();
     }
 
-    static class LoadProfilesTask extends AsyncTask<Void, Void, Void> {
-        // Weak references will still allow the Activity to be garbage-collected
-        private final WeakReference<CreateAttestationActivity> weakActivity;
-        private ArrayAdapter<ProfileEntity> adapter;
-
-        LoadProfilesTask(CreateAttestationActivity myActivity) {
-            this.weakActivity = new WeakReference<>(myActivity);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            List<ProfileEntity> profiles = AppDatabase.getInstance(weakActivity.get()).profileDao().getAll();
-
-            adapter =
-                    new ArrayAdapter<>(
-                            weakActivity.get(),
-                            R.layout.dropdown_menu_popup_item,
-                            profiles);
-
-            return null;
-        }
-
-        @Override
-        public void onPostExecute(Void result) {
-            AutoCompleteTextView editTextFilledExposedDropdown =
-                    weakActivity.get().findViewById(R.id.filled_exposed_dropdown);
-            editTextFilledExposedDropdown.setAdapter(adapter);
-        }
-    }
-
-    private void fillFieldsFromProfile(ProfileEntity profileEntity) {
+    public void fillFieldsFromProfile(ProfileEntity profileEntity) {
         surnameInput = findViewById(R.id.surname);
         surnameInput.setText(profileEntity.getFirstname());
 
@@ -399,107 +320,27 @@ public class CreateAttestationActivity extends AppCompatActivity {
         postalCodeInput.setText(profileEntity.getPostalcode());
     }
 
-    private class LoadProfileTask extends AsyncTask<Void, Void, Void> {
-        ProfileEntity profileEntity;
-        @Override
-        protected Void doInBackground(Void... voids) {
-            profileViewModel = new ProfileViewModel(getApplication());
-
-            int position = getIntent().getIntExtra("position_profile", -1);
-            if (position != -1) {
-                profileEntity = profileViewModel.getById(position);
-
-                CreateAttestationActivity.this.fillFieldsFromProfile(profileEntity);
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Void param) {
-            if (profileEntity != null) {
-                AutoCompleteTextView autoCompleteTextView = findViewById(R.id.filled_exposed_dropdown);
-                // https://stackoverflow.com/a/23568337/11115846
-                if (Build.VERSION.SDK_INT > 16) {
-                    autoCompleteTextView.setText(profileEntity.toString(), false);
-                } else {
-                    ListAdapter adapter = autoCompleteTextView.getAdapter();
-                    autoCompleteTextView.setAdapter(null);
-                    autoCompleteTextView.setText(profileEntity.toString());
-                    autoCompleteTextView.setAdapter((ArrayAdapter) adapter);
-                }
-            }
-        }
-    }
-
-    private class GeneratePdfTask extends AsyncTask<Void, Void, Void> {
-        ProgressDialog nDialog;
-
-        @Override
-        protected void onPreExecute() {
-            CreateAttestationActivity.this.runOnUiThread(new Runnable() {
-                public void run() {
-                    nDialog = new ProgressDialog(CreateAttestationActivity.this);
-                    nDialog.setMessage(getString(R.string.loading));
-                    nDialog.setTitle(getString(R.string.generating));
-                    nDialog.setIndeterminate(true);
-                    nDialog.setCancelable(false);
-                    nDialog.show();
-                }
-            });
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            CreateAttestationActivity.this.runOnUiThread(new Runnable() {
-                public void run() {
-                    nDialog.dismiss();
-
-                    Toast.makeText(
-                            CreateAttestationActivity.this,
-                            CreateAttestationActivity.this.getString(R.string.attestation_generated),
-                            Toast.LENGTH_SHORT
-                    ).show();
-
-                    Intent show = new Intent(CreateAttestationActivity.this, MainActivity.class);
-
-                    startActivity(show);
-                }
-            });
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            saveFields();
-
-            attestationGenerator.generate();
-
-            return null;
-        }
-    }
-
     /**
      * Save the user information locally for future use
      */
     public void saveFields() {
         attestation.setSurname(surnameInput.getText().toString());
-        edit.putString("surname", attestation.getSurname());
 
         attestation.setLastName(lastNameInput.getText().toString());
-        edit.putString("lastName", attestation.getLastName());
 
         attestation.setBirthDate(birthDateInput.getText().toString());
-        edit.putString("birthDate", attestation.getBirthDate());
 
         attestation.setBirthPlace(birthPlaceInput.getText().toString());
-        edit.putString("birthPlace", attestation.getBirthPlace());
 
         attestation.setAddress(addressInput.getText().toString());
-        edit.putString("address", attestation.getAddress());
 
         attestation.setCity(cityInput.getText().toString());
-        edit.putString("city", attestation.getCity());
 
         attestation.setPostalCode(postalCodeInput.getText().toString());
-        edit.putString("postalCode", attestation.getPostalCode());
+
+        SharedPreferences userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
+
+        SharedPreferences.Editor edit = userDetails.edit();
 
         attestation.setReason1(((CheckBox) findViewById(R.id.reason1)).isChecked());
         edit.putBoolean("reason1", attestation.isReason1());

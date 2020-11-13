@@ -34,8 +34,8 @@ import java.io.File;
 import java.util.List;
 
 public class AttestationAdapter extends BaseAdapter implements ListAdapter {
-    private List<AttestationEntity> list;
-    private Context context;
+    private final List<AttestationEntity> list;
+    private final Context context;
 
     public AttestationAdapter(List<AttestationEntity> list, Context context) {
         this.list = list;

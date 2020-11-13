@@ -12,23 +12,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.poupa.attestationdeplacement.ui.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +30,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewPager = findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        setupFloatingActionButton();
+    }
+
+    private void setupFloatingActionButton() {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,37 +56,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    static class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
-
-
-
     /**
      * Start the create attestation activity
      */
@@ -100,13 +64,17 @@ public class MainActivity extends AppCompatActivity {
         mainActivity.startActivity(intent);
     }
 
-    /**
-     * https://stackoverflow.com/a/9044235
-     */
     @Override
     protected void onStart() {
         super.onStart();
 
+        showFirstRunDialog();
+    }
+
+    /**
+     * https://stackoverflow.com/a/9044235
+     */
+    private void showFirstRunDialog() {
         // Show popup once
         // https://androidwithdivya.wordpress.com/2017/02/14/how-to-launch-an-activity-only-once-for-the-first-time/
         boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
@@ -135,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Display the about dialog
+     */
     private void getAboutDialog() {
         TextView tvVersion;
         TextView tvTitle;
@@ -153,18 +124,6 @@ public class MainActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setPositiveButton(getString(android.R.string.ok), null);
         builder.show();
-    }
-
-    /**
-     * https://stackoverflow.com/a/5565700
-     */
-    @Override
-    public void onContentChanged() {
-        super.onContentChanged();
-
-//        View empty = findViewById(R.id.empty);
-//        ListView list = findViewById(R.id.file_list);
-//        list.setEmptyView(empty);
     }
 
     @Override

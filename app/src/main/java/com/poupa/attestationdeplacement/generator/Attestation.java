@@ -1,5 +1,8 @@
 package com.poupa.attestationdeplacement.generator;
 
+/**
+ * POJO Attestation Data
+ */
 public class Attestation {
     private int id;
     private String surname;

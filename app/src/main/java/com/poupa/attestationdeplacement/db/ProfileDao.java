@@ -19,11 +19,9 @@ public interface ProfileDao {
     @Update
     void update(ProfileEntity profileEntity);
 
-    /**
-     * Returns all the profile entities save in the database
-     *
-     * @return profile entities in a LiveData
-     */
     @Query("SELECT * FROM profiles")
     List<ProfileEntity> getAll();
+
+    @Query("SELECT * FROM profiles WHERE id = :id LIMIT 1")
+    ProfileEntity find(long id);
 }

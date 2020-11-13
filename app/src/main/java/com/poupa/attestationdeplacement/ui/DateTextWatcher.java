@@ -13,10 +13,9 @@ import java.util.Calendar;
  */
 public class DateTextWatcher implements TextWatcher {
     private String current = "";
-    private String ddmmyyyy = "JJMMAAAA";
-    private Calendar cal = Calendar.getInstance();
+    private final Calendar cal = Calendar.getInstance();
 
-    private TextInputEditText input;
+    private final TextInputEditText input;
 
     public DateTextWatcher(TextInputEditText input) {
         this.input = input;
@@ -37,6 +36,7 @@ public class DateTextWatcher implements TextWatcher {
             if (clean.equals(cleanC)) sel--;
 
             if (clean.length() < 8){
+                String ddmmyyyy = "JJMMAAAA";
                 clean = clean + ddmmyyyy.substring(clean.length());
             }else{
                 //This part makes sure that when we finish entering numbers

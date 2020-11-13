@@ -18,9 +18,12 @@ import java.util.Map;
 import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
 
+/**
+ * Generate the QR code
+ */
 public class QrCodeGenerator {
-    private Attestation attestation;
-    private File fileDir;
+    private final Attestation attestation;
+    private final File fileDir;
 
     public QrCodeGenerator(Attestation attestation, File fileDir) {
         this.attestation = attestation;

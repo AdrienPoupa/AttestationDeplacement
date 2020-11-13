@@ -15,12 +15,12 @@ public class ProfileViewModel {
         this.allProfile = profileRepository.getAllProfile();
     }
 
-    public List<ProfileEntity> getAllProfile() {
+    public List<ProfileEntity> getAllProfiles() {
         return allProfile;
     }
 
-    public ProfileEntity getById(int id) {
-        return this.profileRepository.getById(id);
+    public ProfileEntity find(int id) {
+        return this.profileRepository.find(id);
     }
 
     public void insert(ProfileEntity profileEntity) {

@@ -1,7 +1,6 @@
 
 package com.poupa.attestationdeplacement;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +9,7 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
-import com.poupa.attestationdeplacement.db.AppDatabase;
-import com.poupa.attestationdeplacement.db.ProfileEntity;
-import com.poupa.attestationdeplacement.ui.ProfileAdapter;
-
-import java.lang.ref.WeakReference;
-import java.util.List;
-
+import com.poupa.attestationdeplacement.tasks.LoadProfilesFragmentTask;
 
 public class ProfilesFragment extends Fragment {
 
@@ -52,41 +45,8 @@ public class ProfilesFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final LoadProfileTask task = new LoadProfileTask(ProfilesFragment.this, rootView);
-                task.execute();
+                (new LoadProfilesFragmentTask(ProfilesFragment.this, rootView)).execute();
             }
         }).start();
     }
-
-    static class LoadProfileTask extends AsyncTask<Void, Void, Void> {
-        private final WeakReference<ProfilesFragment> weakActivity;
-        private final View rootView;
-        ListView listView;
-        ProfileAdapter adapter;
-
-        LoadProfileTask(ProfilesFragment myActivity, View rootView) {
-            this.weakActivity = new WeakReference<>(myActivity);
-            this.rootView = rootView;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            List<ProfileEntity> profiles = AppDatabase.getInstance(weakActivity.get().getContext()).profileDao().getAll();
-
-            listView = rootView.findViewById(R.id.profiles_list);
-
-            adapter = new ProfileAdapter(profiles, weakActivity.get().getContext());
-
-            return null;
-        }
-
-        @Override
-        public void onPostExecute(Void result) {
-            if (listView != null) {
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
-        }
-    }
-
 }

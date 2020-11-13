@@ -27,13 +27,8 @@ public class ProfileRepository {
         new DeleteAsyncTask(profileDao).execute(profileEntity);
     }
 
-    public ProfileEntity getById(int id) {
-        for (ProfileEntity elt : getAllProfile()) {
-            if (elt.getId() == id) {
-                return elt;
-            }
-        }
-        return null;
+    public ProfileEntity find(int id) {
+        return profileDao.find(id);
     }
 
     public List<ProfileEntity> getAllProfile() {

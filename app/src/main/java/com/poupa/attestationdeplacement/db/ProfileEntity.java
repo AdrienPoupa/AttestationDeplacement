@@ -7,20 +7,28 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "profiles")
 public class ProfileEntity {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
+
     @ColumnInfo(name = "firstname")
     private String firstname;
+
     @ColumnInfo(name = "lastname")
     private String lastname;
+
     @ColumnInfo(name = "birthdate")
     private String birthdate;
+
     @ColumnInfo(name = "birthplace")
     private String birthplace;
+
     @ColumnInfo(name = "address")
     private String address;
+
     @ColumnInfo(name = "postalcode")
     private String postalcode;
+
     @ColumnInfo(name = "city")
     private String city;
 
