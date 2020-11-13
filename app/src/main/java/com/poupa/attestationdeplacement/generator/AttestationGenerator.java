@@ -38,10 +38,6 @@ public class AttestationGenerator {
     AcroFields form;
 
     private AttestationDao dao;
-    String currentDay;
-    String currentMonth;
-    private String currentDate;
-    private String currentTime;
     private String pdfFilename;
 
     int smallQrCodeSize;
@@ -49,7 +45,6 @@ public class AttestationGenerator {
     public AttestationGenerator(Context context, Attestation attestation) {
         this.context = context;
         this.attestation = attestation;
-        setDates();
         smallQrCodeSize = 100;
         pdfFilename = "attestation.pdf";
     }
@@ -135,36 +130,10 @@ public class AttestationGenerator {
      */
     private AttestationEntity saveInDb() {
         long id = dao.insert(new AttestationEntity(
-                attestation.getSurname() + " " + attestation.getLastName(), currentDate, currentTime, null
+                attestation.getSurname() + " " + attestation.getLastName(), attestation.getTravelDate(), attestation.getTravelHour(), null
         ));
 
         return dao.find(id);
-    }
-
-    /**
-     * Bootstrap the dates
-     */
-    private void setDates() {
-        Date today = new Date();
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(today);
-
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int month = cal.get(Calendar.MONTH) + 1;
-        int year = cal.get(Calendar.YEAR);
-
-        int currentHour = cal.get(Calendar.HOUR_OF_DAY);
-
-        int currentMinute = cal.get(Calendar.MINUTE);
-
-        currentDay = String.format("%02d", day);
-
-        currentMonth = String.format("%02d", month);
-
-        currentDate = currentDay + '/' + currentMonth + '/' + String.format("%02d", year);
-
-        currentTime = String.format("%02d", currentHour) + "h" + String.format("%02d", currentMinute);
     }
 
     /**
