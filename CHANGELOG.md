@@ -5,6 +5,7 @@
 ## [3.3.0] - 2020-11-12
 ### Ajouté
 - Gestion des profils
+- Modification de l'heure de création par l'heure de début de sortie
 
 ## [3.2.1] - 2020-11-04
 ### Réglé
