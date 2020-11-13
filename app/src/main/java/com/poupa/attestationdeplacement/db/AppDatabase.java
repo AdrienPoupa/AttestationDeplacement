@@ -30,6 +30,9 @@ public abstract class AppDatabase extends RoomDatabase {
             try {
                 SharedPreferences userDetails = context.getSharedPreferences("userDetails", MODE_PRIVATE);
 
+                database.execSQL("CREATE TABLE IF NOT EXISTS profiles (`id` INTEGER NOT NULL, firstname TEXT, " +
+                        "lastname TEXT, birthdate TEXT, birthplace TEXT, address TEXT, postalcode TEXT, city TEXT, PRIMARY KEY(`id`))");
+
                 database.execSQL("INSERT INTO profiles (firstname, lastname, birthdate, birthplace, address, postalcode, city) " +
                         "VALUES (" +
                         "'" + userDetails.getString("surname", "") + "', " +
