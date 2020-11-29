@@ -24,10 +24,10 @@
     <string name="reason3">Consultations et soins ne pouvant être assurés à distance et ne pouvant être différés et l\'achat de médicaments</string>
     <string name="reason4">Déplacements pour motif familial impérieux, pour l\'assistance aux personnes vulnérables ou précaires ou la garde d\'enfants.</string>
     <string name="reason5">Déplacements des personnes en situation de handicap et de leur accompagnant.</string>
-    <string name="reason6">Déplacements en plein air ou vers un lieu de plein air, sans changement du lieu de résidence, dans la limite de trois heures quotidiennes et dans un rayon maximal de vingt kilomètres autour du domicile, liés soit à l’activité physique ou aux loisirs individuels, à l’exclusion de toute pratique sportive collective et de toute proximité avec d’autres personnes, soit à la promenade avec les seules personnes regroupées dans un même domicile, soit aux besoins des animaux de compagnie.</string>
+    <string name="reason6">Déplacements en plein air ou vers un lieu de plein air, sans changement du lieu de résidence, dans la limite de trois heures quotidiennes et dans un rayon maximal de vingt kilomètres autour du domicile, liés soit à l\'activité physique ou aux loisirs individuels, à l\'exclusion de toute pratique sportive collective et de toute proximité avec d\'autres personnes, soit à la promenade avec les seules personnes regroupées dans un même domicile, soit aux besoins des animaux de compagnie.</string>
     <string name="reason7">Convocation judiciaire ou administrative et rendez-vous dans un service public.</string>
     <string name="reason8">Participation à des missions d\'intérêt général sur demande de l\'autorité administrative.</string>
-    <string name="reason9">Déplacement pour chercher les enfants à l’écoles et à l’occasion de leurs activités périscolaires.</string>
+    <string name="reason9">Déplacement pour chercher les enfants à l\'écoles et à l\'occasion de leurs activités périscolaires.</string>
     <string name="generate">Générer</string>
     <string name="information">Cette application n\'est pas officielle. Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.</string>
     <string name="disclaimer_text">Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.\nPressez longuement pour envoyer le fichier.</string>
