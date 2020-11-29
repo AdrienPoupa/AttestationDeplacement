@@ -2,6 +2,13 @@
 
 ## [Non sorti]
 
+## [3.4.0] - 2020-11-29
+### Changé
+- Mise à jour du formulaire
+- Affichage des motifs plus clair
+- Affichage de la date de sortie plutôt que de la date de génération
+- Passage du niveau de correction du QRCode en M
+
 ## [3.3.0] - 2020-11-12
 ### Ajouté
 - Gestion des profils
