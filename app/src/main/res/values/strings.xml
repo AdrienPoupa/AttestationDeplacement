@@ -41,11 +41,11 @@
     <string name="about">À propos</string>
     <string name="version_number__1p">Version %s</string>
     <string name="reason1_smalltext">Travail</string>
-    <string name="reason2_smalltext">Achats/Courses</string>
+    <string name="reason2_smalltext">Achats / Courses</string>
     <string name="reason3_smalltext">Santé</string>
     <string name="reason4_smalltext">Famille</string>
     <string name="reason5_smalltext">Handicap</string>
-    <string name="reason6_smalltext">Sport/Animaux de compagnie</string>
+    <string name="reason6_smalltext">Plein air / Sport / Animaux</string>
     <string name="reason7_smalltext">Convocation</string>
     <string name="reason8_smalltext">Mission I.G.</string>
     <string name="reason9_smalltext">Enfants</string>
