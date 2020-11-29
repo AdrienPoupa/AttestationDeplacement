@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.TimePicker;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +21,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.poupa.attestationdeplacement.db.ProfileEntity;
 import com.poupa.attestationdeplacement.db.ProfileViewModel;
-import com.poupa.attestationdeplacement.generator.Attestation;
+import com.poupa.attestationdeplacement.dto.Attestation;
+import com.poupa.attestationdeplacement.dto.Reason;
 import com.poupa.attestationdeplacement.generator.AttestationGenerator;
 import com.poupa.attestationdeplacement.tasks.GeneratePdfTask;
 import com.poupa.attestationdeplacement.tasks.LoadProfilesCreateAttestationTask;
@@ -105,22 +105,14 @@ public class CreateAttestationActivity extends AppCompatActivity {
             travelDateInput.addTextChangedListener(travelDateTextWatcher);
         }
 
-        travelHourInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mCurrentTime = Calendar.getInstance();
-                int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mCurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(CreateAttestationActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        travelHourInput.setText(String.format("%02d", hour) + "h" + String.format("%02d", minute));
-                    }
-                }, hour, minute, true);
-                mTimePicker.setTitle(R.string.travel_hour);
-                mTimePicker.show();
-            }
+        travelHourInput.setOnClickListener(v -> {
+            Calendar mCurrentTime = Calendar.getInstance();
+            int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
+            int minute = mCurrentTime.get(Calendar.MINUTE);
+            TimePickerDialog mTimePicker;
+            mTimePicker = new TimePickerDialog(CreateAttestationActivity.this, (timePicker, hour1, minute1) -> travelHourInput.setText(String.format("%02d", hour1) + "h" + String.format("%02d", minute1)), hour, minute, true);
+            mTimePicker.setTitle(R.string.travel_hour);
+            mTimePicker.show();
         });
 
         setReasonsCheckboxes();
@@ -128,12 +120,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
         setDate();
 
         ImageView reasonsInfos = findViewById(R.id.reasonInfoImageView);
-        reasonsInfos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getReasonsDialog();
-            }
-        });
+        reasonsInfos.setOnClickListener(v -> getReasonsDialog());
 
         ConstraintSet constraintSet = new ConstraintSet();
         ConstraintLayout constraintLayout = findViewById(R.id.constraint_layout);
@@ -263,21 +250,20 @@ public class CreateAttestationActivity extends AppCompatActivity {
             return false;
         }
 
-        if (!((CheckBox) findViewById(R.id.reason1)).isChecked() &&
-                !((CheckBox) findViewById(R.id.reason2)).isChecked() &&
-                !((CheckBox) findViewById(R.id.reason3)).isChecked() &&
-                !((CheckBox) findViewById(R.id.reason4)).isChecked() &&
-                !((CheckBox) findViewById(R.id.reason5)).isChecked() &&
-                !((CheckBox) findViewById(R.id.reason6)).isChecked() &&
-                !((CheckBox) findViewById(R.id.reason7)).isChecked() &&
-                !((CheckBox) findViewById(R.id.reason8)).isChecked() &&
-                !((CheckBox) findViewById(R.id.reason9)).isChecked()
-        ) {
-            displayAlertDialog(getString(R.string.reaon_missing));
-            return false;
+        for(int i = 1; i < 10; i++) {
+            int resId = getResources().getIdentifier("reason" + i, "id", getPackageName());
+
+            boolean isReasonEnabled = ((CheckBox) findViewById(resId)).isChecked();
+
+            // At least one reason is enabled, move on
+            if (isReasonEnabled) {
+                return true;
+            }
         }
 
-        return true;
+        // No reason were enabled
+        displayAlertDialog(getString(R.string.reaon_missing));
+        return false;
     }
 
     private void displayAlertDialog(String text) {
@@ -342,24 +328,18 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         SharedPreferences.Editor edit = userDetails.edit();
 
-        attestation.setReason1(((CheckBox) findViewById(R.id.reason1)).isChecked());
-        edit.putBoolean("reason1", attestation.isReason1());
-        attestation.setReason2(((CheckBox) findViewById(R.id.reason2)).isChecked());
-        edit.putBoolean("reason2", attestation.isReason2());
-        attestation.setReason3(((CheckBox) findViewById(R.id.reason3)).isChecked());
-        edit.putBoolean("reason3", attestation.isReason3());
-        attestation.setReason4(((CheckBox) findViewById(R.id.reason4)).isChecked());
-        edit.putBoolean("reason4", attestation.isReason4());
-        attestation.setReason5(((CheckBox) findViewById(R.id.reason5)).isChecked());
-        edit.putBoolean("reason5", attestation.isReason5());
-        attestation.setReason6(((CheckBox) findViewById(R.id.reason6)).isChecked());
-        edit.putBoolean("reason6", attestation.isReason6());
-        attestation.setReason7(((CheckBox) findViewById(R.id.reason7)).isChecked());
-        edit.putBoolean("reason7", attestation.isReason7());
-        attestation.setReason8(((CheckBox) findViewById(R.id.reason8)).isChecked());
-        edit.putBoolean("reason8", attestation.isReason8());
-        attestation.setReason9(((CheckBox) findViewById(R.id.reason9)).isChecked());
-        edit.putBoolean("reason9", attestation.isReason9());
+        List<Reason> reasons = attestation.getReasons();
+        for(int i = 0; i < reasons.size(); i++) {
+            String reasonKey = "reason" + (i + 1);
+
+            int resId = getResources().getIdentifier(reasonKey, "id", getPackageName());
+
+            boolean isReasonEnabled = ((CheckBox) findViewById(resId)).isChecked();
+
+            reasons.get(i).setEnabled(isReasonEnabled);
+
+            edit.putBoolean(reasonKey, isReasonEnabled);
+        }
 
         edit.apply();
 

@@ -2,7 +2,6 @@ package com.poupa.attestationdeplacement.ui;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -66,34 +65,31 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
         }
 
         MaterialCardView card = convertView.findViewById(R.id.card);
-        card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Drawable backgroundColor;
-                backgroundColor = new ColorDrawable(Color.BLACK);
-                backgroundColor.setAlpha(192); // Transparency
-    
-                final Dialog dialog = new Dialog(context);
-                dialog.getWindow().setBackgroundDrawable(backgroundColor);
-                dialog.setContentView(R.layout.dialog_qrcode);
-                dialog.getWindow().setLayout(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT); // Full screen
+        card.setOnClickListener(v -> {
+            Drawable backgroundColor;
+            backgroundColor = new ColorDrawable(Color.BLACK);
+            backgroundColor.setAlpha(192); // Transparency
 
-                ImageView img = dialog.findViewById(R.id.dialog_qrcode_img);
-                img.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+            final Dialog dialog = new Dialog(context);
+            dialog.getWindow().setBackgroundDrawable(backgroundColor);
+            dialog.setContentView(R.layout.dialog_qrcode);
+            dialog.getWindow().setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT); // Full screen
 
-                // Set QRCode image
-                String fileName = getItemId(position) + ".png";
-                img.setImageURI(AttestationAdapter.this.getUri(fileName));
+            ImageView img = dialog.findViewById(R.id.dialog_qrcode_img);
+            img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
-                dialog.show();
-            }
+            // Set QRCode image
+            String fileName = getItemId(position) + ".png";
+            img.setImageURI(AttestationAdapter.this.getUri(fileName));
+
+            dialog.show();
         });
 
         AttestationEntity attestationEntity = list.get(position);
@@ -113,96 +109,79 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
         MaterialButton sendBtn = convertView.findViewById(R.id.send_btn);
         MaterialButton pdfBtn = convertView.findViewById(R.id.pdf_btn);
 
-        deleteBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                new MaterialAlertDialogBuilder(context)
-                        .setTitle(R.string.warning)
-                        .setMessage(R.string.delete_information)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                final AttestationEntity attestationEntity = getItem(position);
+        deleteBtn.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.warning)
+                .setMessage(R.string.delete_information)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    final AttestationEntity attestationEntity1 = getItem(position);
 
-                                String fileName = String.valueOf(attestationEntity.getId());
+                    String fileName = String.valueOf(attestationEntity1.getId());
 
-                                File pdfFile = new File(context.getFilesDir() + "/" + fileName + ".pdf");
-                                pdfFile.delete();
+                    File pdfFile = new File(context.getFilesDir() + "/" + fileName + ".pdf");
+                    pdfFile.delete();
 
-                                File qrCodeFile = new File(context.getFilesDir() + "/" + fileName + ".png");
-                                qrCodeFile.delete();
+                    File qrCodeFile = new File(context.getFilesDir() + "/" + fileName + ".png");
+                    qrCodeFile.delete();
 
-                                list.remove(position);
+                    list.remove(position);
 
-                                notifyDataSetChanged();
+                    notifyDataSetChanged();
 
-                                AsyncTask.execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        AppDatabase.getInstance(context).attestationDao().delete(attestationEntity);
-                                    }
-                                });
-
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-            }
-        });
-
-        pdfBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                // Clicking on items
-                String fileName = getItemId(position) + ".pdf";
-
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-
-                Uri uri = getUri(fileName);
-
-                intent.setDataAndType(uri, "application/pdf");
-
-                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-
-                if (resInfoList.size() > 0) {
-                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    // https://stackoverflow.com/a/32950381/11989865
-                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                        for (ResolveInfo resolveInfo : resInfoList) {
-                            String packageName = resolveInfo.activityInfo.packageName;
-                            context.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            AppDatabase.getInstance(context).attestationDao().delete(attestationEntity1);
                         }
+                    });
+
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.no, (dialog, which) -> dialog.dismiss())
+                .show());
+
+        pdfBtn.setOnClickListener(v -> {
+            // Clicking on items
+            String fileName = getItemId(position) + ".pdf";
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+
+            Uri uri = getUri(fileName);
+
+            intent.setDataAndType(uri, "application/pdf");
+
+            List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+            if (resInfoList.size() > 0) {
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                // https://stackoverflow.com/a/32950381/11989865
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                    for (ResolveInfo resolveInfo : resInfoList) {
+                        String packageName = resolveInfo.activityInfo.packageName;
+                        context.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     }
-                    if (intent.resolveActivity(context.getPackageManager()) != null) {
-                        context.startActivity(intent);
-                    } else {
-                        Toast.makeText(context, R.string.no_pdf_reader, Toast.LENGTH_LONG).show();
-                    }
+                }
+                if (intent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(intent);
                 } else {
                     Toast.makeText(context, R.string.no_pdf_reader, Toast.LENGTH_LONG).show();
                 }
-
-                notifyDataSetChanged();
+            } else {
+                Toast.makeText(context, R.string.no_pdf_reader, Toast.LENGTH_LONG).show();
             }
+
+            notifyDataSetChanged();
         });
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String fileName = getItemId(position) + ".pdf";
+        sendBtn.setOnClickListener(v -> {
+            String fileName = getItemId(position) + ".pdf";
 
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_STREAM, AttestationAdapter.this.getUri(fileName));
-                sendIntent.setType("application/pdf");
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_STREAM, AttestationAdapter.this.getUri(fileName));
+            sendIntent.setType("application/pdf");
 
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                context.startActivity(shareIntent);
-            }
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            context.startActivity(shareIntent);
         });
 
         return convertView;

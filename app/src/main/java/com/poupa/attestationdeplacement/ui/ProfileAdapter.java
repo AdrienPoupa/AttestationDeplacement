@@ -1,7 +1,6 @@
 package com.poupa.attestationdeplacement.ui;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -74,35 +73,19 @@ public class ProfileAdapter extends BaseAdapter implements ListAdapter {
         });
 
         MaterialButton deleteProfileBtn = convertView.findViewById(R.id.delete_profile);
-        deleteProfileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new MaterialAlertDialogBuilder(context)
-                        .setTitle(R.string.warning)
-                        .setMessage(R.string.delete_profile)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                final ProfileEntity profileEntity = getItem(position);
-                                list.remove(position);
-                                notifyDataSetChanged();
+        deleteProfileBtn.setOnClickListener(v -> new MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.warning)
+                .setMessage(R.string.delete_profile)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    final ProfileEntity profileEntity1 = getItem(position);
+                    list.remove(position);
+                    notifyDataSetChanged();
 
-                                AsyncTask.execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        AppDatabase.getInstance(context).profileDao().delete(profileEntity);
-                                    }
-                                });
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-            }
-        });
+                    AsyncTask.execute(() -> AppDatabase.getInstance(context).profileDao().delete(profileEntity1));
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.no, (dialog, which) -> dialog.dismiss())
+                .show());
 
         return convertView;
     }

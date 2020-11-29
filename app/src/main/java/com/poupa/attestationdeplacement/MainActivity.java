@@ -1,6 +1,5 @@
 package com.poupa.attestationdeplacement;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,12 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupFloatingActionButton() {
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToCreateAttestation(MainActivity.this);
-            }
-        });
+        fab.setOnClickListener(view -> goToCreateAttestation(MainActivity.this));
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -95,11 +89,7 @@ public class MainActivity extends AppCompatActivity {
         new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.information)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                 .show();
     }
 

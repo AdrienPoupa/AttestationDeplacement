@@ -27,6 +27,11 @@ android {
         }
     }
 
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -36,4 +41,5 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.2.5"
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'com.google.zxing:core:3.4.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
 }

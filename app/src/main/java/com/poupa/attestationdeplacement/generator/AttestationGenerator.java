@@ -22,6 +22,8 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.poupa.attestationdeplacement.db.AppDatabase;
 import com.poupa.attestationdeplacement.db.AttestationDao;
 import com.poupa.attestationdeplacement.db.AttestationEntity;
+import com.poupa.attestationdeplacement.dto.Attestation;
+import com.poupa.attestationdeplacement.dto.Reason;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -78,7 +80,7 @@ public class AttestationGenerator {
 
             fillMotives();
 
-            attestationEntity.setReason(attestation.getMotivesDatabase().toString());
+            attestationEntity.setReason(attestation.getReasonsDatabase());
             dao.update(attestationEntity);
 
             addQrCodes();
@@ -220,49 +222,10 @@ public class AttestationGenerator {
      * Fill the PDF motives
      */
     protected void fillMotives() {
-        if (attestation.isReason1()) {
-            addText("x", 47, 553, 12);
-            attestation.addMotive("travail");
-        }
-
-        if (attestation.isReason2()) {
-            addText("x", 47, 482, 12);
-            attestation.addMotive("achats_culturel_cultuel");
-        }
-
-        if (attestation.isReason3()) {
-            addText("x", 47, 434, 12);
-            attestation.addMotive("sante");
-        }
-
-        if (attestation.isReason4()) {
-            addText("x", 47, 410, 12);
-            attestation.addMotive("famille");
-        }
-
-        if (attestation.isReason5()) {
-            addText("x", 47, 373, 12);
-            attestation.addMotive("handicap");
-        }
-
-        if (attestation.isReason6()) {
-            addText("x", 47, 349, 12);
-            attestation.addMotive("sport_animaux");
-        }
-
-        if (attestation.isReason7()) {
-            addText("x", 47, 276, 12);
-            attestation.addMotive("convocation");
-        }
-
-        if (attestation.isReason8()) {
-            addText("x", 47, 252, 12);
-            attestation.addMotive("missions");
-        }
-
-        if (attestation.isReason9()) {
-            addText("x", 47, 228, 12);
-            attestation.addMotive("enfants");
+        for (Reason reason: attestation.getReasons()) {
+            if (reason.isEnabled()) {
+                addText("x", reason.getX(), reason.getY(), 12);
+            }
         }
     }
 
@@ -285,7 +248,7 @@ public class AttestationGenerator {
 
     /**
      * Returns the text shown in the QRCode
-     * @return
+     * @return qr code text
      */
     protected String getQrCodeText() {
         return "Cree le: " + attestation.getTravelDate() + " a " + attestation.getHour() + "h" + attestation.getMinute() + ";\n" +
@@ -294,6 +257,6 @@ public class AttestationGenerator {
                 "Naissance: " + attestation.getBirthDate() + " a " + attestation.getBirthPlace() + ";\n" +
                 "Adresse: " + attestation.getFullAddress() + ";\n" +
                 "Sortie: " + attestation.getTravelDate() + " a " + attestation.getHour() + ":" + attestation.getMinute() + ";\n" +
-                "Motifs: " + attestation.getMotivesQrCode() + ";";
+                "Motifs: " + attestation.getReasonsQrCode() + ";";
     }
 }

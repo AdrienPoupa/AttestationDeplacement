@@ -41,11 +41,6 @@ public class AttestationsFragment extends Fragment {
     }
 
     private void loadAttestations() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                (new LoadAttestationsFragmentTask(AttestationsFragment.this, rootView)).execute();
-            }
-        }).start();
+        new Thread(() -> (new LoadAttestationsFragmentTask(AttestationsFragment.this, rootView)).execute()).start();
     }
 }

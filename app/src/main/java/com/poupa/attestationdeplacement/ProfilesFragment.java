@@ -42,11 +42,6 @@ public class ProfilesFragment extends Fragment {
     }
 
     public void loadProfiles() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                (new LoadProfilesFragmentTask(ProfilesFragment.this, rootView)).execute();
-            }
-        }).start();
+        new Thread(() -> (new LoadProfilesFragmentTask(ProfilesFragment.this, rootView)).execute()).start();
     }
 }
