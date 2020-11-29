@@ -8,6 +8,7 @@
 - Affichage des motifs plus clair
 - Affichage de la date de sortie plutôt que de la date de génération
 - Passage du niveau de correction du QRCode en M
+- Sélection du lecteur PDF par défaut
 
 ## [3.3.0] - 2020-11-12
 ### Ajouté
