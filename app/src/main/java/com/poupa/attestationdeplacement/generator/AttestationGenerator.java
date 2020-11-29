@@ -38,8 +38,6 @@ public class AttestationGenerator {
     AcroFields form;
 
     private AttestationDao dao;
-    String currentDay;
-    String currentMonth;
     private final String pdfFilename;
 
     int smallQrCodeSize;
@@ -105,8 +103,8 @@ public class AttestationGenerator {
         Rectangle mediabox = reader.getPageSize(1);
 
         // Small QR Code
-        addText(qrTitle1, 440, 140, 6, 1, BaseColor.BLACK);
-        addText(qrTitle2, 440, 130, 6, 1, BaseColor.BLACK);
+        addText(qrTitle1, 440, 140, 6, 1, BaseColor.WHITE);
+        addText(qrTitle2, 440, 130, 6, 1, BaseColor.WHITE);
 
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
