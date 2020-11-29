@@ -36,7 +36,7 @@ public class QrCodeGenerator {
      * @throws IOException
      */
     String generateBigQrCode(String text) throws WriterException, IOException {
-        Bitmap bitmapQrCode = this.generateQrCode(text, 300, 300);
+        Bitmap bitmapQrCode = this.generateQrCode(text, 330, 330);
 
         File qrCodeFile = new File(fileDir + "/" + attestation.getId() + ".png");
 

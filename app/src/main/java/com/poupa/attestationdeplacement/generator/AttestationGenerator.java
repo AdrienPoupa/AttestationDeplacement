@@ -42,7 +42,7 @@ public class AttestationGenerator {
     String currentMonth;
     private String currentDate;
     private String currentTime;
-    private String pdfFilename;
+    private final String pdfFilename;
 
     int smallQrCodeSize;
 
@@ -50,7 +50,7 @@ public class AttestationGenerator {
         this.context = context;
         this.attestation = attestation;
         setDates();
-        smallQrCodeSize = 100;
+        smallQrCodeSize = 106;
         pdfFilename = "attestation.pdf";
     }
 
@@ -99,23 +99,42 @@ public class AttestationGenerator {
      * @throws WriterException
      */
     private void addQrCodes() throws DocumentException, IOException, WriterException {
+
+        String qrTitle1 = "QR-code contenant les informations";
+        String qrTitle2 = "de votre attestation numérique";
+
         QrCodeGenerator qrCodeGenerator = new QrCodeGenerator(attestation, context.getFilesDir());
 
         Rectangle mediabox = reader.getPageSize(1);
 
         // Small QR Code
+        addText(qrTitle1, 440, 140, 6, 1, BaseColor.BLACK);
+        addText(qrTitle2, 440, 130, 6, 1, BaseColor.BLACK);
+
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
-        addImage(smallQrCode, 1, mediabox.getWidth() - 156, 100);
+        addImage(smallQrCode, 1, 440, 15);
 
         // Insert page 2
         stamper.insertPage(reader.getNumberOfPages() + 1,
                 reader.getPageSizeWithRotation(1));
 
         // Big QR Code
+        addText(qrTitle1 + " " + qrTitle2, 50, mediabox.getHeight() - 70, 11, 2, BaseColor.WHITE);
+
         Image bigQrCode = Image.getInstance(qrCodeGenerator.generateBigQrCode(getQrCodeText()));
 
-        addImage(bigQrCode, 2, 50, mediabox.getHeight() - 350);
+        addImage(bigQrCode, 2, 50, mediabox.getHeight() - 420);
+    }
+
+    /**
+     * Add text to the PDF in page 1
+     * @param text
+     * @param x
+     * @param y
+     */
+    protected void addText(String text, float x, float y, int size) {
+        addText(text, x, y, size, 1, BaseColor.BLACK);
     }
 
     /**
@@ -123,10 +142,11 @@ public class AttestationGenerator {
      * @param text
      * @param x
      * @param y
+     * @param page
      */
-    protected void addText(String text, float x, float y, int size) {
-        Phrase phrase = new Phrase(text, FontFactory.getFont(FontFactory.HELVETICA, size, BaseColor.BLACK));
-        ColumnText.showTextAligned(stamper.getOverContent(1), Element.ALIGN_LEFT, phrase, x, y, 0);
+    protected void addText(String text, float x, float y, int size, int page, BaseColor color) {
+        Phrase phrase = new Phrase(text, FontFactory.getFont(FontFactory.HELVETICA, size, color));
+        ColumnText.showTextAligned(stamper.getOverContent(page), Element.ALIGN_LEFT, phrase, x, y, 0);
     }
 
     /**
@@ -201,47 +221,47 @@ public class AttestationGenerator {
      */
     protected void fillMotives() {
         if (attestation.isReason1()) {
-            addText("x", 78, 578, 18);
+            addText("x", 47, 553, 12);
             attestation.addMotive("travail");
         }
 
         if (attestation.isReason2()) {
-            addText("x", 78, 533, 18);
-            attestation.addMotive("achats");
+            addText("x", 47, 482, 12);
+            attestation.addMotive("achats_culturel_cultuel");
         }
 
         if (attestation.isReason3()) {
-            addText("x", 78, 477, 18);
+            addText("x", 47, 434, 12);
             attestation.addMotive("sante");
         }
 
         if (attestation.isReason4()) {
-            addText("x", 78, 435, 18);
+            addText("x", 47, 410, 12);
             attestation.addMotive("famille");
         }
 
         if (attestation.isReason5()) {
-            addText("x", 78, 396, 18);
+            addText("x", 47, 373, 12);
             attestation.addMotive("handicap");
         }
 
         if (attestation.isReason6()) {
-            addText("x", 78, 358, 18);
+            addText("x", 47, 349, 12);
             attestation.addMotive("sport_animaux");
         }
 
         if (attestation.isReason7()) {
-            addText("x", 78, 295, 18);
+            addText("x", 47, 276, 12);
             attestation.addMotive("convocation");
         }
 
         if (attestation.isReason8()) {
-            addText("x", 78, 255, 18);
+            addText("x", 47, 252, 12);
             attestation.addMotive("missions");
         }
 
         if (attestation.isReason9()) {
-            addText("x", 78, 211, 18);
+            addText("x", 47, 228, 12);
             attestation.addMotive("enfants");
         }
     }
@@ -252,15 +272,15 @@ public class AttestationGenerator {
     protected void fillForm() {
         String fullName = attestation.getSurname() + " " + attestation.getLastName();
 
-        addText(fullName, 119, 696, 11);
-        addText(attestation.getBirthDate(), 119, 674, 11);
-        addText(attestation.getBirthPlace(), 297, 674, 11);
-        addText(attestation.getFullAddress(), 133, 652, 11);
+        addText(fullName, 92, 702, 11);
+        addText(attestation.getBirthDate(), 92, 684, 11);
+        addText(attestation.getBirthPlace(), 214, 684, 11);
+        addText(attestation.getFullAddress(), 104, 665, 11);
 
-        addText(attestation.getHour() + ':' + attestation.getMinute(), 264, 153, 11);
+        addText(attestation.getHour() + ':' + attestation.getMinute(), 227, 58, 11);
 
-        addText(attestation.getCity(), 105, 177, 11);
-        addText(attestation.getTravelDate(), 91, 153, 11);
+        addText(attestation.getCity(), 78, 76, 11);
+        addText(attestation.getTravelDate(), 63, 58, 11);
     }
 
     /**
@@ -268,12 +288,12 @@ public class AttestationGenerator {
      * @return
      */
     protected String getQrCodeText() {
-        return "Cree le: " + attestation.getTravelDate() + " a " + attestation.getHour() + "h" + attestation.getMinute() +
-                ";\n Nom: " + attestation.getLastName() + ";\n Prenom: " + attestation.getSurname() + ";\n " +
-                "Naissance: " + attestation.getBirthDate() + " a " + attestation.getBirthPlace() +
-                ";\n Adresse: " + attestation.getFullAddress() + ";\n " +
-                "Sortie: " + attestation.getTravelDate() + " a " +
-                attestation.getHour() + ":" + attestation.getMinute() + ";\n " +
-                "Motifs: " + attestation.getMotivesQrCode();
+        return "Cree le: " + attestation.getTravelDate() + " a " + attestation.getHour() + "h" + attestation.getMinute() + ";\n" +
+                "Nom: " + attestation.getLastName() + ";\n" +
+                "Prenom: " + attestation.getSurname() + ";\n" +
+                "Naissance: " + attestation.getBirthDate() + " a " + attestation.getBirthPlace() + ";\n" +
+                "Adresse: " + attestation.getFullAddress() + ";\n" +
+                "Sortie: " + attestation.getTravelDate() + " a " + attestation.getHour() + ":" + attestation.getMinute() + ";\n" +
+                "Motifs: " + attestation.getMotivesQrCode() + ";";
     }
 }

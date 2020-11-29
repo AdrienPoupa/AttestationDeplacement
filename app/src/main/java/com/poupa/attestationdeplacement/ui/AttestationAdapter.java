@@ -177,8 +177,11 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
                             context.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         }
                     }
-                    intent = Intent.createChooser(intent, "Open File");
-                    context.startActivity(intent);
+                    if (intent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intent);
+                    } else {
+                        Toast.makeText(context, R.string.no_pdf_reader, Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Toast.makeText(context, R.string.no_pdf_reader, Toast.LENGTH_LONG).show();
                 }

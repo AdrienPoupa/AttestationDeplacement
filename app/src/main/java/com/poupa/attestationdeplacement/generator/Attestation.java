@@ -50,7 +50,7 @@ public class Attestation {
      */
     public void addMotive(String motive) {
         if (motivesQrCode.length() != 0) {
-            motivesQrCode.append("-");
+            motivesQrCode.append(", ");
             motivesDatabase.append(", ");
         }
         motivesQrCode.append(motive);
