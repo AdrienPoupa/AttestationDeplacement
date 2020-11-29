@@ -63,13 +63,10 @@ public class ProfileAdapter extends BaseAdapter implements ListAdapter {
         addressTextView.setText(String.format("%s %s %s", profileEntity.getAddress(), profileEntity.getPostalcode(), profileEntity.getCity()));
 
         MaterialButton useBtn = convertView.findViewById(R.id.use_btn);
-        useBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CreateAttestationActivity.class);
-                intent.putExtra("position_profile", getItem(position).getId());
-                context.startActivity(intent);
-            }
+        useBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CreateAttestationActivity.class);
+            intent.putExtra("position_profile", getItem(position).getId());
+            context.startActivity(intent);
         });
 
         MaterialButton deleteProfileBtn = convertView.findViewById(R.id.delete_profile);

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -130,35 +129,23 @@ public class CreateAttestationActivity extends AppCompatActivity {
         constraintSet.applyTo(constraintLayout);
 
         AutoCompleteTextView autoCompleteTextView = findViewById(R.id.filled_exposed_dropdown);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ProfileEntity profileEntity = (ProfileEntity) parent.getItemAtPosition(position);
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            ProfileEntity profileEntity = (ProfileEntity) parent.getItemAtPosition(position);
 
-                CreateAttestationActivity.this.fillFieldsFromProfile(profileEntity);
-            }
+            CreateAttestationActivity.this.fillFieldsFromProfile(profileEntity);
         });
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                (new LoadProfilesCreateAttestationTask(CreateAttestationActivity.this)).execute();
-            }
-        }).start();
+        new Thread(() -> (new LoadProfilesCreateAttestationTask(CreateAttestationActivity.this)).execute()).start();
     }
 
     private void setReasonsCheckboxes() {
         SharedPreferences userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
 
-        ((CheckBox) findViewById(R.id.reason1)).setChecked(userDetails.getBoolean("reason1", false));
-        ((CheckBox) findViewById(R.id.reason2)).setChecked(userDetails.getBoolean("reason2", false));
-        ((CheckBox) findViewById(R.id.reason3)).setChecked(userDetails.getBoolean("reason3", false));
-        ((CheckBox) findViewById(R.id.reason4)).setChecked(userDetails.getBoolean("reason4", false));
-        ((CheckBox) findViewById(R.id.reason5)).setChecked(userDetails.getBoolean("reason5", false));
-        ((CheckBox) findViewById(R.id.reason6)).setChecked(userDetails.getBoolean("reason6", false));
-        ((CheckBox) findViewById(R.id.reason7)).setChecked(userDetails.getBoolean("reason7", false));
-        ((CheckBox) findViewById(R.id.reason8)).setChecked(userDetails.getBoolean("reason8", false));
-        ((CheckBox) findViewById(R.id.reason9)).setChecked(userDetails.getBoolean("reason9", false));
+        for(int i = 1; i < 10; i++) {
+            int resId = getResources().getIdentifier("reason" + i, "id", getPackageName());
+
+            ((CheckBox) findViewById(resId)).setChecked(userDetails.getBoolean("reason" + i, false));
+        }
     }
 
     /**
@@ -170,36 +157,33 @@ public class CreateAttestationActivity extends AppCompatActivity {
         boolean valid = checkFields();
 
         if (valid) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    (new GeneratePdfTask(CreateAttestationActivity.this, attestationGenerator)).execute();
+            new Thread(() -> {
+                (new GeneratePdfTask(CreateAttestationActivity.this, attestationGenerator)).execute();
 
-                    profileViewModel = new ProfileViewModel(getApplication());
-                    List<ProfileEntity> profileEntityList = profileViewModel.getAllProfiles();
-                    for (ProfileEntity profile : profileEntityList) {
-                        if (profile.getFirstname().equals(surnameInput.getText().toString()) &&
-                                profile.getLastname().equals(lastNameInput.getText().toString())) {
-                            profile.setBirthdate(birthDateInput.getText().toString());
-                            profile.setBirthplace(birthPlaceInput.getText().toString());
-                            profile.setAddress(addressInput.getText().toString());
-                            profile.setPostalcode(postalCodeInput.getText().toString());
-                            profile.setCity(cityInput.getText().toString());
-                            profileViewModel.update(profile);
-                            return;
-                        }
+                profileViewModel = new ProfileViewModel(getApplication());
+                List<ProfileEntity> profileEntityList = profileViewModel.getAllProfiles();
+                for (ProfileEntity profile : profileEntityList) {
+                    if (profile.getFirstname().equals(surnameInput.getText().toString()) &&
+                            profile.getLastname().equals(lastNameInput.getText().toString())) {
+                        profile.setBirthdate(birthDateInput.getText().toString());
+                        profile.setBirthplace(birthPlaceInput.getText().toString());
+                        profile.setAddress(addressInput.getText().toString());
+                        profile.setPostalcode(postalCodeInput.getText().toString());
+                        profile.setCity(cityInput.getText().toString());
+                        profileViewModel.update(profile);
+                        return;
                     }
-
-                    ProfileEntity currentProfile = new ProfileEntity(
-                            surnameInput.getText().toString(),
-                            lastNameInput.getText().toString(),
-                            birthDateInput.getText().toString(),
-                            birthPlaceInput.getText().toString(),
-                            addressInput.getText().toString(),
-                            postalCodeInput.getText().toString(),
-                            cityInput.getText().toString());
-                    profileViewModel.insert(currentProfile);
                 }
+
+                ProfileEntity currentProfile = new ProfileEntity(
+                        surnameInput.getText().toString(),
+                        lastNameInput.getText().toString(),
+                        birthDateInput.getText().toString(),
+                        birthPlaceInput.getText().toString(),
+                        addressInput.getText().toString(),
+                        postalCodeInput.getText().toString(),
+                        cityInput.getText().toString());
+                profileViewModel.insert(currentProfile);
             }).start();
         }
     }
