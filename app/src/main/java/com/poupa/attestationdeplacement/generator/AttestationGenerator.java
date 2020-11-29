@@ -28,8 +28,6 @@ import com.poupa.attestationdeplacement.dto.Reason;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
 
 public class AttestationGenerator {
     private final Context context;
@@ -42,8 +40,6 @@ public class AttestationGenerator {
     private AttestationDao dao;
     String currentDay;
     String currentMonth;
-    private String currentDate;
-    private String currentTime;
     private final String pdfFilename;
 
     int smallQrCodeSize;
@@ -51,7 +47,6 @@ public class AttestationGenerator {
     public AttestationGenerator(Context context, Attestation attestation) {
         this.context = context;
         this.attestation = attestation;
-        setDates();
         smallQrCodeSize = 106;
         pdfFilename = "attestation.pdf";
     }
@@ -161,32 +156,6 @@ public class AttestationGenerator {
         ));
 
         return dao.find(id);
-    }
-
-    /**
-     * Bootstrap the dates
-     */
-    private void setDates() {
-        Date today = new Date();
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(today);
-
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int month = cal.get(Calendar.MONTH) + 1;
-        int year = cal.get(Calendar.YEAR);
-
-        int currentHour = cal.get(Calendar.HOUR_OF_DAY);
-
-        int currentMinute = cal.get(Calendar.MINUTE);
-
-        currentDay = String.format("%02d", day);
-
-        currentMonth = String.format("%02d", month);
-
-        currentDate = currentDay + '/' + currentMonth + '/' + String.format("%02d", year);
-
-        currentTime = String.format("%02d", currentHour) + "h" + String.format("%02d", currentMinute);
     }
 
     /**
