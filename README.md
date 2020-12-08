@@ -16,7 +16,7 @@ Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de cont
 
 Cette application n'est pas officielle et n'a aucun lien avec le gouvernement français.
 
-F-Droid est lent à builder les versions, la dernière sera 
+F-Droid est lent à compiler les versions, la dernière sera 
 [toujours ici](https://github.com/AdrienPoupa/AttestationDeplacement/releases).
 
 ### Impressions d'écran
