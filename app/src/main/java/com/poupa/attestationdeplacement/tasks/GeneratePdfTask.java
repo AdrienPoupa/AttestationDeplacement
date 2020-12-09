@@ -2,6 +2,7 @@ package com.poupa.attestationdeplacement.tasks;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -11,6 +12,8 @@ import com.poupa.attestationdeplacement.R;
 import com.poupa.attestationdeplacement.generator.AttestationGenerator;
 
 import java.lang.ref.WeakReference;
+
+import androidx.preference.PreferenceManager;
 
 public class GeneratePdfTask extends AsyncTask<Void, Void, Void> {
     private final WeakReference<CreateAttestationActivity> weakActivity;
@@ -59,8 +62,10 @@ public class GeneratePdfTask extends AsyncTask<Void, Void, Void> {
 
         attestationGenerator.generate();
 
-        weakActivity.get().createShortcut();
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(weakActivity.get());
+        if(preferences.getBoolean("create_shortcuts", false)) {
+            weakActivity.get().createShortcut();
+        }
         return null;
     }
 }

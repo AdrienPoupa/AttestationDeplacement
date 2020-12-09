@@ -1,0 +1,10 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        app:key="create_shortcuts"
+        app:summaryOff="@string/shortcuts_summary_off"
+        app:summaryOn="@string/shortcuts_summary_on"
+        app:title="@string/shortcuts_title"
+        app:defaultValue="false" />
+
+</PreferenceScreen>
