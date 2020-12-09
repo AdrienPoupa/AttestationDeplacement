@@ -19,7 +19,7 @@ Cette application n'est pas officielle et n'a aucun lien avec le gouvernement fr
 F-Droid est lent à compiler les versions, la dernière sera 
 [toujours ici](https://github.com/AdrienPoupa/AttestationDeplacement/releases).
 
-### Impressions d'écran
+### Captures d'écran
 
 <img src="https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/fastlane/metadata/android/fr/images/phoneScreenshots/1.png" width="288" height="512"/> <img src="https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/fastlane/metadata/android/fr/images/phoneScreenshots/2.png" width="288" height="512"/> <img src="https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/fastlane/metadata/android/fr/images/phoneScreenshots/3.png" width="288" height="512"/> <img src="https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/fastlane/metadata/android/fr/images/phoneScreenshots/4.png" width="288" height="512"/> <img src="https://raw.githubusercontent.com/AdrienPoupa/AttestationDeplacement/master/fastlane/metadata/android/fr/images/phoneScreenshots/5.png" width="288" height="512"/>
 
