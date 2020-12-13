@@ -19,7 +19,7 @@
     <string name="generate_attestation">Genera una certificazione</string>
     <string name="delete_information">Vuoi veramente eliminare quest\'attestazione</string>
     <string name="reason1_smalltext">Lavoro</string>
-    <string name="reason2_smalltext">Acquisti</string>
+    <string name="reason2_smalltext">Acquisti / Spesa</string>
     <string name="reason3_smalltext">Salute</string>
     <string name="reason4_smalltext">Famiglia</string>
     <string name="reason5_smalltext">Disabilità</string>
