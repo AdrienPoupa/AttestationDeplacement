@@ -2,6 +2,9 @@
     <string name="app_name">Attestation de déplacement</string>
     <string name="warning">Avertissement</string>
 
+    <string name="certificates">Attestations</string>
+    <string name="profiles">Profils</string>
+
     <string name="title_activity_create_attestation" translatable="false">CreateAttestationActivity</string>
     <string name="save">Enregistrer</string>
     <string name="delete">Supprimer</string>

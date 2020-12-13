@@ -65,4 +65,7 @@
     <string name="reason6">Spostamenti brevi, entro il limite di un’ora al giorno, e nel raggio di massimo un chilometro dal proprio domicilio, legati o all’attività fisica individuale, esclusa ogni attività sportiva collettiva e ogni prossimità con altre persone, o all’attività di passeggio ingruppo, che comprende esclusivamente persone che abitano nello stesso domicilio, o ai bisogni degli animali domestici</string>
     <string name="reason5">Spostamenti di persone in situazione di disabilità e del loro accompagnante.</string>
     <string name="reason9">Spostamenti per prendere i bambini alla scuola e all\'occasione delle loro attività doposcuola.</string>
+    <string name="profiles">Profili</string>
+    <string name="attestations">Certificazioni</string>
+    <string name="certificates">Certificazioni</string>
 </resources>
