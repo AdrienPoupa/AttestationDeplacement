@@ -103,7 +103,7 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
 
         TextView dateTimeText = convertView.findViewById(R.id.attestation_date_time);
         dateTimeText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_access_time, 0, 0, 0);
-        dateTimeText.setText(attestationEntity.getGenerationDate() + " à " + attestationEntity.getGenerationTime());
+        dateTimeText.setText(attestationEntity.getGenerationDate() + " " + context.getString(R.string.at) + " " + attestationEntity.getGenerationTime());
 
         MaterialButton deleteBtn = convertView.findViewById(R.id.delete_btn);
         MaterialButton sendBtn = convertView.findViewById(R.id.send_btn);

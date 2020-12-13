@@ -68,4 +68,5 @@
     <string name="travel_date">Date</string>
     <string name="travel_hour">Time</string>
     <string name="birthPlace">Birth place</string>
+    <string name="at">at</string>
 </resources>

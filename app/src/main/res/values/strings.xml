@@ -5,6 +5,8 @@
     <string name="certificates">Attestations</string>
     <string name="profiles">Profils</string>
 
+    <string name="at">à</string>
+
     <string name="title_activity_create_attestation" translatable="false">CreateAttestationActivity</string>
     <string name="save">Enregistrer</string>
     <string name="delete">Supprimer</string>
