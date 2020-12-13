@@ -2,7 +2,7 @@
     <string name="app_name">Attestation de déplacement</string>
     <string name="warning">Avertissement</string>
 
-    <string name="title_activity_create_attestation">CreateAttestationActivity</string>
+    <string name="title_activity_create_attestation" translatable="false">CreateAttestationActivity</string>
     <string name="save">Enregistrer</string>
     <string name="delete">Supprimer</string>
     <string name="empty_list">Vous n\'avez pas encore généré d\'attestation</string>
@@ -65,7 +65,7 @@
     <string name="reaon_missing">Merci de préciser un motif de déplacement</string>
     <string name="use_profile">utiliser</string>
     <string name="view_profiles_btn">Voir profils</string>|
-    <string name="about_tv_title_txt">xxxxxxxxxxxxxx</string>
+    <string name="about_tv_title_txt" translatable="false">xxxxxxxxxxxxxx</string>
     <string name="about_tv_version_txt">Version 0.0.0 (build 0)</string>
     <string name="profile_hint">Profil</string>
 </resources>
