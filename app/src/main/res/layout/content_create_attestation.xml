@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -307,154 +308,155 @@
 
 
         <LinearLayout
-            android:id="@+id/reasons_line1"
-            android:layout_width="0dp"
+            android:id="@+id/reasons_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/reasonsTextView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reasonsTextView">
 
-            <CheckBox
-                android:id="@+id/reason1"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/reasons_line1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reason1_smalltext" />
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
 
-            <CheckBox
-                android:id="@+id/reason2"
-                android:layout_width="0dp"
+                <CheckBox
+                    android:id="@+id/reason1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reason1_smalltext" />
+
+                <CheckBox
+                    android:id="@+id/reason2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reason2_smalltext" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reasons_line2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reason2_smalltext" />
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
 
-        </LinearLayout>
+                <CheckBox
+                    android:id="@+id/reason3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reason3_smalltext" />
 
-        <LinearLayout
-            android:id="@+id/reasons_line2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/reasonsTextView"
-            app:layout_constraintTop_toBottomOf="@+id/reasons_line1">
+                <CheckBox
+                    android:id="@+id/reason4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reason4_smalltext" />
 
-            <CheckBox
-                android:id="@+id/reason3"
-                android:layout_width="0dp"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reasons_line3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reason3_smalltext" />
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
 
-            <CheckBox
-                android:id="@+id/reason4"
-                android:layout_width="0dp"
+                <CheckBox
+                    android:id="@+id/reason5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reason5_smalltext" />
+
+                <CheckBox
+                    android:id="@+id/reason6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reason6_smalltext" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reasons_line4"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reason4_smalltext" />
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
 
-        </LinearLayout>
+                <CheckBox
+                    android:id="@+id/reason7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reason7_smalltext" />
 
-        <LinearLayout
-            android:id="@+id/reasons_line3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/reasonsTextView"
-            app:layout_constraintTop_toBottomOf="@+id/reasons_line2">
+                <CheckBox
+                    android:id="@+id/reason8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reason8_smalltext" />
+            </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/reason5"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/reasons_line5"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reason5_smalltext" />
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
 
-            <CheckBox
-                android:id="@+id/reason6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reason6_smalltext" />
+                <CheckBox
+                    android:id="@+id/reason9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reason9_smalltext" />
+            </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/reasons_line4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/reasonsTextView"
-            app:layout_constraintTop_toBottomOf="@+id/reasons_line3">
-
-            <CheckBox
-                android:id="@+id/reason7"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reason7_smalltext" />
-
-            <CheckBox
-                android:id="@+id/reason8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reason8_smalltext" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/reasons_line5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/reasonsTextView"
-            app:layout_constraintTop_toBottomOf="@+id/reasons_line4">
-
-            <CheckBox
-                android:id="@+id/reason9"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reason9_smalltext" />
         </LinearLayout>
 
         <Button
             android:id="@+id/signatureButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
             android:layout_marginTop="@dimen/space_between_view"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="10dp"
             android:onClick="startGenerate"
             android:text="@string/generate"
             android:textColor="@color/design_default_color_on_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/reasons_line5"
-            app:layout_constraintTop_toBottomOf="@+id/reasons_line5" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reasons_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
