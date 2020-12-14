@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AttestationsFragment(), "Attestations");
-        adapter.addFragment(new ProfilesFragment(), "Profils");
+        adapter.addFragment(new AttestationsFragment(), getString(R.string.certificates));
+        adapter.addFragment(new ProfilesFragment(), getString(R.string.profiles));
         viewPager.setAdapter(adapter);
     }
 
