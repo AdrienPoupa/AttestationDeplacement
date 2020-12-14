@@ -73,4 +73,12 @@
     <string name="about_tv_title_txt" translatable="false">xxxxxxxxxxxxxx</string>
     <string name="about_tv_version_txt">Version 0.0.0 (build 0)</string>
     <string name="profile_hint">Profil</string>
+
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="settings">Paramètres</string>
+    <string name="shortcuts">Raccourcis</string>
+    <string name="shortcuts_title">Créer des raccourcis</string>
+    <string name="shortcuts_summary_on">Des raccourcis sont mis à disposition après la génération d\'une attestation. Ils sont accessibles par un appui long sur l\'icône de l\'application.</string>
+    <string name="shortcuts_summary_off">Aucun raccourci n\'est proposé par l\'application.</string>
+    <string name="shortcuts_summary_disabled">Cette option n\'est pas compatible avec votre appareil.</string>
 </resources>

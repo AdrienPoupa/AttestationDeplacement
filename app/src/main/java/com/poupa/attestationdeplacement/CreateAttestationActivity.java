@@ -2,7 +2,13 @@ package com.poupa.attestationdeplacement;
 
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
+import android.graphics.drawable.Icon;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,10 +34,25 @@ import com.poupa.attestationdeplacement.tasks.LoadProfilesCreateAttestationTask;
 import com.poupa.attestationdeplacement.ui.DateTextWatcher;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class CreateAttestationActivity extends AppCompatActivity {
+
+    private static final String URI_SCHEME="attestation";
+    private static final String URI_GENERATE = "/generate";
+    private static final String URI_PARAM_SURNAME = "surname";
+    private static final String URI_PARAM_LAST_NAME = "lastname";
+    private static final String URI_PARAM_CITY = "city";
+    private static final String URI_PARAM_POSTAL_CODE = "postalcode";
+    private static final String URI_PARAM_ADDRESS = "address";
+    private static final String URI_PARAM_BIRTH_PLACE = "birthplace";
+    private static final String URI_PARAM_BIRTH_DATE = "birthdate";
 
     private TextInputEditText surnameInput;
     private TextInputEditText lastNameInput;
@@ -66,6 +87,18 @@ public class CreateAttestationActivity extends AppCompatActivity {
         super.onResume();
 
         initFields(false);
+
+        Intent intent = getIntent() ;
+        if( intent != null ) {
+
+            Uri uri = intent.getData();
+
+            if (uri != null ) {
+                fillFieldsFromUri(uri);
+
+                startGenerate(findViewById(R.id.signatureButton));
+            }
+        }
     }
 
     /**
@@ -375,5 +408,114 @@ public class CreateAttestationActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setPositiveButton(getString(android.R.string.ok), null);
         builder.show();
+    }
+
+    /**
+     * Create or update a dynamic shortcut
+     */
+    public void createShortcut() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
+            ShortcutManager shortcutManager = getSystemService(ShortcutManager.class);
+
+            Uri.Builder uriBuilder = new Uri.Builder();
+            uriBuilder.scheme(URI_SCHEME)
+                    .path(URI_GENERATE)
+                    .appendQueryParameter(URI_PARAM_SURNAME, attestation.getSurname())
+                    .appendQueryParameter(URI_PARAM_LAST_NAME, attestation.getLastName())
+                    .appendQueryParameter(URI_PARAM_BIRTH_DATE, attestation.getBirthDate())
+                    .appendQueryParameter(URI_PARAM_BIRTH_PLACE, attestation.getBirthPlace())
+                    .appendQueryParameter(URI_PARAM_ADDRESS, attestation.getAddress())
+                    .appendQueryParameter(URI_PARAM_CITY, attestation.getCity())
+                    .appendQueryParameter(URI_PARAM_POSTAL_CODE, attestation.getPostalCode());
+
+            List<Reason> reasons = attestation.getReasons();
+            for(int i = 0; i < reasons.size(); i++) {
+                String reasonKey = "reason" + (i + 1);
+
+                if( reasons.get(i).isEnabled() ) {
+                    uriBuilder.appendQueryParameter(reasonKey, "true");
+                }
+            }
+
+            Uri shortcutUri = uriBuilder.build();
+
+            final String id = shortcutUri.toString();
+
+            // looking for a shortcut with same id
+            ShortcutInfo matchingShortcut = shortcutManager.getDynamicShortcuts().stream().filter(shortcutInfo -> id.equals(shortcutInfo.getId())).findFirst().orElse(null);
+
+            if (matchingShortcut != null) {
+                shortcutManager.reportShortcutUsed(id);
+            } else {
+                String shortLabel = attestation.getReasonsDatabase();
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, shortcutUri)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                ShortcutInfo shortcut = new ShortcutInfo.Builder(this, id)
+                        .setShortLabel(shortLabel)
+                        .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
+                        .setIntent(intent)
+                        .build();
+
+                shortcutManager.addDynamicShortcuts(Collections.singletonList(shortcut));
+
+                // manage dynamic shortcuts list size
+                int maxDynamicShortcuts = Math.max(0, 4 - shortcutManager.getManifestShortcuts().size());
+                List<String> shortcutsToDelete = shortcutManager.getDynamicShortcuts()
+                        .stream()
+                        .sorted(new Comparator<ShortcutInfo>() {
+                            @Override
+                            public int compare(ShortcutInfo lhs, ShortcutInfo rhs) {
+                                return Long.compare(rhs.getLastChangedTimestamp(), lhs.getLastChangedTimestamp());
+                            }
+                        })
+                        .skip(maxDynamicShortcuts)
+                        .map(new Function<ShortcutInfo, String>() {
+                            @Override
+                            public String apply(ShortcutInfo s) {
+                                return s.getId();
+                            }
+                        })
+                        .collect(Collectors.<String>toList());
+
+                shortcutManager.removeDynamicShortcuts(shortcutsToDelete);
+            }
+        }
+    }
+
+    public void fillFieldsFromUri(Uri shortcut) {
+
+        if(shortcut == null) {
+            return;
+        }
+
+        if (URI_GENERATE.equals(shortcut.getPath())) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                String shortcutId = shortcut.toString();
+                ShortcutManager shortcutManager = getSystemService(ShortcutManager.class);
+                shortcutManager.reportShortcutUsed(shortcutId);
+            }
+
+            surnameInput.setText(shortcut.getQueryParameter(URI_PARAM_SURNAME));
+            lastNameInput.setText(shortcut.getQueryParameter(URI_PARAM_LAST_NAME));
+            birthDateInput.setText(shortcut.getQueryParameter(URI_PARAM_BIRTH_DATE));
+            birthPlaceInput.setText(shortcut.getQueryParameter(URI_PARAM_BIRTH_PLACE));
+            addressInput.setText(shortcut.getQueryParameter(URI_PARAM_ADDRESS));
+            cityInput.setText(shortcut.getQueryParameter(URI_PARAM_CITY));
+            postalCodeInput.setText(shortcut.getQueryParameter(URI_PARAM_POSTAL_CODE));
+
+            List<Reason> reasons = attestation.getReasons();
+            for(int i = 0; i < reasons.size(); i++) {
+                String reasonKey = "reason" + (i + 1);
+
+                int resId = getResources().getIdentifier(reasonKey, "id", getPackageName());
+
+                ((CheckBox) findViewById(resId)).setChecked(Boolean.parseBoolean(shortcut.getQueryParameter(reasonKey)));
+            }
+
+            setDate();
+        }
     }
 }
