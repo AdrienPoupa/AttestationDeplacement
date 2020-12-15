@@ -1,5 +1,6 @@
 package com.poupa.attestationdeplacement;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,10 +19,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.poupa.attestationdeplacement.ui.ViewPagerAdapter;
 
+import java.lang.ref.WeakReference;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static WeakReference<Context> context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = new WeakReference<>(this);
 
         setContentView(R.layout.activity_main);
 
@@ -138,5 +146,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static Context getContext() {
+        return context.get();
     }
 }

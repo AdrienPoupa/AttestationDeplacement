@@ -2,6 +2,13 @@
 
 ## [Non sorti]
 
+## [3.5.0] - 2020-12-15
+### Changé
+- Mise à jour du formulaire: couvre-feu
+- Ajout de la traduction anglaise
+- Affichage des raisons au centre
+- Boutons plus proches du texte (profils)
+
 ## [3.4.0] - 2020-11-29
 ### Changé
 - Mise à jour du formulaire

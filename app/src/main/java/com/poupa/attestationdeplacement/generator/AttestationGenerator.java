@@ -108,7 +108,7 @@ public class AttestationGenerator {
 
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
-        addImage(smallQrCode, 1, 440, 15);
+        addImage(smallQrCode, 1, 440, 122);
 
         // Insert page 2
         stamper.insertPage(reader.getNumberOfPages() + 1,
@@ -202,15 +202,15 @@ public class AttestationGenerator {
     protected void fillForm() {
         String fullName = attestation.getSurname() + " " + attestation.getLastName();
 
-        addText(fullName, 92, 702, 11);
-        addText(attestation.getBirthDate(), 92, 684, 11);
-        addText(attestation.getBirthPlace(), 214, 684, 11);
-        addText(attestation.getFullAddress(), 104, 665, 11);
+        addText(fullName, 119, 665, 11);
+        addText(attestation.getBirthDate(), 119, 645, 11);
+        addText(attestation.getBirthPlace(), 312, 645, 11);
+        addText(attestation.getFullAddress(), 133, 625, 11);
 
-        addText(attestation.getHour() + ':' + attestation.getMinute(), 227, 58, 11);
+        addText(attestation.getHour() + ':' + attestation.getMinute(), 312, 267, 11);
 
-        addText(attestation.getCity(), 78, 76, 11);
-        addText(attestation.getTravelDate(), 63, 58, 11);
+        addText(attestation.getCity(), 105, 286, 11);
+        addText(attestation.getTravelDate(), 91, 267, 11);
     }
 
     /**

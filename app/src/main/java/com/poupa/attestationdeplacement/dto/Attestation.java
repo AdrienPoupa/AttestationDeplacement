@@ -1,5 +1,10 @@
 package com.poupa.attestationdeplacement.dto;
 
+import android.content.Context;
+
+import com.poupa.attestationdeplacement.MainActivity;
+import com.poupa.attestationdeplacement.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,16 +33,17 @@ public class Attestation {
     }
 
     private void setupReasons() {
+        Context context = MainActivity.getContext();
+
         this.reasons = new ArrayList<>();
-        this.reasons.add(new Reason("Travail", "travail", 47, 553));
-        this.reasons.add(new Reason("Achats et courses", "achats_culturel_cultuel", 47, 482));
-        this.reasons.add(new Reason("Santé", "sante", 47, 434));
-        this.reasons.add(new Reason("Famille", "famille", 47, 410));
-        this.reasons.add(new Reason("Handicap", "handicap", 47, 373));
-        this.reasons.add(new Reason("Plein air, sport et animaux", "sport_animaux", 47, 349));
-        this.reasons.add(new Reason("Convocation", "convocation", 47, 276));
-        this.reasons.add(new Reason("Missions", "missions", 47, 252));
-        this.reasons.add(new Reason("Enfants", "enfants", 47, 228));
+        this.reasons.add(new Reason(context.getString(R.string.reason1_smalltext), "travail", 73, 540));
+        this.reasons.add(new Reason(context.getString(R.string.reason2_smalltext), "sante", 73, 508));
+        this.reasons.add(new Reason(context.getString(R.string.reason3_smalltext), "famille", 73, 474));
+        this.reasons.add(new Reason(context.getString(R.string.reason4_smalltext), "handicap", 73, 441));
+        this.reasons.add(new Reason(context.getString(R.string.reason5_smalltext), "convocation", 73, 418));
+        this.reasons.add(new Reason(context.getString(R.string.reason6_smalltext), "missions", 73, 397));
+        this.reasons.add(new Reason(context.getString(R.string.reason7_smalltext), "transits", 73, 363));
+        this.reasons.add(new Reason(context.getString(R.string.reason8_smalltext), "animaux", 73, 330));
     }
 
     /**

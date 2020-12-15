@@ -1,7 +1,6 @@
 package com.poupa.attestationdeplacement;
 
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -118,8 +117,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         setDate();
 
-        ImageView reasonsInfos = findViewById(R.id.reasonInfoImageView);
-        reasonsInfos.setOnClickListener(v -> getReasonsDialog());
+        ImageView reasonsInfo = findViewById(R.id.reasonInfoImageView);
+        reasonsInfo.setOnClickListener(v -> getReasonsDialog());
 
         ConstraintSet constraintSet = new ConstraintSet();
         ConstraintLayout constraintLayout = findViewById(R.id.constraint_layout);
@@ -141,10 +140,13 @@ public class CreateAttestationActivity extends AppCompatActivity {
     private void setReasonsCheckboxes() {
         SharedPreferences userDetails = getSharedPreferences("userDetails", MODE_PRIVATE);
 
-        for(int i = 1; i < 10; i++) {
-            int resId = getResources().getIdentifier("reason" + i, "id", getPackageName());
+        List<Reason> reasons = attestation.getReasons();
+        for(int i = 0; i < reasons.size(); i++) {
+            String reasonKey = "reason" + (i + 1);
 
-            ((CheckBox) findViewById(resId)).setChecked(userDetails.getBoolean("reason" + i, false));
+            int resId = getResources().getIdentifier(reasonKey, "id", getPackageName());
+
+            ((CheckBox) findViewById(resId)).setChecked(userDetails.getBoolean(reasonKey, false));
         }
     }
 
@@ -234,8 +236,11 @@ public class CreateAttestationActivity extends AppCompatActivity {
             return false;
         }
 
-        for(int i = 1; i < 10; i++) {
-            int resId = getResources().getIdentifier("reason" + i, "id", getPackageName());
+        List<Reason> reasons = attestation.getReasons();
+        for(int i = 0; i < reasons.size(); i++) {
+            String reasonKey = "reason" + (i + 1);
+
+            int resId = getResources().getIdentifier(reasonKey, "id", getPackageName());
 
             boolean isReasonEnabled = ((CheckBox) findViewById(resId)).isChecked();
 
@@ -254,16 +259,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
         new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.warning)
                 .setMessage(text)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(android.R.string.no, (dialog, which) -> dialog.dismiss())
                 .show();
     }
 

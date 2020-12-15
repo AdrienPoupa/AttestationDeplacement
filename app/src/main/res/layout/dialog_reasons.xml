@@ -137,21 +137,5 @@
             android:layout_marginBottom="16dp"
             android:text="@string/reason8"/>
 
-        <TextView
-            android:id="@+id/reasons9_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/reason9_smalltext"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/reasons9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/reason9"/>
-
     </LinearLayout>
 </ScrollView>

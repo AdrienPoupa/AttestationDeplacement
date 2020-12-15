@@ -8,8 +8,8 @@ android {
         applicationId "com.poupa.attestationdeplacement"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 24
-        versionName "3.4.0"
+        versionCode 25
+        versionName "3.5.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
