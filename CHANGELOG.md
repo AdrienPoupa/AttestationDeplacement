@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [3.5.1] - 2021-01-19
+### Changé
+- Mise à jour des horaires du formulaire de couvre feu
+
 ## [3.5.0] - 2020-12-15
 ### Changé
 - Mise à jour du formulaire: couvre-feu
