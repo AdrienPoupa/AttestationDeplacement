@@ -102,15 +102,15 @@ public class AttestationGenerator {
 
         Rectangle mediabox = reader.getPageSize(1);
 
-        // Small QR Code
+        /* Small QR Code Removed for now as I don't know where to put it, and it hides "Tous anti covid" qr code
         addText(qrTitle1, 440, 140, 6, 1, BaseColor.WHITE);
         addText(qrTitle2, 440, 130, 6, 1, BaseColor.WHITE);
 
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
         addImage(smallQrCode, 2, 440, 122);
-
-        // Insert page 2
+        */
+        // Insert page 3
         stamper.insertPage(reader.getNumberOfPages() + 1,
                 reader.getPageSizeWithRotation(1));
 

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/reasons9_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reason9_smalltext"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reasons9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/reason9"/>
+
+        <TextView
+            android:id="@+id/reasons10_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reason10_smalltext"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reasons10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/reason10"/>
+
+        <TextView
+            android:id="@+id/reasons11_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reason11_smalltext"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reasons11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/reason11"/>
+
+        <TextView
+            android:id="@+id/reasons12_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reason12_smalltext"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reasons12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/reason12"/>
+
+        <TextView
+            android:id="@+id/reasons13_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reason13_smalltext"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reasons13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/reason13"/>
+
+        <TextView
+            android:id="@+id/reasons14_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reason14_smalltext"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reasons14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/reason14"/>
+
+        <TextView
+            android:id="@+id/reasons15_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reason15_smalltext"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reasons15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/reason15"/>
+
+    </LinearLayout>
+</ScrollView>

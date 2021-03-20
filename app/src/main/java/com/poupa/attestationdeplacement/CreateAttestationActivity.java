@@ -118,7 +118,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
         setDate();
 
         ImageView reasonsInfo = findViewById(R.id.reasonInfoImageView);
-        reasonsInfo.setOnClickListener(v -> getReasonsDialog());
+        reasonsInfo.setOnClickListener(v -> getReasonsDialog(R.layout.dialog_reasons));
+
+        ImageView reasonsInfoLockdown = findViewById(R.id.reasonLockdownInfoImageView);
+        reasonsInfoLockdown.setOnClickListener(v -> getReasonsDialog(R.layout.dialog_reasons_lockdown));
 
         ConstraintSet constraintSet = new ConstraintSet();
         ConstraintLayout constraintLayout = findViewById(R.id.constraint_layout);
@@ -364,9 +367,9 @@ public class CreateAttestationActivity extends AppCompatActivity {
         travelHourInput.setText(currentTime);
     }
 
-    private void getReasonsDialog() {
+    private void getReasonsDialog(int layout) {
         LayoutInflater inflater = getLayoutInflater();
-        View dialogLayout = inflater.inflate(R.layout.dialog_reasons, null);
+        View dialogLayout = inflater.inflate(layout, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogLayout);
         builder.setCancelable(false);

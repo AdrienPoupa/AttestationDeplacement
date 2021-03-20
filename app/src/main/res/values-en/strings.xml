@@ -17,6 +17,8 @@
     <string name="postal_code">Zip code</string>
     <string name="signature_location">Made at</string>
     <string name="reasons">Reasons for going out</string>
+    <string name="reasonsCurfew">Curfew (7pm - 6am)</string>
+    <string name="reasonsLockdown">Lockdown (6am - 19pm)</string>
     <string name="generate">Generate</string>
     <string name="reason1">Commuting to and from work or university and training places; for a competition or an exam ; business trips that cannot be delayed</string>
     <string name="reason2">Consults and provision of care that cannot be done remotely or delayed</string>
@@ -26,6 +28,13 @@
     <string name="reason6">Participating in a mission of general interest upon request from an administrative authority</string>
     <string name="reason7">Air or rail transit related to long distance journeys</string>
     <string name="reason8">Walking a pet outdoors within 1km of one’s place of residence and for a brief amount of time</string>
+    <string name="reason9">Travel to purchase supplies necessary for professional activity, or for home deliveries.</string>
+    <string name="reason10">Travel to make essential purchases or order withdrawals.</string>
+    <string name="reason11">Travel related to a move resulting from a change of domicile and travel essential for the acquisition or rental of a main residence, which cannot be postponed.</string>
+    <string name="reason12">Travel within a maximum radius of ten kilometers around the home, linked either to the individual physical activity of people, excluding any collective sporting practice, or to walking with only people grouped together in the same home.</string>
+    <string name="reason13">Travel to go to a public service for an act or a process that cannot be carried out remotely.</string>
+    <string name="reason14">Travel to or from a place of worship.</string>
+    <string name="reason15">Participation in rallies, meetings or activities on public roads or in a place open to the public which are not prohibited under article 3.</string>
     <string name="information">This application isn\'t official. You\'ll have to present the QR code or print the generated file in case of control.</string>
     <string name="disclaimer_text">You\'ll have to print the QR code or print the generated file in case of control. Keep pressing to send the file.</string>
     <string name="generate_attestation">Generate a certificate</string>
@@ -44,6 +53,13 @@
     <string name="reason6_smalltext">Mission I.G.</string>
     <string name="reason7_smalltext">Transit</string>
     <string name="reason8_smalltext">Pets</string>
+    <string name="reason9_smalltext">Professional purchases and home deliveries</string>
+    <string name="reason10_smalltext">Purchases</string>
+    <string name="reason11_smalltext">Moving out</string>
+    <string name="reason12_smalltext">Physical activity and walking</string>
+    <string name="reason13_smalltext">Administrative or legal procedures</string>
+    <string name="reason14_smalltext">Cult</string>
+    <string name="reason15_smalltext">Participation in authorized gatherings</string>
     <string name="see_pdf">See the PDF</string>
     <string name="see_attestation">See the certifications</string>
     <string name="share">Share</string>

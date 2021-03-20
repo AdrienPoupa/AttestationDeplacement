@@ -24,7 +24,8 @@
     <string name="postal_code">Code postal</string>
     <string name="signature_location">Fait à</string>
     <string name="reasons">Motifs du déplacement</string>
-    <string name="reasonsLockdown">Motifs du déplacement</string>
+    <string name="reasonsCurfew">Couvre feu (19h - 6h)</string>
+    <string name="reasonsLockdown">Confinement (6h - 19h)</string>
     <string name="reason1">Déplacements entre le domicile et le lieu d\'exercice de l\'activité professionnelle ou le lieu d\'enseignement et de formation, déplacements professionnels ne pouvant être différés.</string>
     <string name="reason2">Déplacements pour des consultations et soins ne pouvant être assurés à distance et ne pouvant être différés ou pour l\'achat de produits de santé.</string>
     <string name="reason3">Déplacements pour motif familial impérieux, pour l\'assistance aux personnes vulnérables ou précaires ou la garde d\'enfants.</string>
@@ -33,6 +34,13 @@
     <string name="reason6">Déplacements pour participer à des missions d\'intérêt général sur demande de l\'autorité administrative.</string>
     <string name="reason7">Déplacements liés à des transits ferroviaires ou aériens pour des déplacements de longues distances.</string>
     <string name="reason8">Déplacements brefs, dans un rayon maximal d\'un kilomètre autour du domicile pour les besoins des animaux de compagnie.</string>
+    <string name="reason9">Déplacements pour effectuer des achats de fournitures nécessaires à l\'activité professionnelle, ou pour des livraisons à domicile.</string>
+    <string name="reason10">Déplacements pour effectuer des achats de première nécessité ou des retraits de commandes.</string>
+    <string name="reason11">Déplacements liés à un déménagement résultant d\'un changement de domicile et déplacements indispensables à l\'acquisition ou à la location d\’une résidence principale, insusceptibles d\'être différés.</string>
+    <string name="reason12">Déplacements dans un rayon maximal de dix kilomètres autour du domicile, liés soit à l\'activité physique individuelle des personnes, à l\'exclusion de toute pratique sportive collective, soit à la promenade avec les seules personnes regroupées dans un même domicile.</string>
+    <string name="reason13">Déplacements pour se rendre dans un service public pour un acte ou une démarche qui ne peuvent être réalisés à distance.</string>
+    <string name="reason14">Déplacements à destination ou en provenance d\'un lieu de culte.</string>
+    <string name="reason15">Participation à des rassemblements, réunions ou activités sur la voie publique ou dans un lieu ouvert au public qui ne sont pas interdits en application de l\'article 3.</string>
     <string name="generate">Générer</string>
     <string name="information">Cette application n\'est pas officielle. Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.</string>
     <string name="disclaimer_text">Vous devrez présenter le QRCode ou imprimer le fichier généré en cas de contrôle.\nPressez longuement pour envoyer le fichier.</string>

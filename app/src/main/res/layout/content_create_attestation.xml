@@ -291,14 +291,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/travel_hour_layout" />
 
+        <TextView
+            android:id="@+id/reasonsCurfewTextView"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="@dimen/space_between_view"
+            android:gravity="center"
+            android:text="@string/reasonsCurfew"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reasonsTextView" />
+
 
         <ImageView
             android:id="@+id/reasonInfoImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/reasonsTextView"
-            app:layout_constraintBottom_toBottomOf="@id/reasonsTextView"
-            app:layout_constraintEnd_toEndOf="@id/reasonsTextView"
+            app:layout_constraintTop_toTopOf="@id/reasonsCurfewTextView"
+            app:layout_constraintBottom_toBottomOf="@id/reasonsCurfewTextView"
+            app:layout_constraintEnd_toEndOf="@id/reasonsCurfewTextView"
             android:layout_marginRight="48dp"
             android:layout_marginEnd="48dp"
             android:paddingHorizontal="8dp"
@@ -313,7 +324,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reasonsTextView">
+            app:layout_constraintTop_toBottomOf="@+id/reasonsCurfewTextView">
 
             <LinearLayout
                 android:id="@+id/reasons_line1"
