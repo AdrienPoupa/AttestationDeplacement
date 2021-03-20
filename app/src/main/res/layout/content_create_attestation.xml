@@ -421,15 +421,15 @@
         </LinearLayout>
 
         <TextView
-                android:id="@+id/reasonsLockdownTextView"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="@dimen/space_between_view"
-                android:gravity="center"
-                android:text="@string/reasonsLockdown"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/travel_hour_layout" />
+            android:id="@+id/reasonsLockdownTextView"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="@dimen/space_between_view"
+            android:gravity="center"
+            android:text="@string/reasonsLockdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reasons_layout" />
 
 
         <ImageView
@@ -570,7 +570,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reasons_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/reasonsLockdown_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
