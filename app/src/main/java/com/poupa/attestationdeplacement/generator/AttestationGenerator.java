@@ -128,8 +128,8 @@ public class AttestationGenerator {
      * @param x
      * @param y
      */
-    protected void addText(String text, float x, float y, int size) {
-        addText(text, x, y, size, 1, BaseColor.BLACK);
+    protected void addText(String text, float x, float y, int size, int page) {
+        addText(text, x, y, size, page, BaseColor.BLACK);
     }
 
     /**
@@ -191,7 +191,7 @@ public class AttestationGenerator {
     protected void fillMotives() {
         for (Reason reason: attestation.getReasons()) {
             if (reason.isEnabled()) {
-                addText("x", reason.getX(), reason.getY(), 12);
+                addText("x", reason.getX(), reason.getY(), 12, reason.getPage());
             }
         }
     }
@@ -202,15 +202,15 @@ public class AttestationGenerator {
     protected void fillForm() {
         String fullName = attestation.getSurname() + " " + attestation.getLastName();
 
-        addText(fullName, 119, 665, 11);
-        addText(attestation.getBirthDate(), 119, 645, 11);
-        addText(attestation.getBirthPlace(), 312, 645, 11);
-        addText(attestation.getFullAddress(), 133, 625, 11);
+        addText(fullName, 119, 665, 11, 1);
+        addText(attestation.getBirthDate(), 119, 645, 11, 1);
+        addText(attestation.getBirthPlace(), 312, 645, 11, 1);
+        addText(attestation.getFullAddress(), 133, 625, 11, 1);
 
-        addText(attestation.getHour() + ':' + attestation.getMinute(), 312, 267, 11);
+        addText(attestation.getHour() + ':' + attestation.getMinute(), 312, 267, 11,1);
 
-        addText(attestation.getCity(), 105, 286, 11);
-        addText(attestation.getTravelDate(), 91, 267, 11);
+        addText(attestation.getCity(), 105, 286, 11, 1);
+        addText(attestation.getTravelDate(), 91, 267, 11, 1);
     }
 
     /**

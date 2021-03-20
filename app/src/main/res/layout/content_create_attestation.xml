@@ -420,6 +420,140 @@
 
         </LinearLayout>
 
+        <TextView
+                android:id="@+id/reasonsLockdownTextView"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/space_between_view"
+                android:gravity="center"
+                android:text="@string/reasonsLockdown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/travel_hour_layout" />
+
+
+        <ImageView
+                android:id="@+id/reasonLockdownInfoImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/reasonsLockdownTextView"
+                app:layout_constraintBottom_toBottomOf="@id/reasonsLockdownTextView"
+                app:layout_constraintEnd_toEndOf="@id/reasonsLockdownTextView"
+                android:layout_marginRight="48dp"
+                android:layout_marginEnd="48dp"
+                android:paddingHorizontal="8dp"
+                app:srcCompat="@drawable/ic_info" />
+
+
+        <LinearLayout
+                android:id="@+id/reasonsLockdown_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/reasonsLockdownTextView">
+
+            <LinearLayout
+                    android:id="@+id/reasonsLockdown_line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center">
+
+                <CheckBox
+                        android:id="@+id/reason9"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reason9_smalltext" />
+
+                <CheckBox
+                        android:id="@+id/reason10"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reason10_smalltext" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/reasonsLockdown_line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center">
+
+                <CheckBox
+                        android:id="@+id/reason11"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reason11_smalltext" />
+
+                <CheckBox
+                        android:id="@+id/reason12"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reason12_smalltext" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/reasonsLockdown_line3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center">
+
+                <CheckBox
+                        android:id="@+id/reason13"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reason13_smalltext" />
+
+                <CheckBox
+                        android:id="@+id/reason14"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reason14_smalltext" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/reasonsLockdown_line4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center">
+
+                <CheckBox
+                        android:id="@+id/reason15"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reason15_smalltext" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/signatureButton"
             android:layout_width="wrap_content"

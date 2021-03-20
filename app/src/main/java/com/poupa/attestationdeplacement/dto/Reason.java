@@ -6,12 +6,14 @@ public class Reason {
     boolean enabled = false;
     int x;
     int y;
+    int page;
 
-    public Reason(String databaseName, String qrCodeName, int x, int y) {
+    public Reason(String databaseName, String qrCodeName, int x, int y, int page) {
         this.databaseName = databaseName;
         this.qrCodeName = qrCodeName;
         this.x = x;
         this.y = y;
+        this.page = page;
     }
 
     public String getDatabaseName() {
@@ -52,5 +54,13 @@ public class Reason {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
     }
 }
