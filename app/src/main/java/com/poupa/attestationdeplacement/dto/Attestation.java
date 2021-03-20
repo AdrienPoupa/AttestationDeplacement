@@ -37,22 +37,22 @@ public class Attestation {
 
         this.reasons = new ArrayList<>();
         // Curfew reasons
-        this.reasons.add(new Reason(context.getString(R.string.reason1_smalltext), "travail", 73, 540, 1));
-        this.reasons.add(new Reason(context.getString(R.string.reason2_smalltext), "sante", 73, 508, 1));
-        this.reasons.add(new Reason(context.getString(R.string.reason3_smalltext), "famille", 73, 474, 1));
-        this.reasons.add(new Reason(context.getString(R.string.reason4_smalltext), "handicap", 73, 441, 1));
-        this.reasons.add(new Reason(context.getString(R.string.reason5_smalltext), "convocation", 73, 418, 1));
-        this.reasons.add(new Reason(context.getString(R.string.reason6_smalltext), "missions", 73, 397, 1));
-        this.reasons.add(new Reason(context.getString(R.string.reason7_smalltext), "transits", 73, 363, 1));
-        this.reasons.add(new Reason(context.getString(R.string.reason8_smalltext), "animaux", 73, 330, 1));
+        this.reasons.add(new Reason(context.getString(R.string.reason1_smalltext), "travail", 60, 550, 1));
+        this.reasons.add(new Reason(context.getString(R.string.reason2_smalltext), "sante", 60, 488, 1));
+        this.reasons.add(new Reason(context.getString(R.string.reason3_smalltext), "famille", 60, 412, 1));
+        this.reasons.add(new Reason(context.getString(R.string.reason4_smalltext), "handicap", 60, 350, 1));
+        this.reasons.add(new Reason(context.getString(R.string.reason5_smalltext), "convocation", 60, 300, 1));
+        this.reasons.add(new Reason(context.getString(R.string.reason6_smalltext), "missions", 60, 225, 1));
+        this.reasons.add(new Reason(context.getString(R.string.reason7_smalltext), "transits", 60, 170, 1));
+        this.reasons.add(new Reason(context.getString(R.string.reason8_smalltext), "animaux", 60, 115, 1));
         // March 2021 lockdown reasons
-        this.reasons.add(new Reason(context.getString(R.string.reason9_smalltext), "achats_pro", 73, 540, 2));
-        this.reasons.add(new Reason(context.getString(R.string.reason10_smalltext), "achats", 73, 508, 2));
-        this.reasons.add(new Reason(context.getString(R.string.reason11_smalltext), "demenagement", 73, 474, 2));
-        this.reasons.add(new Reason(context.getString(R.string.reason12_smalltext), "sport", 73, 441, 2));
-        this.reasons.add(new Reason(context.getString(R.string.reason13_smalltext), "demarches", 73, 418, 2));
-        this.reasons.add(new Reason(context.getString(R.string.reason14_smalltext), "culte", 73, 397, 2));
-        this.reasons.add(new Reason(context.getString(R.string.reason15_smalltext), "rassemblements", 73, 363, 2));
+        this.reasons.add(new Reason(context.getString(R.string.reason9_smalltext), "achats_pro", 60, 582, 2));
+        this.reasons.add(new Reason(context.getString(R.string.reason10_smalltext), "achats", 60, 527, 2));
+        this.reasons.add(new Reason(context.getString(R.string.reason11_smalltext), "demenagement", 60, 480, 2));
+        this.reasons.add(new Reason(context.getString(R.string.reason12_smalltext), "sport", 60, 410, 2));
+        this.reasons.add(new Reason(context.getString(R.string.reason13_smalltext), "demarches", 60, 328, 2));
+        this.reasons.add(new Reason(context.getString(R.string.reason14_smalltext), "culte", 60, 272, 2));
+        this.reasons.add(new Reason(context.getString(R.string.reason15_smalltext), "rassemblements", 60, 237, 2));
 
     }
 

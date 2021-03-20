@@ -108,7 +108,7 @@ public class AttestationGenerator {
 
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
-        addImage(smallQrCode, 1, 440, 122);
+        addImage(smallQrCode, 2, 440, 122);
 
         // Insert page 2
         stamper.insertPage(reader.getNumberOfPages() + 1,
@@ -119,7 +119,7 @@ public class AttestationGenerator {
 
         Image bigQrCode = Image.getInstance(qrCodeGenerator.generateBigQrCode(getQrCodeText()));
 
-        addImage(bigQrCode, 2, 50, mediabox.getHeight() - 420);
+        addImage(bigQrCode, 3, 50, mediabox.getHeight() - 420);
     }
 
     /**
@@ -202,15 +202,15 @@ public class AttestationGenerator {
     protected void fillForm() {
         String fullName = attestation.getSurname() + " " + attestation.getLastName();
 
-        addText(fullName, 119, 665, 11, 1);
-        addText(attestation.getBirthDate(), 119, 645, 11, 1);
-        addText(attestation.getBirthPlace(), 312, 645, 11, 1);
-        addText(attestation.getFullAddress(), 133, 625, 11, 1);
+        addText(fullName, 110, 666, 12, 1);
+        addText(attestation.getBirthDate(), 150, 652, 12, 1);
+        addText(attestation.getBirthPlace(), 220, 652, 12, 1);
+        addText(attestation.getFullAddress(), 133, 639, 12, 1);
 
-        addText(attestation.getHour() + ':' + attestation.getMinute(), 312, 267, 11,1);
+        addText(attestation.getHour() + ':' + attestation.getMinute(), 150, 154, 11,2);
 
-        addText(attestation.getCity(), 105, 286, 11, 1);
-        addText(attestation.getTravelDate(), 91, 267, 11, 1);
+        addText(attestation.getCity(), 105, 167, 11, 2);
+        addText(attestation.getTravelDate(), 80, 154, 9, 2);
     }
 
     /**
