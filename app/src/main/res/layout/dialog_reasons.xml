@@ -13,7 +13,7 @@
             android:id="@+id/reasons1_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reason1_smalltext"
+            android:text="@string/reason1_curfew_smalltext"
             android:textStyle="bold"/>
 
         <TextView
@@ -23,13 +23,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/reason1"/>
+            android:text="@string/reason1_curfew"/>
 
         <TextView
             android:id="@+id/reasons2_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reason2_smalltext"
+            android:text="@string/reason2_curfew_smalltext"
             android:textStyle="bold"/>
 
         <TextView
@@ -39,13 +39,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/reason2"/>
+            android:text="@string/reason2_curfew"/>
 
         <TextView
             android:id="@+id/reasons3_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reason3_smalltext"
+            android:text="@string/reason3_curfew_smalltext"
             android:textStyle="bold"/>
 
         <TextView
@@ -55,13 +55,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/reason3"/>
+            android:text="@string/reason3_curfew"/>
 
         <TextView
             android:id="@+id/reasons4_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reason4_smalltext"
+            android:text="@string/reason4_curfew_smalltext"
             android:textStyle="bold"/>
 
         <TextView
@@ -71,13 +71,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/reason4"/>
+            android:text="@string/reason4_curfew"/>
 
         <TextView
             android:id="@+id/reasons5_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reason5_smalltext"
+            android:text="@string/reason5_curfew_smalltext"
             android:textStyle="bold"/>
 
         <TextView
@@ -87,13 +87,13 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/reason5"/>
+            android:text="@string/reason5_curfew"/>
 
         <TextView
             android:id="@+id/reasons6_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reason6_smalltext"
+            android:text="@string/reason6_curfew_smalltext"
             android:textStyle="bold"/>
 
         <TextView
@@ -103,13 +103,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/reason6"/>
+            android:text="@string/reason6_curfew"/>
 
         <TextView
             android:id="@+id/reasons7_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reason7_smalltext"
+            android:text="@string/reason7_curfew_smalltext"
             android:textStyle="bold"/>
 
         <TextView
@@ -119,13 +119,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/reason7"/>
+            android:text="@string/reason7_curfew"/>
 
         <TextView
             android:id="@+id/reasons8_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reason8_smalltext"
+            android:text="@string/reason8_curfew_smalltext"
             android:textStyle="bold"/>
 
         <TextView
@@ -135,7 +135,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/reason8"/>
+            android:text="@string/reason8_curfew"/>
 
     </LinearLayout>
 </ScrollView>

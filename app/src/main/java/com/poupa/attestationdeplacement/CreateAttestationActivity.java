@@ -2,12 +2,16 @@ package com.poupa.attestationdeplacement;
 
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,12 +24,17 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.poupa.attestationdeplacement.db.ProfileEntity;
 import com.poupa.attestationdeplacement.db.ProfileViewModel;
 import com.poupa.attestationdeplacement.dto.Attestation;
+import com.poupa.attestationdeplacement.dto.CurfewAttestation;
+import com.poupa.attestationdeplacement.dto.QuarantineAttestation;
 import com.poupa.attestationdeplacement.dto.Reason;
 import com.poupa.attestationdeplacement.generator.AttestationGenerator;
+import com.poupa.attestationdeplacement.generator.CurfewAttestationGenerator;
+import com.poupa.attestationdeplacement.generator.QuarantineAttestationGenerator;
 import com.poupa.attestationdeplacement.tasks.GeneratePdfTask;
 import com.poupa.attestationdeplacement.tasks.LoadProfilesCreateAttestationTask;
 import com.poupa.attestationdeplacement.ui.DateTextWatcher;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -71,9 +80,50 @@ public class CreateAttestationActivity extends AppCompatActivity {
      * Initialize the input fields
      */
     private void initFields(boolean initDate) {
-        attestation = new Attestation();
+        attestation = new QuarantineAttestation();
+        attestationGenerator = new QuarantineAttestationGenerator(this, (QuarantineAttestation) attestation);
 
-        attestationGenerator = new AttestationGenerator(this, attestation);
+        LinearLayout curfewLayout = (LinearLayout) findViewById(R.id.reasons_curfew_layout);
+        LinearLayout quarantineLayout = (LinearLayout) findViewById(R.id.reasons_quarantine_layout);
+
+        AutoCompleteTextView autoCompleteAttestation = findViewById(R.id.attestation_type_dropdown);
+        autoCompleteAttestation.setOnItemClickListener((parent, view, position, id) -> {
+            attestation = (Attestation) parent.getItemAtPosition(position);
+
+            if (attestation instanceof CurfewAttestation) {
+                CurfewAttestation curfewAttestation = (CurfewAttestation) attestation;
+                attestationGenerator = new CurfewAttestationGenerator(this, curfewAttestation);
+                curfewLayout.setVisibility(View.VISIBLE);
+                quarantineLayout.setVisibility(View.INVISIBLE);
+            } else {
+                QuarantineAttestation quarantineAttestation = (QuarantineAttestation) attestation;
+                attestationGenerator = new QuarantineAttestationGenerator(this, quarantineAttestation);
+                curfewLayout.setVisibility(View.INVISIBLE);
+                quarantineLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        List<Attestation> attestations = new ArrayList<>();
+        attestations.add(new QuarantineAttestation());
+        attestations.add(new CurfewAttestation());
+
+        ArrayAdapter<Attestation> adapter =
+                new ArrayAdapter<>(
+                        this,
+                        R.layout.dropdown_menu_popup_item,
+                        attestations);
+
+        autoCompleteAttestation.setAdapter(adapter);
+
+        // https://stackoverflow.com/a/23568337/11115846
+        if (Build.VERSION.SDK_INT > 16) {
+            autoCompleteAttestation.setText(attestation.toString(), false);
+        } else {
+            ListAdapter adapter2 = autoCompleteAttestation.getAdapter();
+            autoCompleteAttestation.setAdapter(null);
+            autoCompleteAttestation.setText(attestation.toString());
+            autoCompleteAttestation.setAdapter((ArrayAdapter) adapter2);
+        }
 
         surnameInput = findViewById(R.id.surname);
 
@@ -127,8 +177,8 @@ public class CreateAttestationActivity extends AppCompatActivity {
                 R.id.travel_hour_layout, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
 
-        AutoCompleteTextView autoCompleteTextView = findViewById(R.id.filled_exposed_dropdown);
-        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+        AutoCompleteTextView autoCompleteProfile = findViewById(R.id.filled_exposed_dropdown);
+        autoCompleteProfile.setOnItemClickListener((parent, view, position, id) -> {
             ProfileEntity profileEntity = (ProfileEntity) parent.getItemAtPosition(position);
 
             CreateAttestationActivity.this.fillFieldsFromProfile(profileEntity);
@@ -142,7 +192,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         List<Reason> reasons = attestation.getReasons();
         for(int i = 0; i < reasons.size(); i++) {
-            String reasonKey = "reason" + (i + 1);
+            String reasonKey = "reason" + (i + 1) + "_" + attestation.getReasonPrefix();
 
             int resId = getResources().getIdentifier(reasonKey, "id", getPackageName());
 
@@ -238,7 +288,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         List<Reason> reasons = attestation.getReasons();
         for(int i = 0; i < reasons.size(); i++) {
-            String reasonKey = "reason" + (i + 1);
+            String reasonKey = "reason" + (i + 1) + "_" + attestation.getReasonPrefix();
 
             int resId = getResources().getIdentifier(reasonKey, "id", getPackageName());
 
@@ -311,7 +361,7 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
         List<Reason> reasons = attestation.getReasons();
         for(int i = 0; i < reasons.size(); i++) {
-            String reasonKey = "reason" + (i + 1);
+            String reasonKey = "reason" + (i + 1) + "_" + attestation.getReasonPrefix();
 
             int resId = getResources().getIdentifier(reasonKey, "id", getPackageName());
 
