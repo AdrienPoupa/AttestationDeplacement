@@ -29,24 +29,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AttestationGenerator {
-    private final Context context;
+public abstract class AttestationGenerator {
+    protected final Context context;
     Attestation attestation;
 
-    private PdfStamper stamper;
-    private PdfReader reader;
+    protected PdfStamper stamper;
+    protected PdfReader reader;
     AcroFields form;
 
-    private AttestationDao dao;
-    private final String pdfFilename;
+    protected AttestationDao dao;
 
     int smallQrCodeSize;
+
+    protected QrCodeGenerator qrCodeGenerator;
 
     public AttestationGenerator(Context context, Attestation attestation) {
         this.context = context;
         this.attestation = attestation;
         smallQrCodeSize = 106;
-        pdfFilename = "attestation.pdf";
     }
 
     /**
@@ -56,7 +56,7 @@ public class AttestationGenerator {
         try {
             AssetManager assetManager = context.getAssets();
 
-            InputStream attestationInputStream = assetManager.open(pdfFilename);
+            InputStream attestationInputStream = assetManager.open(attestation.getPdfFileName());
 
             reader = new PdfReader(attestationInputStream);
 
@@ -66,6 +66,8 @@ public class AttestationGenerator {
             attestation.setId(attestationEntity.getId());
 
             stamper = new PdfStamper(reader, new FileOutputStream(getPdfPath(attestation.getId())));
+
+            qrCodeGenerator = new QrCodeGenerator(attestation, context.getFilesDir());
 
             form = stamper.getAcroFields();
 
@@ -88,38 +90,52 @@ public class AttestationGenerator {
     }
 
     /**
-     *
      * @throws DocumentException
      * @throws IOException
      * @throws WriterException
      */
-    private void addQrCodes() throws DocumentException, IOException, WriterException {
+    protected void addQrCodes() throws DocumentException, IOException, WriterException {
+        addSmallQrCode();
 
-        String qrTitle1 = "QR-code contenant les informations";
-        String qrTitle2 = "de votre attestation numérique";
+        // Insert new page
+        stamper.insertPage(reader.getNumberOfPages() + 1,
+                reader.getPageSizeWithRotation(1));
 
-        QrCodeGenerator qrCodeGenerator = new QrCodeGenerator(attestation, context.getFilesDir());
+        addBigQrCode();
+    }
 
-        Rectangle mediabox = reader.getPageSize(1);
+    protected String qrTitle1 = "QR-code contenant les informations";
+    protected String qrTitle2 = "de votre attestation numérique";
 
+    /**
+     * @throws DocumentException
+     * @throws IOException
+     * @throws WriterException
+     */
+    protected void addSmallQrCode() throws DocumentException, IOException, WriterException {
         // Small QR Code
         addText(qrTitle1, 440, 140, 6, 1, BaseColor.WHITE);
         addText(qrTitle2, 440, 130, 6, 1, BaseColor.WHITE);
 
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
-        addImage(smallQrCode, 1, 440, 122);
+        addImage(smallQrCode, reader.getNumberOfPages(), 440, 122);
+    }
 
-        // Insert page 2
-        stamper.insertPage(reader.getNumberOfPages() + 1,
-                reader.getPageSizeWithRotation(1));
+    /**
+     * @throws DocumentException
+     * @throws IOException
+     * @throws WriterException
+     */
+    protected void addBigQrCode() throws DocumentException, IOException, WriterException {
+        Rectangle mediabox = reader.getPageSize(1);
 
         // Big QR Code
         addText(qrTitle1 + " " + qrTitle2, 50, mediabox.getHeight() - 70, 11, 2, BaseColor.WHITE);
 
         Image bigQrCode = Image.getInstance(qrCodeGenerator.generateBigQrCode(getQrCodeText()));
 
-        addImage(bigQrCode, 2, 50, mediabox.getHeight() - 420);
+        addImage(bigQrCode, reader.getNumberOfPages(), 50, mediabox.getHeight() - 420);
     }
 
     /**
@@ -128,8 +144,18 @@ public class AttestationGenerator {
      * @param x
      * @param y
      */
-    protected void addText(String text, float x, float y, int size) {
-        addText(text, x, y, size, 1, BaseColor.BLACK);
+    protected void addText(String text, float x, float y) {
+        addText(text, x, y, 11, 1, BaseColor.BLACK);
+    }
+
+    /**
+     * Add text to the PDF in page 1
+     * @param text
+     * @param x
+     * @param y
+     */
+    protected void addText(String text, float x, float y, int size, int page) {
+        addText(text, x, y, size, page, BaseColor.BLACK);
     }
 
     /**
@@ -173,7 +199,7 @@ public class AttestationGenerator {
      * @throws DocumentException
      * @throws IOException
      */
-    private void addImage(Image image, int page, float x, float y) throws DocumentException, IOException {
+    protected void addImage(Image image, int page, float x, float y) throws DocumentException, IOException {
         PdfImage stream = new PdfImage(image, "", null);
 
         PdfIndirectObject ref = stamper.getWriter().addToBody(stream);
@@ -191,7 +217,7 @@ public class AttestationGenerator {
     protected void fillMotives() {
         for (Reason reason: attestation.getReasons()) {
             if (reason.isEnabled()) {
-                addText("x", reason.getX(), reason.getY(), 12);
+                addText("x", reason.getX(), reason.getY(), 12, reason.getPage());
             }
         }
     }
@@ -199,19 +225,7 @@ public class AttestationGenerator {
     /**
      * Fill the PDF form
      */
-    protected void fillForm() {
-        String fullName = attestation.getSurname() + " " + attestation.getLastName();
-
-        addText(fullName, 119, 665, 11);
-        addText(attestation.getBirthDate(), 119, 645, 11);
-        addText(attestation.getBirthPlace(), 312, 645, 11);
-        addText(attestation.getFullAddress(), 133, 625, 11);
-
-        addText(attestation.getHour() + ':' + attestation.getMinute(), 312, 267, 11);
-
-        addText(attestation.getCity(), 105, 286, 11);
-        addText(attestation.getTravelDate(), 91, 267, 11);
-    }
+    protected abstract void fillForm();
 
     /**
      * Returns the text shown in the QRCode

@@ -1,50 +1,36 @@
 package com.poupa.attestationdeplacement.dto;
 
-import android.content.Context;
-
-import com.poupa.attestationdeplacement.MainActivity;
-import com.poupa.attestationdeplacement.R;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Attestation Data
  */
-public class Attestation {
-    private int id;
-    private String surname;
-    private String lastName;
-    private String city;
-    private String postalCode;
-    private String address;
-    private String birthPlace;
-    private String birthDate;
-    private String travelDate;
-    private String travelHour;
-    private String hour;
-    private String minute;
+public abstract class Attestation {
+    protected int id;
+    protected String surname;
+    protected String lastName;
+    protected String city;
+    protected String postalCode;
+    protected String address;
+    protected String birthPlace;
+    protected String birthDate;
+    protected String travelDate;
+    protected String travelHour;
+    protected String hour;
+    protected String minute;
 
-    private List<Reason> reasons;
+    protected List<Reason> reasons;
 
     public Attestation() {
         setupReasons();
     }
 
-    private void setupReasons() {
-        Context context = MainActivity.getContext();
+    protected abstract void setupReasons();
 
-        this.reasons = new ArrayList<>();
-        this.reasons.add(new Reason(context.getString(R.string.reason1_smalltext), "travail", 73, 540));
-        this.reasons.add(new Reason(context.getString(R.string.reason2_smalltext), "sante", 73, 508));
-        this.reasons.add(new Reason(context.getString(R.string.reason3_smalltext), "famille", 73, 474));
-        this.reasons.add(new Reason(context.getString(R.string.reason4_smalltext), "handicap", 73, 441));
-        this.reasons.add(new Reason(context.getString(R.string.reason5_smalltext), "convocation", 73, 418));
-        this.reasons.add(new Reason(context.getString(R.string.reason6_smalltext), "missions", 73, 397));
-        this.reasons.add(new Reason(context.getString(R.string.reason7_smalltext), "transits", 73, 363));
-        this.reasons.add(new Reason(context.getString(R.string.reason8_smalltext), "animaux", 73, 330));
-    }
+    public abstract String getPdfFileName();
+
+    public abstract String getReasonPrefix();
 
     /**
      * Get the full address
@@ -175,4 +161,6 @@ public class Attestation {
     public void setId(int id) {
         this.id = id;
     }
+
+    public abstract String toString();
 }

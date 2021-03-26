@@ -78,12 +78,7 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
                     ViewGroup.LayoutParams.MATCH_PARENT); // Full screen
 
             ImageView img = dialog.findViewById(R.id.dialog_qrcode_img);
-            img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
+            img.setOnClickListener(v1 -> dialog.dismiss());
 
             // Set QRCode image
             String fileName = getItemId(position) + ".png";
@@ -127,12 +122,7 @@ public class AttestationAdapter extends BaseAdapter implements ListAdapter {
 
                     notifyDataSetChanged();
 
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            AppDatabase.getInstance(context).attestationDao().delete(attestationEntity1);
-                        }
-                    });
+                    AsyncTask.execute(() -> AppDatabase.getInstance(context).attestationDao().delete(attestationEntity1));
 
                     dialog.dismiss();
                 })

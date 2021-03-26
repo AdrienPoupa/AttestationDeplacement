@@ -2,6 +2,10 @@
 
 ## [Non sorti]
 
+## [3.6.0] - 2021-03-26
+### Changé
+- Ajout des nouveaux formulaires de couvre feu et de confinement
+
 ## [3.5.1] - 2021-01-19
 ### Changé
 - Mise à jour des horaires du formulaire de couvre feu
