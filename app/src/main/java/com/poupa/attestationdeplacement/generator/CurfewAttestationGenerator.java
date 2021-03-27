@@ -20,10 +20,5 @@ public class CurfewAttestationGenerator extends AttestationGenerator {
         addText(attestation.getBirthDate(), 144, 684);
         addText(attestation.getBirthPlace(), 310, 684);
         addText(attestation.getFullAddress(), 148, 665);
-
-        addText("Fait à" + attestation.getCity(), 72, 109);
-        addText("Le " + attestation.getTravelDate(), 72, 93);
-        addText("à " + attestation.getHour() + ':' + attestation.getMinute(), 310, 93);
-        addText("(Date et heure de début de sortie à mentionner obligatoirement)", 72, 77);
     }
 }

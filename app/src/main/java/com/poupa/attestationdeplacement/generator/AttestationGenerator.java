@@ -41,6 +41,8 @@ public abstract class AttestationGenerator {
 
     int smallQrCodeSize;
 
+    int originalPageNumber;
+
     protected QrCodeGenerator qrCodeGenerator;
 
     public AttestationGenerator(Context context, Attestation attestation) {
@@ -60,6 +62,8 @@ public abstract class AttestationGenerator {
 
             reader = new PdfReader(attestationInputStream);
 
+            originalPageNumber = reader.getNumberOfPages();
+
             dao = AppDatabase.getInstance(context).attestationDao();
 
             AttestationEntity attestationEntity = saveInDb();
@@ -73,7 +77,9 @@ public abstract class AttestationGenerator {
 
             fillForm();
 
-            fillMotives();
+            addFooter();
+
+            fillReasons();
 
             attestationEntity.setReason(attestation.getReasonsDatabase());
             dao.update(attestationEntity);
@@ -98,7 +104,7 @@ public abstract class AttestationGenerator {
         addSmallQrCode();
 
         // Insert new page
-        stamper.insertPage(reader.getNumberOfPages() + 1,
+        stamper.insertPage(originalPageNumber + 1,
                 reader.getPageSizeWithRotation(1));
 
         addBigQrCode();
@@ -119,10 +125,11 @@ public abstract class AttestationGenerator {
 
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
-        addImage(smallQrCode, reader.getNumberOfPages(), 440, 122);
+        addImage(smallQrCode, originalPageNumber, 440, 122);
     }
 
     /**
+     * Insert the big QR Code on the last page
      * @throws DocumentException
      * @throws IOException
      * @throws WriterException
@@ -135,7 +142,7 @@ public abstract class AttestationGenerator {
 
         Image bigQrCode = Image.getInstance(qrCodeGenerator.generateBigQrCode(getQrCodeText()));
 
-        addImage(bigQrCode, reader.getNumberOfPages(), 50, mediabox.getHeight() - 420);
+        addImage(bigQrCode, originalPageNumber + 1, 50, mediabox.getHeight() - 420);
     }
 
     /**
@@ -176,7 +183,7 @@ public abstract class AttestationGenerator {
      */
     private AttestationEntity saveInDb() {
         long id = dao.insert(new AttestationEntity(
-                attestation.getSurname() + " " + attestation.getLastName(), attestation.getTravelDate(), attestation.getTravelHour(), null
+            attestation.getSurname() + " " + attestation.getLastName(), attestation.getTravelDate(), attestation.getTravelHour(), null
         ));
 
         return dao.find(id);
@@ -214,11 +221,9 @@ public abstract class AttestationGenerator {
     /**
      * Fill the PDF motives
      */
-    protected void fillMotives() {
-        for (Reason reason: attestation.getReasons()) {
-            if (reason.isEnabled()) {
-                addText("x", reason.getX(), reason.getY(), 12, reason.getPage());
-            }
+    protected void fillReasons() {
+        for (Reason reason: attestation.getEnabledReasons()) {
+            addText("x", reason.getX(), reason.getY(), 12, reason.getPage());
         }
     }
 
@@ -228,7 +233,17 @@ public abstract class AttestationGenerator {
     protected abstract void fillForm();
 
     /**
-     * Returns the text shown in the QRCode
+     * Add the footer
+     */
+    protected void addFooter() {
+        addText("Fait à " + attestation.getCity(), 72, 109, 11, originalPageNumber);
+        addText("Le " + attestation.getTravelDate(), 72, 93, 11, originalPageNumber);
+        addText("à " + attestation.getHour() + ':' + attestation.getMinute(), 310, 93, 11, originalPageNumber);
+        addText("(Date et heure de début de sortie à mentionner obligatoirement)", 72, 77, 11, originalPageNumber);
+    }
+
+    /**
+     * Return the text shown in the QRCode
      * @return qr code text
      */
     protected String getQrCodeText() {
