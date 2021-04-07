@@ -358,6 +358,18 @@
                     android:layout_weight="1"
                     android:text="@string/reason1_quarantine_smalltext" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reasons_quarantine_line2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
+
                 <CheckBox
                     android:id="@+id/reason2_quarantine"
                     android:layout_width="0dp"
@@ -368,7 +380,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/reasons_quarantine_line2"
+                android:id="@+id/reasons_quarantine_line3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -384,6 +396,18 @@
                     android:layout_weight="1"
                     android:text="@string/reason3_quarantine_smalltext" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reasons_quarantine_line4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
+
                 <CheckBox
                     android:id="@+id/reason4_quarantine"
                     android:layout_width="0dp"
@@ -394,7 +418,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/reasons_quarantine_line3"
+                android:id="@+id/reasons_quarantine_line5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -410,6 +434,18 @@
                     android:layout_weight="1"
                     android:text="@string/reason5_quarantine_smalltext" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reasons_quarantine_line6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
+
                 <CheckBox
                     android:id="@+id/reason6_quarantine"
                     android:layout_width="0dp"
@@ -420,7 +456,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/reasons_quarantine_line4"
+                android:id="@+id/reasons_quarantine_line7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -435,63 +471,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/reason7_quarantine_smalltext" />
-
-                <CheckBox
-                    android:id="@+id/reason8_quarantine"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reason8_quarantine_smalltext" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/reasons_quarantine_line5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:gravity="center">
-
-                <CheckBox
-                    android:id="@+id/reason9_quarantine"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reason9_quarantine_smalltext" />
-
-                <CheckBox
-                    android:id="@+id/reason10_quarantine"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reason10_quarantine_smalltext" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/reasons_quarantine_line6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:gravity="center">
-
-                <CheckBox
-                    android:id="@+id/reason11_quarantine"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reason11_quarantine_smalltext" />
-
-                <CheckBox
-                    android:id="@+id/reason12_quarantine"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reason12_quarantine_smalltext" />
             </LinearLayout>
 
         </LinearLayout>
@@ -524,6 +503,18 @@
                     android:layout_weight="1"
                     android:text="@string/reason1_curfew_smalltext" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reasons_curfew_line2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
+
                 <CheckBox
                     android:id="@+id/reason2_curfew"
                     android:layout_width="0dp"
@@ -534,7 +525,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/reasons_curfew_line2"
+                android:id="@+id/reasons_curfew_line3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -550,6 +541,18 @@
                     android:layout_weight="1"
                     android:text="@string/reason3_curfew_smalltext" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reasons_curfew_line4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center">
+
                 <CheckBox
                     android:id="@+id/reason4_curfew"
                     android:layout_width="0dp"
@@ -560,7 +563,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/reasons_curfew_line3"
+                android:id="@+id/reasons_curfew_line5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -576,38 +579,6 @@
                     android:layout_weight="1"
                     android:text="@string/reason5_curfew_smalltext" />
 
-                <CheckBox
-                    android:id="@+id/reason6_curfew"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reason6_curfew_smalltext" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/reasons_curfew_line4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:gravity="center">
-
-                <CheckBox
-                    android:id="@+id/reason7_curfew"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reason7_curfew_smalltext" />
-
-                <CheckBox
-                    android:id="@+id/reason8_curfew"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/reason8_curfew_smalltext" />
             </LinearLayout>
 
         </LinearLayout>

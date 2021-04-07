@@ -29,7 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public abstract class AttestationGenerator {
+public class AttestationGenerator {
     protected final Context context;
     Attestation attestation;
 
@@ -120,12 +120,12 @@ public abstract class AttestationGenerator {
      */
     protected void addSmallQrCode() throws DocumentException, IOException, WriterException {
         // Small QR Code
-        addText(qrTitle1, 440, 140, 6, 1, BaseColor.WHITE);
-        addText(qrTitle2, 440, 130, 6, 1, BaseColor.WHITE);
+        addText(qrTitle1, 490, 140, 6, 1, BaseColor.WHITE);
+        addText(qrTitle2, 490, 130, 6, 1, BaseColor.WHITE);
 
         Image smallQrCode = Image.getInstance(qrCodeGenerator.generateSmallQrCode(getQrCodeText(), smallQrCodeSize));
 
-        addImage(smallQrCode, originalPageNumber, 440, 122);
+        addImage(smallQrCode, originalPageNumber, 440, 20);
     }
 
     /**
@@ -223,23 +223,29 @@ public abstract class AttestationGenerator {
      */
     protected void fillReasons() {
         for (Reason reason: attestation.getEnabledReasons()) {
-            addText("x", reason.getX(), reason.getY(), 12, reason.getPage());
+            Phrase phrase = new Phrase("x", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 13, BaseColor.BLACK));
+            ColumnText.showTextAligned(stamper.getOverContent(reason.getPage()), Element.ALIGN_LEFT, phrase, reason.getX(), reason.getY(), 0);
         }
     }
 
     /**
      * Fill the PDF form
      */
-    protected abstract void fillForm();
+    protected void fillForm() {
+        String fullName = attestation.getSurname() + " " + attestation.getLastName();
+
+        addText(fullName, 110, 677);
+        addText(attestation.getBirthDate(), 120, 667);
+        addText(attestation.getFullAddress(), 128, 657);
+    }
 
     /**
      * Add the footer
      */
     protected void addFooter() {
-        addText("Fait à " + attestation.getCity(), 72, 109, 11, originalPageNumber);
-        addText("Le " + attestation.getTravelDate(), 72, 93, 11, originalPageNumber);
-        addText("à " + attestation.getHour() + ':' + attestation.getMinute(), 310, 93, 11, originalPageNumber);
-        addText("(Date et heure de début de sortie à mentionner obligatoirement)", 72, 77, 11, originalPageNumber);
+        String text = "Fait le " + attestation.getTravelDate() + " à " + attestation.getHour() + ':' + attestation.getMinute();
+        Phrase phrase = new Phrase(text, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.BLACK));
+        ColumnText.showTextAligned(stamper.getOverContent(1), Element.ALIGN_LEFT, phrase, 30, 60, 0);
     }
 
     /**
@@ -250,7 +256,7 @@ public abstract class AttestationGenerator {
         return "Cree le: " + attestation.getTravelDate() + " a " + attestation.getHour() + "h" + attestation.getMinute() + ";\n" +
                 "Nom: " + attestation.getLastName() + ";\n" +
                 "Prenom: " + attestation.getSurname() + ";\n" +
-                "Naissance: " + attestation.getBirthDate() + " a " + attestation.getBirthPlace() + ";\n" +
+                "Naissance: " + attestation.getBirthDate() + ";\n" +
                 "Adresse: " + attestation.getFullAddress() + ";\n" +
                 "Sortie: " + attestation.getTravelDate() + " a " + attestation.getHour() + ":" + attestation.getMinute() + ";\n" +
                 "Motifs: " + attestation.getReasonsQrCode() + ";";

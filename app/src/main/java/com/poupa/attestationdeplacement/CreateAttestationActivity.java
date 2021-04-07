@@ -28,8 +28,6 @@ import com.poupa.attestationdeplacement.dto.CurfewAttestation;
 import com.poupa.attestationdeplacement.dto.QuarantineAttestation;
 import com.poupa.attestationdeplacement.dto.Reason;
 import com.poupa.attestationdeplacement.generator.AttestationGenerator;
-import com.poupa.attestationdeplacement.generator.CurfewAttestationGenerator;
-import com.poupa.attestationdeplacement.generator.QuarantineAttestationGenerator;
 import com.poupa.attestationdeplacement.tasks.GeneratePdfTask;
 import com.poupa.attestationdeplacement.tasks.LoadProfilesCreateAttestationTask;
 import com.poupa.attestationdeplacement.ui.DateTextWatcher;
@@ -81,10 +79,10 @@ public class CreateAttestationActivity extends AppCompatActivity {
      */
     private void initFields(boolean initDate) {
         attestation = new QuarantineAttestation();
-        attestationGenerator = new QuarantineAttestationGenerator(this, (QuarantineAttestation) attestation);
+        attestationGenerator = new AttestationGenerator(this, attestation);
 
-        LinearLayout curfewLayout = (LinearLayout) findViewById(R.id.reasons_curfew_layout);
-        LinearLayout quarantineLayout = (LinearLayout) findViewById(R.id.reasons_quarantine_layout);
+        LinearLayout curfewLayout = findViewById(R.id.reasons_curfew_layout);
+        LinearLayout quarantineLayout = findViewById(R.id.reasons_quarantine_layout);
 
         AutoCompleteTextView autoCompleteAttestation = findViewById(R.id.attestation_type_dropdown);
         autoCompleteAttestation.setOnItemClickListener((parent, view, position, id) -> {
@@ -92,12 +90,12 @@ public class CreateAttestationActivity extends AppCompatActivity {
 
             if (attestation instanceof CurfewAttestation) {
                 CurfewAttestation curfewAttestation = (CurfewAttestation) attestation;
-                attestationGenerator = new CurfewAttestationGenerator(this, curfewAttestation);
+                attestationGenerator = new AttestationGenerator(this, curfewAttestation);
                 curfewLayout.setVisibility(View.VISIBLE);
                 quarantineLayout.setVisibility(View.INVISIBLE);
             } else {
                 QuarantineAttestation quarantineAttestation = (QuarantineAttestation) attestation;
-                attestationGenerator = new QuarantineAttestationGenerator(this, quarantineAttestation);
+                attestationGenerator = new AttestationGenerator(this, quarantineAttestation);
                 curfewLayout.setVisibility(View.INVISIBLE);
                 quarantineLayout.setVisibility(View.VISIBLE);
             }

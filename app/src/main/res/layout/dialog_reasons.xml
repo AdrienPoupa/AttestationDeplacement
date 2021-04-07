@@ -10,6 +10,13 @@
         android:layout_margin="16dp">
 
         <TextView
+            android:id="@+id/curfew_reasons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/curfew_attestation"
+            android:textStyle="bold"/>
+
+        <TextView
             android:id="@+id/reasons1_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,54 +95,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/reason5_curfew"/>
-
-        <TextView
-            android:id="@+id/reasons6_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/reason6_curfew_smalltext"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/reasons6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/reason6_curfew"/>
-
-        <TextView
-            android:id="@+id/reasons7_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/reason7_curfew_smalltext"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/reasons7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/reason7_curfew"/>
-
-        <TextView
-            android:id="@+id/reasons8_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/reason8_curfew_smalltext"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/reasons8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/reason8_curfew"/>
 
     </LinearLayout>
 </ScrollView>
